@@ -1,0 +1,2 @@
+LayoutFileName: /projectnb/cometsfba/comets_2.8.2_test/layouts/test_run/Co_low_2.5.8/Co_layout_Low
+ModelFileName: /projectnb/cometsfba/comets_2.8.2_test/layouts/test_run/Co_low_2.5.8/BtModel.txt

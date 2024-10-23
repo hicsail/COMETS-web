@@ -1,0 +1,8 @@
+cobra
+numpy==1.23.5
+requests
+dill
+boto3
+matplotlib==3.8.0
+python-dotenv
+pandas==1.5.3
