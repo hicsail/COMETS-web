@@ -125,6 +125,31 @@ def save_metabolite(experiment: c.comets, metabolite_id: str) -> Path:
 
     return output_path
 
+def save_total_biomass_series(experiment: c.comets) -> Path:
+    # Output settings
+    output_path = OUTPUT_DIR / f'biomass_timeseries.png'
+
+    _, ax = plt.subplots()
+    ax = experiment.total_biomass.plot(x='cycle', ax=ax)
+    ax.set_ylabel('Biomass (gr.)')
+
+    plt.savefig(output_path, format='png', bbox_inches='tight')
+
+    return output_path
+
+def save_metabolite_timeseries(experiment: c.comets) -> Path:
+    # Output settings
+    output_path = OUTPUT_DIR / f'metabolite_timeseries.png'
+
+    _, ax = plt.subplots()
+    ax = experiment.get_metabolite_time_series().plot(x='cycle', ax=ax)
+    ax.set_ylabel('Metabolite time series (gr.)')
+
+    plt.savefig(output_path, format='png', bbox_inches='tight')
+
+    return output_path
+
+
 def main():
     params = c.params()
 
@@ -183,10 +208,17 @@ def main():
     experiment.run(False)
 
     ## Capture the output
-    save_biomass(experiment, model.id)
+    # Produce the images
+    output_paths: list[Path] = []
+    output_paths.append(save_biomass(experiment, model.id))
     # TODO: Add Flux Saving
     # TODO: Add Metabolite Saving
+    output_paths.append(save_total_biomass_series(experiment))
+    output_paths.append(save_metabolite_timeseries(experiment))
 
+    # Save the images in the S3 bucket
+
+    print(experiment.fluxes_by_species)
 
 
 if __name__ == '__main__':
