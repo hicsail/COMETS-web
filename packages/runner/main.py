@@ -1,13 +1,25 @@
+from dotenv import load_dotenv
 import cometspy as c
-import os
 import cobra
 import matplotlib.pyplot as plt
+from argparse import ArgumentParser
+from dotenv import load_dotenv
+import os
+import boto3
+
+# Load environment variables
+load_dotenv()
+
+# S3 Configuration
+s3_client = boto3.client(
+    's3',
+    aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
+    aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY'),
+    endpoint_url=os.getenv('AWS_ENDPOINT_URL')
+)
 
 
 def main():
-    # TODO: Change out to have environment set by Docker
-    os.environ['COMETS_GLOP'] = './lib/comets_glop'
-
     params = c.params()
 
     ## Model setup

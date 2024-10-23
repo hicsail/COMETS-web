@@ -2,7 +2,8 @@ cobra
 numpy==1.23.5
 requests
 dill
-boto3
+boto3==1.35.47
 matplotlib==3.8.0
 python-dotenv
 pandas==1.5.3
+python-dotenv==1.0.1
