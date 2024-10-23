@@ -1,0 +1,2 @@
+LayoutFileName: /projectnb/cometsfba/comets_2.8.2_test/layouts/petri_dish_circles.txt
+ModelFileName: /projectnb/cometsfba/comets_2.8.2_test/layouts/model_CSP.mod

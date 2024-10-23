@@ -1,0 +1,12 @@
+LayoutFileName: /projectnb/cometsfba/comets_2.5.17_test/test_run/Co_low_minflux_2.5.17/layout.txt
+ModelFileName: BtModel.txt
+ModelFileName: FpModel.txt
+FluxFileName: ./flux.m
+MediaFileName: ./media.m
+TotalBiomassFileName: ./total_biomass.txt
+ModelFileName: BtModel.txt
+ModelFileName: BtModel.txt
+ModelFileName: FpModel.txt
+FluxFileName: ./flux.m
+MediaFileName: ./media.m
+TotalBiomassFileName: ./total_biomass.txt

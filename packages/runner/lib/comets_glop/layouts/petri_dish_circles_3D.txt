@@ -1,0 +1,28 @@
+model_file	model_CSP.mod  model_CSP.mod  model_CSP.mod  model_CSP.mod
+model_world
+	grid_size 21 21 21
+	world_media
+		Carbon1	100
+		Carbon2 100
+		Oxygen 500
+		Dext 0
+		Eext 0
+		Fext 500
+		Hext 500
+	//
+	static_media 1 1 0 0 0 0 0 0 0 0 0 0 0 0
+	//
+	
+	barrier
+	//	
+//
+	initial_pop
+		5 5 10 1E-7 0 0 0
+		15 15 10 0 0 0 1E-7
+                5 15 10 0 1E-7 0 0
+                15 5 10 0 0 1E-7 0
+	//
+	parameters
+	numrunthreads = 1
+	//
+//

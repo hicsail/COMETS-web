@@ -1,0 +1,9 @@
+-script
+running script file: comets_script
+Loading layout file 'layout.txt'...
+null/COMETS_manifest.txt (No such file or directory)
+Unable to initialize manifest file. 
+Continuing without writing manifest file.
+Found 2 model files!
+Loading 'BtModel.txt' ...
+Loading 'BtModel.txt' ...
