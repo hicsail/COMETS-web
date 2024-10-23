@@ -23,7 +23,12 @@ def main():
     layout = c.layout()
 
     # Set metabolite
-    layout.set_specific_metabolite('glc__D_e', 0.011)
+    layout.set_specific_metabolite('glc__D_e', 1000)
+    layout.set_specific_metabolite('o2_e', 1000)
+    layout.set_specific_metabolite('nh4_e', 1000)
+    layout.set_specific_metabolite('h2o_e', 1000)
+    layout.set_specific_metabolite('h_e', 1000)
+    layout.set_specific_metabolite('pi_e', 1000)
     layout.set_specific_metabolite('ac_e', 1000)
 
     # Set size
@@ -44,7 +49,6 @@ def main():
     params.set_param('MediaLogRate', 20)
     params.set_param('FluxLogRate', 20)
     params.set_param('ExchangeStyle','Monod Style')
-    # params.set_param('defaultDiffConst',6.0E-6)
     params.set_param('defaultDiffConst', 0.000006)
     params.set_param('biomassMotionStyle', 'ConvNonlin Diffusion 2D')
     params.set_param('writeBiomassLog', True)
