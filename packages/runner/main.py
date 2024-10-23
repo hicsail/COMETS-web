@@ -1,3 +1,4 @@
+from math import exp
 from dotenv import load_dotenv
 import cometspy as c
 import cobra
@@ -6,6 +7,8 @@ from argparse import ArgumentParser
 from dotenv import load_dotenv
 import os
 import boto3
+from pathlib import Path
+import matplotlib
 
 # Load environment variables
 load_dotenv()
@@ -17,6 +20,52 @@ s3_client = boto3.client(
     aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY'),
     endpoint_url=os.getenv('AWS_ENDPOINT_URL')
 )
+
+# System Variables
+OUTPUT_DIR = Path(os.getenv('OUTPUT_DIR', default='./sim_files/'))
+
+# Visualization Settings
+plt.switch_backend('Agg')
+
+
+def save_biomass(experiment: c.comets, model_id: str) -> None:
+    # Output settings
+    output_path = OUTPUT_DIR / f'biomass_{model_id}.png'
+    image_index = [20, 40, 60, 80, 100]
+    figsize = (20, 8)
+
+    # Set the target color map
+    cmap = matplotlib.colormaps.get_cmap('magma')
+    cmap.set_bad((0, 0, 0))
+
+    images = [
+        experiment.get_biomass_image(model_id, image_index[0]),
+        experiment.get_biomass_image(model_id, image_index[1]),
+        experiment.get_biomass_image(model_id, image_index[2]),
+        experiment.get_biomass_image(model_id, image_index[3]),
+        experiment.get_biomass_image(model_id, image_index[4]),
+    ]
+
+    fig = plt.figure(constrained_layout=True, figsize=figsize)
+    gs = fig.add_gridspec(2, 6, width_ratios=[1, 1, 1, 1, 1, 0.25])
+
+    # Display the petri dish images on the first row
+    for index, img in enumerate(images):
+        # Display the subplot in the given row
+        ax = fig.add_subplot(gs[0, index])
+        # Title based on the timestep in hours
+        ax.set_title(str(image_index[index] // 10) + 'h')
+        # Add the image in
+        cax = ax.imshow(img, cmap='viridis')
+        ax.axis('off')
+
+    ax = fig.add_subplot(gs[0, 5])
+
+    ax.axis('off')
+    ax.set_title('grams/pixel')
+    fig.colorbar(cax, ax=ax)
+
+    fig.savefig(output_path, format='png', bbox_inches='tight')
 
 
 def main():
@@ -73,12 +122,11 @@ def main():
     experiment = c.comets(layout, params, 'sim_files/')
     experiment.set_classpath('bin', './lib/comets_glop/bin/comets_scr.jar')
 
+    ## Run the experiment
     experiment.run(False)
 
-    fig, ax = plt.subplots()
-    ax = experiment.total_biomass.plot(x='cycle', ax=ax)
-    plt.savefig('example', format='png')
-    plt.close(fig)
+    ## Capture the output
+    save_biomass(experiment, model.id)
 
 
 if __name__ == '__main__':
