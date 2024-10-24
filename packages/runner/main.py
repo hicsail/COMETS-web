@@ -1,13 +1,41 @@
+from dotenv import load_dotenv
 import cometspy as c
-import os
 import cobra
 import matplotlib.pyplot as plt
+from dotenv import load_dotenv
+import os
+import boto3
+from pathlib import Path
+
+from runner import savers
+
+# Load environment variables
+load_dotenv()
+
+# S3 Configuration
+s3_client = boto3.client(
+    's3',
+    aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
+    aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY'),
+    endpoint_url=os.getenv('AWS_ENDPOINT_URL')
+)
+
+# System Variables
+OUTPUT_DIR = Path(os.getenv('OUTPUT_DIR', default='./sim_files/'))
+
+# Visualization Settings
+plt.switch_backend('Agg')
+save_config = savers.SaveConfig(s3_client, OUTPUT_DIR)
+output_savers = [
+    savers.BiomassSaver(),
+    savers.FluxSaver(),
+    savers.MetaboliteSaver(),
+    savers.BiomassSeriesSaver(),
+    savers.MetabolitSeriesSaver()
+]
 
 
 def main():
-    # TODO: Change out to have environment set by Docker
-    os.environ['COMETS_GLOP'] = './lib/comets_glop'
-
     params = c.params()
 
     ## Model setup
@@ -61,12 +89,14 @@ def main():
     experiment = c.comets(layout, params, 'sim_files/')
     experiment.set_classpath('bin', './lib/comets_glop/bin/comets_scr.jar')
 
+    ## Run the experiment
     experiment.run(False)
 
-    fig, ax = plt.subplots()
-    ax = experiment.total_biomass.plot(x='cycle', ax=ax)
-    plt.savefig('example', format='png')
-    plt.close(fig)
+    ## Capture the output
+    output = dict()
+    for saver in output_savers:
+        output.update(saver.save(experiment, save_config))
+    print(output)
 
 
 if __name__ == '__main__':
