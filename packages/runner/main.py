@@ -7,7 +7,8 @@ from dotenv import load_dotenv
 import os
 import boto3
 from pathlib import Path
-from runner import helpers
+
+from runner import savers
 
 # Load environment variables
 load_dotenv()
@@ -25,6 +26,14 @@ OUTPUT_DIR = Path(os.getenv('OUTPUT_DIR', default='./sim_files/'))
 
 # Visualization Settings
 plt.switch_backend('Agg')
+save_config = savers.SaveConfig(s3_client, OUTPUT_DIR)
+output_savers = [
+    savers.BiomassSaver(),
+    savers.FluxSaver(),
+    savers.MetaboliteSaver(),
+    savers.BiomassSeriesSaver(),
+    savers.MetabolitSeriesSaver()
+]
 
 
 def main():
@@ -85,17 +94,10 @@ def main():
     experiment.run(False)
 
     ## Capture the output
-    # Produce the images
-    output_paths: list[Path] = []
-    output_paths.append(save_biomass(experiment, model.id))
-    # TODO: Add Flux Saving
-    # TODO: Add Metabolite Saving
-    output_paths.append(save_total_biomass_series(experiment))
-    output_paths.append(save_metabolite_timeseries(experiment))
-
-    # Save the images in the S3 bucket
-    fluxes = helpers.get_target_flux(experiment, model.id)
-    print(fluxes)
+    output = dict()
+    for saver in output_savers:
+        output.update(saver.save(experiment, save_config))
+    print(output)
 
 
 if __name__ == '__main__':
