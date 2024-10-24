@@ -1,3 +1,4 @@
+import argparse
 import cometspy as c
 from argparse import ArgumentParser, Namespace
 
@@ -9,7 +10,7 @@ def get_target_flux(experiment: c.comets, model_id: str) -> list[str]:
     return list(filtered_flux.columns)
 
 
-def argument_handling() -> Namespace:
+def argument_handling() -> dict:
     argparser = ArgumentParser()
 
     # Metabolite settings
@@ -69,9 +70,38 @@ def argument_handling() -> Namespace:
 
     args = argparser.parse_args()
 
+    # Divide up the args based on their groups
+    arg_groups={}
+
+    for group in argparser._action_groups:
+        group_dict = {a.dest:getattr(args,a.dest,None) for a in group._group_actions}
+        arg_groups[group.title] = group_dict
+
     # Check for the length of the model info
-    if len(args.model_name) == 0:
+    if len(arg_groups['model']['model_name']) == 0:
         argparser.error('At least one model is required')
 
-    print(args)
-    return args
+    # Make sure all the model arg lists are the same size
+    arg_lengths = [len(arg_groups['model'][arg]) for arg in arg_groups['model']]
+    if not all([length == arg_lengths[0] for length in arg_lengths]):
+        argparser.error('Each model argument needs to be present for each model')
+
+    # Create a list of dictionaries for the model parameters
+    model_args = []
+    for index in range(len(arg_groups['model']['model_name'])):
+        model_args.append({
+            'model_name': arg_groups['model']['model_name'][index],
+            'model_neutral_drift': arg_groups['model']['model_neutral_drift'][index],
+            'model_neutral_drift_amp': arg_groups['model']['model_neutral_drift_amp'][index],
+            'model_death_rate': arg_groups['model']['model_death_rate'][index],
+            'model_linear_diffusivity': arg_groups['model']['model_linear_diffusivity'][index],
+            'model_nonlinear_diffusivity': arg_groups['model']['model_nonlinear_diffusivity'][index]
+        })
+
+    resulting_args = {
+        'metabolite': arg_groups['metabolite'],
+        'model': model_args,
+        'global': arg_groups['global']
+    }
+
+    return resulting_args

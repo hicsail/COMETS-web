@@ -39,6 +39,7 @@ output_savers = [
 def main():
     ## Argument Parsing
     args = argument_handling()
+    print(args)
     exit(0)
 
     ## Model setup
