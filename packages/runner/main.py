@@ -8,6 +8,7 @@ import boto3
 from pathlib import Path
 from argparse import ArgumentParser
 from runner import savers
+from runner import helpers
 from runner.helpers import argument_handling
 
 # Load environment variables
@@ -38,16 +39,27 @@ output_savers = [
 
 def main():
     ## Argument Parsing
-    args = argument_handling()
-    print(args)
-    exit(0)
+    args = helpers.argument_handling()
 
     ## Model setup
-    loaded_model = cobra.io.load_model('textbook')
-    model = c.model(loaded_model)
-    model.add_nonlinear_diffusion_parameters(0.001, 0.6, 1.0, 1.0, 0.0)
-    model.change_bounds('EX_glc__D_e', -1000, 1000)
-    model.change_bounds('EX_ac_e', -1000, 1000)
+    models = []
+    for model_args in args['model']:
+        # Select the correct model to load
+        if model_args['model_name'] == helpers.E_COLI:
+            loaded_model = cobra.io.load_model('textbook')
+        elif model_args['model_name'] == helpers.NITROBACTER:
+            loaded_model = cobra.io.load_model('./iFC579_modified_cobra.xml')
+        else:
+            loaded_model = cobra.io.load_model('./iGC535_modified_cobra.xml')
+
+        model = c.model(loaded_model)
+        model.add_nonlinear_diffusion_parameters(
+            model_args['model_linear_diffusivity'], model_args['model_nonlinear_diffusivity'],
+            1.0, 1.0, 0.0)
+        model.change_bounds('EX_glc__D_e', -1000, 1000)
+        model.change_bounds('EX_ac_e', -1000, 1000)
+        model.initial_pop = [[0, 0, 1e-6]]
+        models.append(model)
 
     ## Layout setup
     layout = c.layout()
@@ -64,8 +76,7 @@ def main():
     layout.grid = [1, 1]
 
     # Add model
-    model.initial_pop = [[0, 0, 1e-6]]
-    layout.add_model(model)
+    [layout.add_model(model) for model in models]
 
     ## Parameters setup
     params = c.params()

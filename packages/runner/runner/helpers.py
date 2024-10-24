@@ -3,6 +3,11 @@ import cometspy as c
 from argparse import ArgumentParser, Namespace
 
 
+E_COLI = 'escherichia coli core'
+NITROSOMONAS = 'nitrosomonas europaea'
+NITROBACTER = 'nitrobacter winogradskyi'
+
+
 def get_target_flux(experiment: c.comets, model_id: str) -> list[str]:
     # Get only the fluxes start start with "EX"
     filtered_flux = experiment.fluxes_by_species[model_id].filter(regex='^EX', axis=1)
@@ -32,7 +37,7 @@ def argument_handling() -> dict:
     model_args = argparser.add_argument_group('model')
     model_args.add_argument('--model-name',
                             type=str,
-                            choices=['escherichia coli core', 'nitrosomonas europaea', 'nitrobacter winogradskyi'],
+                            choices=[E_COLI, NITROSOMONAS, NITROBACTER],
                             action='append')
     model_args.add_argument('--model-neutral-drift',
                             type=bool,
