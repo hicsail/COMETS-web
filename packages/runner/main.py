@@ -59,7 +59,7 @@ def main():
     layout = c.layout()
 
     # Set metabolite
-    layout.set_specific_metabolite('glc__D_e', 0.011)
+    layout.set_specific_metabolite(args['metabolite']['metabolite_type'], args['metabolite']['metabolite_amount'])
     layout.set_specific_metabolite('o2_e', 1000)
     layout.set_specific_metabolite('nh4_e', 1000)
     layout.set_specific_metabolite('h2o_e', 1000)
@@ -69,7 +69,7 @@ def main():
     # Set size
     layout.grid = [1, 1]
 
-    # Add model
+    # Add models
     [layout.add_model(model) for model in models]
 
     ## Parameters setup
