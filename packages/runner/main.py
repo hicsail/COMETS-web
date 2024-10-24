@@ -6,8 +6,9 @@ from dotenv import load_dotenv
 import os
 import boto3
 from pathlib import Path
-
+from argparse import ArgumentParser
 from runner import savers
+from runner.helpers import argument_handling
 
 # Load environment variables
 load_dotenv()
@@ -36,7 +37,9 @@ output_savers = [
 
 
 def main():
-    params = c.params()
+    ## Argument Parsing
+    args = argument_handling()
+    exit(0)
 
     ## Model setup
     loaded_model = cobra.io.load_model('textbook')
@@ -64,6 +67,8 @@ def main():
     layout.add_model(model)
 
     ## Parameters setup
+    params = c.params()
+
     # Core simulation parameters
     params.set_param('defaultVmax', 10)
     params.set_param('defaultKm', 0.000015)
@@ -85,8 +90,6 @@ def main():
     params.set_param('writeFluxLog', True)
     params.set_param('writeTotalBiomassLog', True)
     params.set_param('comets_optimizer', 'GLOP')
-
-
 
     ## Create the experiment
     experiment = c.comets(layout, params, 'sim_files/')
