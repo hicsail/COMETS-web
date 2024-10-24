@@ -163,18 +163,20 @@ class BiomassSeriesSaver(Saver):
         # Output settings
         output_path = config.output_folder / f'biomass_timeseries.png'
 
-        fig, ax = plt.subplots()
-        ax = experiment.total_biomass.plot(x='cycle', ax=ax)
-        ax.set_ylabel('Biomass (gr.)')
+        pld = experiment.total_biomass.mul(experiment.parameters.get_param('timeStep'))
+        ax = pld.plot(x = 'cycle')
+        ax.set_ylabel('Biomass (g)')
+        ax.set_xlabel('Time (h)')
 
         plt.savefig(output_path, format='png', bbox_inches='tight')
+
+        plt.close()
 
         output = dict()
         output['biomass_series'] = {
             'name': 'Biomass Series',
             'path': output_path
         }
-        plt.close(fig)
 
         return output
 
@@ -185,9 +187,15 @@ class MetabolitSeriesSaver(Saver):
         # Output settings
         output_path = config.output_folder / f'metabolite_timeseries.png'
 
+        media = experiment.media.copy()
+        media['time'] = media['cycle'] * experiment.parameters.get_param('timeStep')
+        media = media[media.conc_mmol<900]
+
         fig, ax = plt.subplots()
-        ax = experiment.get_metabolite_time_series().plot(x='cycle', ax=ax)
-        ax.set_ylabel('Metabolite time series (gr.)')
+        media.groupby('metabolite').plot(x='time', ax =ax, y='conc_mmol')
+        ax.legend(('acetate','CO2', 'formate', 'glucose'))
+        ax.set_ylabel("Concentration (mmol)")
+        ax.set_xlabel("Time (h)")
 
         plt.savefig(output_path, format='png', bbox_inches='tight')
 
