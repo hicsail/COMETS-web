@@ -6,10 +6,8 @@ from dotenv import load_dotenv
 import os
 import boto3
 from pathlib import Path
-from argparse import ArgumentParser
 from runner import savers
 from runner import helpers
-from runner.helpers import argument_handling
 
 # Load environment variables
 load_dotenv()
