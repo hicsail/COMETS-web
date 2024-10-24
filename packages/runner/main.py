@@ -45,13 +45,7 @@ def main():
     models = []
     for model_args in args['model']:
         # Select the correct model to load
-        if model_args['model_name'] == helpers.E_COLI:
-            loaded_model = cobra.io.load_model('textbook')
-        elif model_args['model_name'] == helpers.NITROBACTER:
-            loaded_model = cobra.io.load_model('./iFC579_modified_cobra.xml')
-        else:
-            loaded_model = cobra.io.load_model('./iGC535_modified_cobra.xml')
-
+        loaded_model = cobra.io.load_model(helpers.MODEL_TO_NOTEBOOK[model_args['model_name']])
         model = c.model(loaded_model)
         model.add_nonlinear_diffusion_parameters(
             model_args['model_linear_diffusivity'], model_args['model_nonlinear_diffusivity'],

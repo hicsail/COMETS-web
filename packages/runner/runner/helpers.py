@@ -7,6 +7,12 @@ E_COLI = 'escherichia coli core'
 NITROSOMONAS = 'nitrosomonas europaea'
 NITROBACTER = 'nitrobacter winogradskyi'
 
+MODEL_TO_NOTEBOOK = {
+    E_COLI: 'textbook',
+    NITROSOMONAS: './iGC535_modified_cobra.xml',
+    NITROBACTER: './iFC579_modified_cobra.xml',
+}
+
 
 def get_target_flux(experiment: c.comets, model_id: str) -> list[str]:
     # Get only the fluxes start start with "EX"
