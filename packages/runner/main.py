@@ -64,24 +64,29 @@ def main():
     layout.add_model(model)
 
     ## Parameters setup
-    params.set_param('timeStep', 0.01)
-    params.set_param('maxCycles', 2000)
-    params.set_param('spaceWidth', 1)
+    # Core simulation parameters
     params.set_param('defaultVmax', 10)
     params.set_param('defaultKm', 0.000015)
+    params.set_param('maxCycles', 2000)
+    params.set_param('timeStep', 0.01)
+    params.set_param('spaceWidth', 1)
+    params.set_param('maxSpaceBiomass', 10)
+    params.set_param('minSpaceBiomass', 1e-11)
+
+    # Functional control
     params.set_param('BiomassLogRate', 20)
     params.set_param('MediaLogRate', 20)
     params.set_param('FluxLogRate', 20)
     params.set_param('ExchangeStyle','Monod Style')
     params.set_param('defaultDiffConst', 0.000006)
     params.set_param('biomassMotionStyle', 'ConvNonlin Diffusion 2D')
-    params.set_param('maxSpaceBiomass', 10)
-    params.set_param('minSpaceBiomass', 1e-11)
-    params.set_param('writeBiomassLog', True)
-    params.set_param('writeTotalBiomassLog', True)
-    params.set_param('writeFluxLog', True)
     params.set_param('writeMediaLog', True)
+    params.set_param('writeBiomassLog', True)
+    params.set_param('writeFluxLog', True)
+    params.set_param('writeTotalBiomassLog', True)
     params.set_param('comets_optimizer', 'GLOP')
+
+
 
     ## Create the experiment
     experiment = c.comets(layout, params, 'sim_files/')
