@@ -76,20 +76,20 @@ def main():
     params = c.params()
 
     # Core simulation parameters
-    params.set_param('defaultVmax', 10)
-    params.set_param('defaultKm', 0.000015)
-    params.set_param('maxCycles', 2000)
-    params.set_param('timeStep', 0.01)
+    params.set_param('defaultVmax', args['global']['default_v_max'])
+    params.set_param('defaultKm', args['global']['default_km'])
+    params.set_param('maxCycles', args['global']['max_cycles'])
+    params.set_param('timeStep', args['global']['time_step'])
     params.set_param('spaceWidth', 1)
     params.set_param('maxSpaceBiomass', 10)
     params.set_param('minSpaceBiomass', 1e-11)
 
     # Functional control
-    params.set_param('BiomassLogRate', 20)
-    params.set_param('MediaLogRate', 20)
-    params.set_param('FluxLogRate', 20)
+    params.set_param('BiomassLogRate', args['global']['log_freq'])
+    params.set_param('MediaLogRate', args['global']['log_freq'])
+    params.set_param('FluxLogRate', args['global']['log_freq'])
     params.set_param('ExchangeStyle','Monod Style')
-    params.set_param('defaultDiffConst', 0.000006)
+    params.set_param('defaultDiffConst', args['global']['default_diff_const'])
     params.set_param('biomassMotionStyle', 'ConvNonlin Diffusion 2D')
     params.set_param('writeMediaLog', True)
     params.set_param('writeBiomassLog', True)

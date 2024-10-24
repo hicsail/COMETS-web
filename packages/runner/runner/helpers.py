@@ -78,6 +78,9 @@ def argument_handling() -> dict:
     global_args.add_argument('--default-km',
                              type=float,
                              required=True)
+    global_args.add_argument('--max-cycles',
+                             type=int,
+                             required=True)
 
     args = argparser.parse_args()
 
