@@ -2,7 +2,6 @@ from dotenv import load_dotenv
 import cometspy as c
 import cobra
 import matplotlib.pyplot as plt
-from argparse import ArgumentParser
 from dotenv import load_dotenv
 import os
 import boto3
