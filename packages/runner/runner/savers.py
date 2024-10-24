@@ -163,18 +163,20 @@ class BiomassSeriesSaver(Saver):
         # Output settings
         output_path = config.output_folder / f'biomass_timeseries.png'
 
-        fig, ax = plt.subplots()
-        ax = experiment.total_biomass.plot(x='cycle', ax=ax)
-        ax.set_ylabel('Biomass (gr.)')
+        pld = experiment.total_biomass.mul(experiment.parameters.get_param('timeStep'))
+        ax = pld.plot(x = 'cycle')
+        ax.set_ylabel('Biomass (g)')
+        ax.set_xlabel('Time (h)')
 
         plt.savefig(output_path, format='png', bbox_inches='tight')
+
+        plt.close()
 
         output = dict()
         output['biomass_series'] = {
             'name': 'Biomass Series',
             'path': output_path
         }
-        plt.close(fig)
 
         return output
 
