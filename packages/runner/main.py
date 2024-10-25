@@ -8,6 +8,7 @@ import boto3
 from pathlib import Path
 from runner import savers
 from runner import helpers
+from pprint import pprint
 
 # Load environment variables
 load_dotenv()
@@ -15,9 +16,9 @@ load_dotenv()
 # S3 Configuration
 s3_client = boto3.client(
     's3',
-    aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
-    aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY'),
-    endpoint_url=os.getenv('AWS_ENDPOINT_URL')
+    aws_access_key_id=os.getenv('S3_ACCESS_KEY_ID'),
+    aws_secret_access_key=os.getenv('S3_SECRET_ACCESS_KEY'),
+    endpoint_url=os.getenv('S3_ENDPOINT_URL')
 )
 
 # System Variables
@@ -25,13 +26,12 @@ OUTPUT_DIR = Path(os.getenv('OUTPUT_DIR', default='./sim_files/'))
 
 # Visualization Settings
 plt.switch_backend('Agg')
-save_config = savers.SaveConfig(s3_client, OUTPUT_DIR)
 output_savers = [
     savers.BiomassSaver(),
     savers.FluxSaver(),
     savers.MetaboliteSaver(),
     savers.BiomassSeriesSaver(),
-    savers.MetabolitSeriesSaver()
+    savers.MetaboliteSeriesSaver()
 ]
 
 
@@ -103,10 +103,16 @@ def main():
     experiment.run(False)
 
     ## Capture the output
+    save_config = savers.SaveConfig(
+        s3_client=s3_client,
+        output_folder=OUTPUT_DIR,
+        s3_bucket=args['app']['s3_bucket'],
+        s3_folder=args['app']['s3_folder'],
+        do_upload=args['app']['s3_save'])
     output = dict()
     for saver in output_savers:
         output.update(saver.save(experiment, save_config))
-    print(output)
+    pprint(output)
 
 
 if __name__ == '__main__':
