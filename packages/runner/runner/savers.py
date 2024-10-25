@@ -11,9 +11,16 @@ from runner import helpers
 class SaveConfig:
     s3_client: typing.Any
     output_folder: Path
+    s3_bucket: str
+    s3_folder: str
+    do_upload: bool
 
 
 class Saver(ABC):
+    def upload_file(self, config: SaveConfig, key: str, filename: Path) -> None:
+        if config.do_upload:
+            config.s3_client.upload_file(filename, config.s3_bucket, key)
+
     @abstractmethod
     def save(self, experiment: c.comets, config: SaveConfig) -> dict:
         """
@@ -27,7 +34,9 @@ class BiomassSaver(Saver):
 
         for model in experiment.layout.models:
             # Output settings
-            output_path = config.output_folder / f'biomass_{model.id}.png'
+            filename = f'biomass_{model.id}.png'
+            output_path = config.output_folder / filename
+            bucket_location = f'{config.s3_folder}/{filename}'
             image_index = [20, 40, 60, 80, 100]
             figsize = (20, 8)
 
@@ -52,11 +61,13 @@ class BiomassSaver(Saver):
             ax.set_title('grams/pixel')
             fig.colorbar(cax, ax=ax)
 
+            # Save the file and upload
             fig.savefig(output_path, format='png', bbox_inches='tight')
+            self.upload_file(config, bucket_location, output_path)
 
             output['biomass'][model.id] = {
                 'name': model.id,
-                'path': output_path
+                'location': bucket_location
             }
             plt.close(fig)
 
@@ -77,7 +88,9 @@ class FluxSaver(Saver):
             # Go through each flux on the model
             for flux in fluxes:
                 # Output settings
-                output_path = config.output_folder / f'flux_{model.id}_{flux}.png'
+                filename = f'flux_{model.id}_{flux}.png'
+                output_path = config.output_folder / filename
+                bucket_location = f'{config.s3_folder}/{filename}'
                 image_index = [20, 40, 60, 80, 100]
                 figsize = (20, 4)
 
@@ -104,11 +117,13 @@ class FluxSaver(Saver):
                 ax.set_title('mmol/gh')
                 fig.colorbar(cax, ax=ax)
 
+                # Save the file and upload
                 fig.savefig(output_path, format='png', bbox_inches='tight')
+                self.upload_file(config, bucket_location, output_path)
 
                 output['flux'][model.id][flux] = {
                     'name': flux,
-                    'path': output_path
+                    'location': bucket_location
                 }
                 plt.close(fig)
         return output
@@ -121,7 +136,9 @@ class MetaboliteSaver(Saver):
 
         for metabolite in experiment.layout.media.metabolite:
             # Output settings
-            output_path = config.output_folder / f'metabolite_{metabolite}.png'
+            filename = f'metabolite_{metabolite}.png'
+            output_path = config.output_folder / filename
+            bucket_location = f'{config.s3_folder}/{filename}'
             image_index = [20, 40, 60, 80, 100]
             figsize = (20, 8)
 
@@ -147,11 +164,13 @@ class MetaboliteSaver(Saver):
             ax.set_title('mmol/pixel')
             fig.colorbar(cax, ax=ax)
 
+            # Save the file and upload
             fig.savefig(output_path, format='png', bbox_inches='tight')
+            self.upload_file(config, bucket_location, output_path)
 
             output['metabolite'][metabolite] = {
                 'name': metabolite,
-                'path': output_path
+                'location': bucket_location
             }
             plt.close(fig)
 
@@ -161,31 +180,36 @@ class MetaboliteSaver(Saver):
 class BiomassSeriesSaver(Saver):
     def save(self, experiment: c.comets, config: SaveConfig) -> dict:
         # Output settings
-        output_path = config.output_folder / f'biomass_timeseries.png'
+        filename = 'biomass_timeseries.png'
+        output_path = config.output_folder / filename
+        bucket_location = f'{config.s3_folder}/{filename}'
 
         pld = experiment.total_biomass.mul(experiment.parameters.get_param('timeStep'))
         ax = pld.plot(x = 'cycle')
         ax.set_ylabel('Biomass (g)')
         ax.set_xlabel('Time (h)')
 
+        # Save the file and upload
         plt.savefig(output_path, format='png', bbox_inches='tight')
+        self.upload_file(config, bucket_location, output_path)
 
         plt.close()
 
         output = dict()
         output['biomass_series'] = {
             'name': 'Biomass Series',
-            'path': output_path
+            'location': bucket_location
         }
 
         return output
 
 
-class MetabolitSeriesSaver(Saver):
+class MetaboliteSeriesSaver(Saver):
     def save(self, experiment: c.comets, config: SaveConfig) -> dict:
-
         # Output settings
-        output_path = config.output_folder / f'metabolite_timeseries.png'
+        filename = 'metabolite_timeseries.png'
+        output_path = config.output_folder / filename
+        bucket_location = f'{config.s3_folder}/{filename}'
 
         media = experiment.media.copy()
         media['time'] = media['cycle'] * experiment.parameters.get_param('timeStep')
@@ -197,12 +221,14 @@ class MetabolitSeriesSaver(Saver):
         ax.set_ylabel("Concentration (mmol)")
         ax.set_xlabel("Time (h)")
 
+        # Save the file and upload
         plt.savefig(output_path, format='png', bbox_inches='tight')
+        self.upload_file(config, bucket_location, output_path)
 
         output = dict()
         output['metabolite_series'] = {
             'name': 'Metabolit Series',
-            'path': output_path
+            'location': bucket_location
         }
         plt.close(fig)
 

@@ -1,6 +1,5 @@
-import argparse
 import cometspy as c
-from argparse import ArgumentParser, Namespace
+from argparse import ArgumentParser
 
 
 E_COLI = 'escherichia coli core'
@@ -23,6 +22,18 @@ def get_target_flux(experiment: c.comets, model_id: str) -> list[str]:
 
 def argument_handling() -> dict:
     argparser = ArgumentParser()
+
+    # Application specific
+    applevel_args = argparser.add_argument_group('app')
+    applevel_args.add_argument('--s3-bucket',
+                               type=str,
+                               required=True)
+    applevel_args.add_argument('--s3-folder',
+                               type=str,
+                               required=True)
+    applevel_args.add_argument('--s3-save',
+                               type=bool,
+                               required=True)
 
     # Metabolite settings
     metabolite_args = argparser.add_argument_group('metabolite')
@@ -113,6 +124,7 @@ def argument_handling() -> dict:
         })
 
     resulting_args = {
+        'app': arg_groups['app'],
         'metabolite': arg_groups['metabolite'],
         'model': model_args,
         'global': arg_groups['global']
