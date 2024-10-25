@@ -35,7 +35,7 @@ export class ModelParameters {
   name: ModelName;
 
   @Field()
-  neutralDrift: number;
+  neutralDrift: boolean;
 
   @Field()
   neutralDriftAmp: number;
@@ -80,7 +80,7 @@ export class SimulationRequst {
   metaboliteParams: MetaboliteParameters;
 
   @Field(() => [ModelParameters])
-  modelParams: ModelParameters;
+  modelParams: ModelParameters[];
 
   @Field(() => GlobalParameters)
   globalParams: GlobalParameters;

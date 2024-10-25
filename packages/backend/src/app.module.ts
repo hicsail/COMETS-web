@@ -4,6 +4,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { SimulationModule } from './simulation/simulation.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { JobModule } from './job/job.module';
 import configuration from './config/configuration';
 
 
@@ -24,7 +25,8 @@ import configuration from './config/configuration';
       useFactory: (configService: ConfigService) => ({
         uri: configService.getOrThrow<string>('database.uri')
       })
-    })
+    }),
+    JobModule
   ],
 })
 export class AppModule {}
