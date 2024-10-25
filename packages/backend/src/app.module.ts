@@ -11,6 +11,7 @@ import configuration from './config/configuration';
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
+      autoSchemaFile: true
     }),
     SimulationModule,
     ConfigModule.forRoot({
