@@ -6,6 +6,9 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JobModule } from './job/job.module';
 import configuration from './config/configuration';
+import { BullModule } from '@nestjs/bullmq';
+import { BullBoardModule } from '@bull-board/nestjs';
+import { ExpressAdapter } from '@bull-board/express';
 
 
 @Module({
@@ -25,6 +28,20 @@ import configuration from './config/configuration';
       useFactory: (configService: ConfigService) => ({
         uri: configService.getOrThrow<string>('database.uri')
       })
+    }),
+    BullModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        connection: {
+          host: configService.getOrThrow<string>('redis.host'),
+          port: configService.getOrThrow<number>('redis.port')
+        }
+      })
+    }),
+    BullBoardModule.forRoot({
+      route: '/queues',
+      adapter: ExpressAdapter // Or FastifyAdapter from `@bull-board/fastify`
     }),
     JobModule
   ],

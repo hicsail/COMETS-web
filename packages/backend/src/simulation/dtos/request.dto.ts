@@ -1,87 +1,23 @@
-import { InputType, Field, registerEnumType } from '@nestjs/graphql';
-
-export enum MetaboliteType {
-  GLUCOSE = 'glc__D_e',
-  ACETATE = 'ac_e',
-  RICH = 'rich'
-}
-
-registerEnumType(MetaboliteType, {
-  name: 'MetaboliteType'
-});
+import { InputType, OmitType, Field } from '@nestjs/graphql';
+import { GlobalParameters, MetaboliteParameters, ModelParameters, SimulationRequest } from '../models/request.model';
 
 @InputType()
-export class MetaboliteParameters {
-  @Field(() => MetaboliteType)
-  type: MetaboliteType;
-
-  @Field()
-  amount: number;
-}
-
-export enum ModelName {
-  E_COLI = 'escherichia coli core',
-  NITROSOMONAS = 'nitrosomonas europaea',
-  NITROBACTER = 'nitrobacter winogradskyi'
-}
-
-registerEnumType(ModelName, {
-  name: 'ModelName'
-});
+export class MetaboliteParametersInput extends OmitType(MetaboliteParameters, [] as const, InputType) {}
 
 @InputType()
-export class ModelParameters {
-  @Field(() => ModelName)
-  name: ModelName;
-
-  @Field()
-  neutralDrift: boolean;
-
-  @Field()
-  neutralDriftAmp: number;
-
-  @Field()
-  deathRate: number;
-
-  @Field()
-  linearDiffusivity: number;
-
-  @Field()
-  nonlinearDiffusivity: number;
-}
+export class ModelParametersInput extends OmitType(ModelParameters, [] as const, InputType) {}
 
 @InputType()
-export class GlobalParameters {
-  @Field()
-  timeStep: number;
-
-  @Field()
-  logFreq: number;
-
-  @Field()
-  defaultDiffConst: number;
-
-  @Field()
-  defaultVMax: number;
-
-  @Field()
-  defaultKm: number;
-
-  @Field()
-  maxCycles: number;
-}
+export class GlobalParametersInput extends OmitType(GlobalParameters, [] as const, InputType) {}
 
 @InputType()
-export class SimulationRequst {
-  @Field(() => String)
-  email: string;
+export class SimulationRequestInput extends OmitType(SimulationRequest, ['_id', 'modelParams', 'status', 'modelParams', 'globalParams', 'metaboliteParams'] as const, InputType) {
+  @Field(() => MetaboliteParametersInput)
+  metaboliteParams: MetaboliteParametersInput;
 
-  @Field(() => MetaboliteParameters)
-  metaboliteParams: MetaboliteParameters;
+  @Field(() => [ModelParametersInput])
+  modelParams: ModelParametersInput[];
 
-  @Field(() => [ModelParameters])
-  modelParams: ModelParameters[];
-
-  @Field(() => GlobalParameters)
-  globalParams: GlobalParameters;
+  @Field(() => GlobalParametersInput)
+  globalParams: GlobalParametersInput;
 }

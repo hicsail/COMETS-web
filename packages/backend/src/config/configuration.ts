@@ -12,5 +12,9 @@ export default () => ({
     image: process.env.RUNNER_IMAGE || 'hicsail/comets-runner:latest',
     imagePullSecret: process.env.IMAGE_PULL_SECRET_NAME,
     namespace: process.env.KUBE_NAMESPACE
+  },
+  redis: {
+    host: process.env.REDIS_HOST || 'localhost',
+    port: process.env.REDIS_PORT || 6379
   }
 });

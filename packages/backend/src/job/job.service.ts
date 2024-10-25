@@ -10,7 +10,7 @@ import {
 } from '@kubernetes/client-node';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { SimulationRequst } from 'src/simulation/dtos/request.dto';
+import { SimulationRequest } from '../simulation/models/request.model';
 import { InjectKube } from './kubectl.provider';
 import { uuid } from 'uuidv4';
 
@@ -50,15 +50,17 @@ export class JobService {
     this.jobTemplate.spec.template.spec.imagePullSecrets![0].name = this.configService.getOrThrow<string>('runner.imagePullSecret')
   }
 
-  async triggeJob(simulationRequest: SimulationRequst): Promise<void> {
+  async triggerJob(simulationRequest: SimulationRequest): Promise<string> {
     const job: V1Job = JSON.parse(JSON.stringify(this.jobTemplate));
+    const jobName = `comets-runner-${uuid()}`;
     job.metadata!.name = `comets-runner-${uuid()}`
     job.spec!.template.spec!.containers[0].command = this.createCommand(simulationRequest);
 
     await this.batchClient.createNamespacedJob(this.namespace, job);
+    return jobName;
   }
 
-  private createCommand(simulationRequest: SimulationRequst): string[] {
+  private createCommand(simulationRequest: SimulationRequest): string[] {
     let modelParams: string[] = [];
 
     for (const param of simulationRequest.modelParams) {
