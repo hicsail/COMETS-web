@@ -34,6 +34,15 @@ def argument_handling() -> dict:
     applevel_args.add_argument('--s3-save',
                                type=bool,
                                required=True)
+    applevel_args.add_argument('--queue',
+                               type=str,
+                               required=True)
+    applevel_args.add_argument('--id',
+                               type=str,
+                               required=True)
+    applevel_args.add_argument('--notify',
+                               type=bool,
+                               required=True)
 
     # Metabolite settings
     metabolite_args = argparser.add_argument_group('metabolite')

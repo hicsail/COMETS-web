@@ -9,6 +9,8 @@ from pathlib import Path
 from runner import savers
 from runner import helpers
 from pprint import pprint
+import asyncio
+from bullmq import Queue
 
 # Load environment variables
 load_dotenv()
@@ -20,6 +22,12 @@ s3_client = boto3.client(
     aws_secret_access_key=os.getenv('S3_SECRET_ACCESS_KEY'),
     endpoint_url=os.getenv('S3_ENDPOINT_URL'),
 )
+
+# Redis options for BullMQ Configuration
+redis_options = {
+    'host': os.environ['REDIS_HOST'],
+    'port': os.environ['REDIS_PORT']
+}
 
 # System Variables
 OUTPUT_DIR = Path(os.getenv('OUTPUT_DIR', default='./sim_files/'))
@@ -35,7 +43,7 @@ output_savers = [
 ]
 
 
-def main():
+async def main():
     ## Argument Parsing
     args = helpers.argument_handling()
 
@@ -114,6 +122,12 @@ def main():
         output.update(saver.save(experiment, save_config))
     pprint(output)
 
+    ## Notify of completion
+    if args['app']['notify']:
+        output['id'] = args['app']['id']
+        queue = Queue(args['app']['queue'], redis_options)
+        await queue.add('result', output)
+
 
 if __name__ == '__main__':
-    main()
+    asyncio.run(main())
