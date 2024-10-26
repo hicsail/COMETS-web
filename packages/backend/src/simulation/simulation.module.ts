@@ -9,6 +9,7 @@ import { BullBoardModule } from '@bull-board/nestjs';
 import { BullMQAdapter } from "@bull-board/api/bullMQAdapter";
 import { SimulationRequestConsumer } from './simulation.consumer';
 import { SimulationRequest, SimulationRequestSchema } from './models/request.model';
+import { SimulationCompletionProcessor } from './completion.consumer';
 
 @Module({
   imports: [
@@ -25,6 +26,6 @@ import { SimulationRequest, SimulationRequestSchema } from './models/request.mod
     }),
     JobModule
   ],
-  providers: [SimulationResolver, SimulationService, SimulationRequestConsumer]
+  providers: [SimulationResolver, SimulationService, SimulationRequestConsumer, SimulationCompletionProcessor]
 })
 export class SimulationModule {}
