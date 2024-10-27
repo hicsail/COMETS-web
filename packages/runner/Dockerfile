@@ -1,6 +1,6 @@
-FROM openjdk:11.0.12-slim-bullseye
+FROM python:3.11.10-bookworm
 
-RUN apt-get update && apt-get install -y python3 python3-pip
+RUN apt-get update && apt-get install -y default-jre
 
 WORKDIR /comets
 COPY ./lib/cometspy .
@@ -15,6 +15,6 @@ COPY . .
 
 ENV PYTHONUNBUFFERED=1
 
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip3 install --no-cache-dir -r requirements.txt
 
 ENTRYPOINT ["python3", "main.py"]
