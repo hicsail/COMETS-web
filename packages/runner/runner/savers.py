@@ -30,7 +30,7 @@ class Saver(ABC):
 class BiomassSaver(Saver):
     def save(self, experiment: c.comets, config: SaveConfig) -> dict:
         output = dict()
-        output['biomass'] = dict()
+        output['biomass'] = []
 
         for model in experiment.layout.models:
             # Output settings
@@ -65,10 +65,11 @@ class BiomassSaver(Saver):
             fig.savefig(output_path, format='png', bbox_inches='tight')
             self.upload_file(config, bucket_location, output_path)
 
-            output['biomass'][model.id] = {
+            output['biomass'].append({
+                'key': model.id,
                 'name': model.id,
                 'location': bucket_location
-            }
+            })
             plt.close(fig)
 
         return output
@@ -77,12 +78,16 @@ class BiomassSaver(Saver):
 class FluxSaver(Saver):
     def save(self, experiment: c.comets, config: SaveConfig) -> dict:
         output = dict()
-        output['flux'] = dict()
+        output['flux'] = []
 
         # Go through all the included models
-        for model in experiment.layout.models:
-            # Make a dictionary to store each flux value
-            output['flux'][model.id] = dict()
+        for model_index, model in enumerate(experiment.layout.models):
+            # Make a list for each flux
+            output['flux'].append({
+                'modelID': model.id,
+                'modelName': model.id,
+                'flux': []
+            })
             fluxes = helpers.get_target_flux(experiment, model.id)
 
             # Go through each flux on the model
@@ -121,10 +126,11 @@ class FluxSaver(Saver):
                 fig.savefig(output_path, format='png', bbox_inches='tight')
                 self.upload_file(config, bucket_location, output_path)
 
-                output['flux'][model.id][flux] = {
+                output['flux'][model_index]['flux'].append({
+                    'key': flux,
                     'name': flux,
                     'location': bucket_location
-                }
+                })
                 plt.close(fig)
         return output
 
@@ -132,7 +138,7 @@ class FluxSaver(Saver):
 class MetaboliteSaver(Saver):
     def save(self, experiment: c.comets, config: SaveConfig) -> dict:
         output = dict()
-        output['metabolite'] = dict()
+        output['metabolite'] = []
 
         for metabolite in experiment.layout.media.metabolite:
             # Output settings
@@ -168,10 +174,11 @@ class MetaboliteSaver(Saver):
             fig.savefig(output_path, format='png', bbox_inches='tight')
             self.upload_file(config, bucket_location, output_path)
 
-            output['metabolite'][metabolite] = {
+            output['metabolite'].append({
+                'key': metabolite,
                 'name': metabolite,
                 'location': bucket_location
-            }
+            })
             plt.close(fig)
 
         return output
@@ -196,8 +203,9 @@ class BiomassSeriesSaver(Saver):
         plt.close()
 
         output = dict()
-        output['biomass_series'] = {
+        output['biomassSeries'] = {
             'name': 'Biomass Series',
+            'key': 'Biomass Series',
             'location': bucket_location
         }
 
@@ -226,8 +234,9 @@ class MetaboliteSeriesSaver(Saver):
         self.upload_file(config, bucket_location, output_path)
 
         output = dict()
-        output['metabolite_series'] = {
-            'name': 'Metabolit Series',
+        output['metaboliteSseries'] = {
+            'key': 'Metabolite Series',
+            'name': 'Metabolite Series',
             'location': bucket_location
         }
         plt.close(fig)

@@ -32,17 +32,33 @@ export class FluxOutput {
   modelName: string;
 
   @Prop({ type: [ResultOutput]})
+  @Field(() => [ResultOutput])
+  flux: ResultOutput[];
 }
 
 
 @Schema()
 @ObjectType()
 export class SimulationResult {
-  @Prop({ type: [ResultOutput]})
+  @Prop({ type: [ResultOutput] })
   @Field(() => [ResultOutput])
   biomass: ResultOutput;
 
-  @Prop({ type: [ResultOutput] })
+  @Prop({ type: [FluxOutput] })
+  @Field(() => [FluxOutput])
+  flux: FluxOutput[];
+
+  @Prop({ type: [ResultOutput]})
+  @Field(() => [ResultOutput])
+  metabolite: ResultOutput[];
+
+  @Prop({ type: ResultOutput })
+  @Field(() => ResultOutput)
+  biomassSeries: ResultOutput;
+
+  @Prop({ type: ResultOutput })
+  @Field(() => ResultOutput)
+  metaboliteSeries: ResultOutput;
 }
 
 export type SimulationResultDocument = SimulationResult & Document;
