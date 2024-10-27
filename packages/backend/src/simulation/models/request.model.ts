@@ -1,6 +1,7 @@
 import { ObjectType, Field, registerEnumType } from '@nestjs/graphql';
 import { Schema, SchemaFactory, Prop } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { SimulationResult } from './result.model';
 
 export enum MetaboliteType {
   GLUCOSE = 'glc__D_e',
@@ -126,7 +127,11 @@ export class SimulationRequest {
 
   @Prop({ type: String, enum: SimulationStatus })
   @Field(() => SimulationStatus)
-  status: SimulationStatus
+  status: SimulationStatus;
+
+  @Prop({ type: SimulationResult, required: false })
+  @Field(() => SimulationResult, { nullable: true })
+  result: SimulationResult | null;
 }
 
 export type SimulationRequestDocument = SimulationRequest & Document;

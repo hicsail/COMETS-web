@@ -11,7 +11,7 @@ export class ModelParametersInput extends OmitType(ModelParameters, [] as const,
 export class GlobalParametersInput extends OmitType(GlobalParameters, [] as const, InputType) {}
 
 @InputType()
-export class SimulationRequestInput extends OmitType(SimulationRequest, ['_id', 'modelParams', 'status', 'modelParams', 'globalParams', 'metaboliteParams'] as const, InputType) {
+export class SimulationRequestInput extends OmitType(SimulationRequest, ['_id', 'modelParams', 'status', 'modelParams', 'globalParams', 'metaboliteParams', 'result'] as const, InputType) {
   @Field(() => MetaboliteParametersInput)
   metaboliteParams: MetaboliteParametersInput;
 

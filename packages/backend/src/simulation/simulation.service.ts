@@ -5,6 +5,7 @@ import { Queue } from 'bullmq';
 import { Model } from 'mongoose';
 import { SimulationRequestInput } from './dtos/request.dto';
 import { SimulationRequest, SimulationRequestDocument, SimulationStatus } from './models/request.model';
+import { SimulationResult } from './models/result.model';
 
 @Injectable()
 export class SimulationService {
@@ -20,7 +21,17 @@ export class SimulationService {
       status: SimulationStatus.IN_PROGRESS
     });
 
-    const job = await this.simulationQueue.add('example', request);
-    // await this.jobService.triggeJob(request);
+    await this.simulationQueue.add('request', request);
+  }
+
+  async makeComplete(requestID: string, result: SimulationResult): Promise<void> {
+    await this.simulationRequestModel.updateOne(
+      { id: requestID },
+      { $set: { status: SimulationStatus.SUCCESS, result }}
+    );
+  }
+
+  async get(requestID: string): Promise<SimulationRequest | null> {
+    return await this.simulationRequestModel.findById(requestID);
   }
 }

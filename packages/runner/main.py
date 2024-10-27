@@ -120,13 +120,14 @@ async def main():
     output = dict()
     for saver in output_savers:
         output.update(saver.save(experiment, save_config))
-    pprint(output)
 
     ## Notify of completion
     if args['app']['notify']:
-        output['id'] = args['app']['id']
+        output['requestID'] = args['app']['id']
         queue = Queue(args['app']['queue'], redis_options)
         await queue.add('result', output)
+    pprint(output)
+
 
 
 if __name__ == '__main__':

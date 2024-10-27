@@ -40,6 +40,10 @@ export class FluxOutput {
 @Schema()
 @ObjectType()
 export class SimulationResult {
+  @Prop()
+  @Field()
+  requestID: string;
+
   @Prop({ type: [ResultOutput] })
   @Field(() => [ResultOutput])
   biomass: ResultOutput;
