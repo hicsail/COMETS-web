@@ -20,8 +20,15 @@ import { SimulationCompletionProcessor } from './completion.consumer';
     BullModule.registerQueue({
       name: 'simulationRequest'
     }),
+    BullModule.registerQueue({
+      name: 'completion'
+    }),
     BullBoardModule.forFeature({
       name: 'simulationRequest',
+      adapter: BullMQAdapter
+    }),
+    BullBoardModule.forFeature({
+      name: 'completion',
       adapter: BullMQAdapter
     }),
     JobModule

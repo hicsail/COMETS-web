@@ -12,7 +12,6 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { SimulationRequest } from '../simulation/models/request.model';
 import { InjectKube } from './kubectl.provider';
-import { uuid } from 'uuidv4';
 
 @Injectable()
 export class JobService {
@@ -52,8 +51,8 @@ export class JobService {
 
   async triggerJob(simulationRequest: SimulationRequest): Promise<string> {
     const job: V1Job = JSON.parse(JSON.stringify(this.jobTemplate));
-    const jobName = `comets-runner-${uuid()}`;
-    job.metadata!.name = `comets-runner-${uuid()}`
+    const jobName = `comets-runner-${simulationRequest._id}`;
+    job.metadata!.name = jobName;
     job.spec!.template.spec!.containers[0].command = this.createCommand(simulationRequest);
 
     await this.batchClient.createNamespacedJob(this.namespace, job);
@@ -78,7 +77,7 @@ export class JobService {
       'python3',
       'main.py',
       `--s3-bucket=${this.bucket}`,
-      `--s3-folder=${uuid()}`,
+      `--s3-folder=${simulationRequest._id}`,
       `--s3-save=True`,
       `--queue=completion`,
       `--id=${simulationRequest._id}`,

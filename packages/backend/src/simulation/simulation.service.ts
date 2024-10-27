@@ -26,7 +26,7 @@ export class SimulationService {
 
   async makeComplete(requestID: string, result: SimulationResult): Promise<void> {
     await this.simulationRequestModel.updateOne(
-      { id: requestID },
+      { _id: requestID },
       { $set: { status: SimulationStatus.SUCCESS, result }}
     );
   }
