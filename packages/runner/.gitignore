@@ -2,3 +2,4 @@ venv/
 sim_files/
 !sim_files/.gitkeep
 sample.sh
+sample-docker.sh
