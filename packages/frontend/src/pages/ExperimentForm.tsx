@@ -1,14 +1,16 @@
 import { JsonForms } from '@jsonforms/react';
 import { materialRenderers, materialCells } from '@jsonforms/material-renderers';
 import { JsonSchema } from '@jsonforms/core';
-import { Box } from '@mui/system';
+import { Box, Stack, Button } from '@mui/material';
 import { ErrorObject } from 'ajv';
+import { useState } from 'react';
 
 const schema: JsonSchema = {
   type: 'object',
   properties: {
     metaboliteParams: {
       type: 'object',
+      title: 'Metabolite Parameters',
       properties: {
         type: {
           type: 'string',
@@ -35,6 +37,7 @@ const schema: JsonSchema = {
     },
     modelParams: {
       type: 'array',
+      title: 'Model Parameters',
       items: {
         type: 'object',
         properties: {
@@ -80,6 +83,7 @@ const schema: JsonSchema = {
     },
     globalParams: {
       type: 'object',
+      title: 'Global Parameters',
       properties: {
         timeStep: {
           type: 'number',
@@ -134,34 +138,41 @@ const uischema = {
   ]
 };
 
+const defaults = {
+  globalParams: {
+    timeStep: 0.1,
+    logFreq: 20,
+    defaultDiffConst: 0.000006,
+    defaultVMax: 10,
+    defaultKm: 0.00001,
+    maxCycles: 2000
+  }
+};
+
+
 
 export const ExperimentForm: React.FC = () => {
-  const data = {
-    globalParams: {
-      timeStep: 0.1,
-      logFreq: 20,
-      defaultDiffConst: 0.000006,
-      defaultVMax: 10,
-      defaultKm: 0.00001,
-      maxCycles: 2000
-    }
-  };
+  const [hasErrors, setHasErrors] = useState<boolean>(false);
+  const [data, setData] = useState<any>(defaults);
 
   const handleChange = (data: any, errors: ErrorObject[] | undefined) => {
-    console.log(data);
-    console.log(errors);
+    setData(data);
+    setHasErrors(!!errors && errors.length > 0);
   };
 
   return (
     <Box sx={{ maxWidth: '75%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-      <JsonForms
-        schema={schema}
-        uischema={uischema}
-        data={data}
-        renderers={materialRenderers}
-        cells={materialCells}
-        onChange={({ data, errors }) => handleChange(data, errors as any)}
-      />
+      <Stack direction='column' sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <JsonForms
+          schema={schema}
+          uischema={uischema}
+          data={data}
+          renderers={materialRenderers}
+          cells={materialCells}
+          onChange={({ data, errors }) => handleChange(data, errors as any)}
+        />
+        <Button variant='contained' sx={{ maxWidth: 100 }} disabled={hasErrors}>Submit</Button>
+      </Stack>
     </Box>
   );
 };
