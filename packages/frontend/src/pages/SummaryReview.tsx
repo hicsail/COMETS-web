@@ -14,6 +14,7 @@ import FooterStepper from "../components/FooterStepper";
 import { Link, useLocation } from "react-router-dom";
 import { SidebarCard } from "../components/SidebarObject";
 import axios from 'axios';
+import { ModelParameters, SimulationRequestInput } from "../graphql/graphql";
 
 
 const bodyTheme = createTheme({
@@ -46,23 +47,19 @@ export function SummaryReviewPage() {
       media: {},
       email: email
     }
-    const models:any = []
+    const models: ModelParameters[]  = []
     data.map((item: any) =>{
-      console.log(item)
-      
+
       const param: any = item.info.params
       if(item.info.type === 'model'){
-        console.log('model params', item)
         models.push(
           {
             name: item.label,
-            demographicNoise: param["demographicNoise"],
-            demographicNoiseAmp: param["demographicNoiseAmplitude"],
-            vMax: param["uptakeVMax"],
-            Km: param["uptakeKm"],
+            neutralDrift: param["demographicNoise"],
+            neutralDriftAmp: param["demographicNoiseAmplitude"],
             deathRate: param["deathRate"],
             linearDiffusivity: param["biomassLinearDiffusivity"],
-            nonLinearDiffusivity: param["biomassNonlinearDiffusivity"]
+            nonlinearDiffusivity: param["biomassNonlinearDiffusivity"]
           }
         )
       }else if(item.info.type === 'layout'){
@@ -83,7 +80,7 @@ export function SummaryReviewPage() {
     body['models'] = models;
     console.log(`${import.meta.env.VITE_COMETS_BACKEND}`)
     axios.post(`${import.meta.env.VITE_COMETS_BACKEND}/comets-request`, body ).then((ret) => {console.log(ret)})
-    
+
   }
 
   const handleTextChange = (event: ChangeEvent<HTMLInputElement>) => {
