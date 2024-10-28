@@ -3,10 +3,10 @@ import { RootLayout } from "./pages/Root";
 import { LandingPage } from "./pages/Landing";
 import "./App.css";
 import { DashboardPage } from "./pages/Dashboard";
-import { ExperimentSetupPage } from "./pages/ExperimentSetup";
 import { SummaryReviewPage } from "./pages/SummaryReview";
 import { ResultsPage } from "./pages/Results";
 import { ExperimentSubmittedPage } from "./pages/ExperimentSubmitted";
+import { ExperimentForm } from "./pages/ExperimentForm";
 
 const router = createBrowserRouter([
   {
@@ -23,7 +23,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/experimentSetup",
-        element: <ExperimentSetupPage />,
+        element: <ExperimentForm />,
         children: [],
       },
       {
