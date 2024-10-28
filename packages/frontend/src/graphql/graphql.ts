@@ -110,6 +110,7 @@ export type ResultOutput = {
   key: Scalars['String']['output'];
   location: Scalars['String']['output'];
   name: Scalars['String']['output'];
+  url: Scalars['String']['output'];
 };
 
 export type SimulationRequest = {

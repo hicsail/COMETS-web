@@ -11,6 +11,7 @@ import { SimulationRequestConsumer } from './simulation.consumer';
 import { SimulationRequest, SimulationRequestSchema } from './models/request.model';
 import { SimulationCompletionProcessor } from './completion.consumer';
 import { SimulationPipe } from './pipes/simulation.pipe';
+import { ResultOutputResolver } from './result.resolver';
 
 @Module({
   imports: [
@@ -34,6 +35,6 @@ import { SimulationPipe } from './pipes/simulation.pipe';
     }),
     JobModule
   ],
-  providers: [SimulationResolver, SimulationService, SimulationRequestConsumer, SimulationCompletionProcessor, SimulationPipe]
+  providers: [SimulationResolver, SimulationService, SimulationRequestConsumer, SimulationCompletionProcessor, SimulationPipe, ResultOutputResolver]
 })
 export class SimulationModule {}

@@ -17,7 +17,7 @@ export type GetSimulationRequestQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetSimulationRequestQuery = { __typename?: 'Query', getSimulationRequest: { __typename?: 'SimulationRequest', _id: string, email: string, status: Types.SimulationStatus, metaboliteParams: { __typename?: 'MetaboliteParameters', type: Types.MetaboliteType, amount: number }, modelParams: Array<{ __typename?: 'ModelParameters', name: Types.ModelName, neutralDrift: boolean, neutralDriftAmp: number, deathRate: number, linearDiffusivity: number, nonlinearDiffusivity: number }>, globalParams: { __typename?: 'GlobalParameters', timeStep: number, logFreq: number, defaultDiffConst: number, defaultVMax: number, defaultKm: number, maxCycles: number }, result?: { __typename?: 'SimulationResult', requestID: string, biomass: Array<{ __typename?: 'ResultOutput', key: string, name: string, location: string }>, flux: Array<{ __typename?: 'FluxOutput', modelID: string, modelName: string, flux: Array<{ __typename?: 'ResultOutput', key: string, name: string, location: string }> }>, metabolite: Array<{ __typename?: 'ResultOutput', key: string, name: string, location: string }>, biomassSeries: { __typename?: 'ResultOutput', key: string, name: string, location: string }, metaboliteSeries: { __typename?: 'ResultOutput', key: string, name: string, location: string } } | null } };
+export type GetSimulationRequestQuery = { __typename?: 'Query', getSimulationRequest: { __typename?: 'SimulationRequest', _id: string, email: string, status: Types.SimulationStatus, metaboliteParams: { __typename?: 'MetaboliteParameters', type: Types.MetaboliteType, amount: number }, modelParams: Array<{ __typename?: 'ModelParameters', name: Types.ModelName, neutralDrift: boolean, neutralDriftAmp: number, deathRate: number, linearDiffusivity: number, nonlinearDiffusivity: number }>, globalParams: { __typename?: 'GlobalParameters', timeStep: number, logFreq: number, defaultDiffConst: number, defaultVMax: number, defaultKm: number, maxCycles: number }, result?: { __typename?: 'SimulationResult', requestID: string, biomass: Array<{ __typename?: 'ResultOutput', key: string, name: string, location: string, url: string }>, flux: Array<{ __typename?: 'FluxOutput', modelID: string, modelName: string, flux: Array<{ __typename?: 'ResultOutput', key: string, name: string, location: string, url: string }> }>, metabolite: Array<{ __typename?: 'ResultOutput', key: string, name: string, location: string, url: string }>, biomassSeries: { __typename?: 'ResultOutput', key: string, name: string, location: string }, metaboliteSeries: { __typename?: 'ResultOutput', key: string, name: string, location: string, url: string } } | null } };
 
 
 export const RequestSimulationDocument = gql`
@@ -83,6 +83,7 @@ export const GetSimulationRequestDocument = gql`
         key
         name
         location
+        url
       }
       flux {
         modelID
@@ -91,12 +92,14 @@ export const GetSimulationRequestDocument = gql`
           key
           name
           location
+          url
         }
       }
       metabolite {
         key
         name
         location
+        url
       }
       biomassSeries {
         key
@@ -107,6 +110,7 @@ export const GetSimulationRequestDocument = gql`
         key
         name
         location
+        url
       }
     }
   }

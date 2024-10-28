@@ -32,7 +32,8 @@ query getSimulationRequest($request: ID!) {
       biomass {
         key,
         name,
-        location
+        location,
+        url
       },
       flux {
         modelID,
@@ -40,13 +41,15 @@ query getSimulationRequest($request: ID!) {
         flux {
           key,
           name,
-          location
+          location,
+          url
         }
       },
       metabolite {
         key,
         name,
-        location
+        location,
+        url
       },
       biomassSeries {
         key,
@@ -56,7 +59,8 @@ query getSimulationRequest($request: ID!) {
       metaboliteSeries {
         key,
         name,
-        location
+        location,
+        url
       }
     }
   }
