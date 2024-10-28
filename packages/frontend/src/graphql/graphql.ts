@@ -97,6 +97,12 @@ export type MutationRequestSimulationArgs = {
 export type Query = {
   __typename?: 'Query';
   example: Scalars['String']['output'];
+  getSimulationRequest: SimulationRequest;
+};
+
+
+export type QueryGetSimulationRequestArgs = {
+  request: Scalars['ID']['input'];
 };
 
 export type ResultOutput = {
@@ -104,6 +110,17 @@ export type ResultOutput = {
   key: Scalars['String']['output'];
   location: Scalars['String']['output'];
   name: Scalars['String']['output'];
+};
+
+export type SimulationRequest = {
+  __typename?: 'SimulationRequest';
+  _id: Scalars['String']['output'];
+  email: Scalars['String']['output'];
+  globalParams: GlobalParameters;
+  metaboliteParams: MetaboliteParameters;
+  modelParams: Array<ModelParameters>;
+  result?: Maybe<SimulationResult>;
+  status: SimulationStatus;
 };
 
 export type SimulationRequestInput = {
@@ -122,3 +139,9 @@ export type SimulationResult = {
   metaboliteSeries: ResultOutput;
   requestID: Scalars['String']['output'];
 };
+
+export enum SimulationStatus {
+  Failed = 'FAILED',
+  InProgress = 'IN_PROGRESS',
+  Success = 'SUCCESS'
+}

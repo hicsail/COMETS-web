@@ -1,3 +1,63 @@
 mutation requestSimulation($request: SimulationRequestInput!) {
   requestSimulation(request: $request)
 }
+
+query getSimulationRequest($request: ID!) {
+  getSimulationRequest(request: $request) {
+    _id,
+    email,
+    metaboliteParams {
+      type,
+      amount
+    },
+    modelParams {
+      name,
+      neutralDrift,
+      neutralDriftAmp,
+      deathRate,
+      linearDiffusivity,
+      nonlinearDiffusivity
+    },
+    globalParams {
+      timeStep,
+      logFreq,
+      defaultDiffConst,
+      defaultVMax,
+      defaultKm,
+      maxCycles
+    },
+    status,
+    result {
+      requestID,
+      biomass {
+        key,
+        name,
+        location
+      },
+      flux {
+        modelID,
+        modelName,
+        flux {
+          key,
+          name,
+          location
+        }
+      },
+      metabolite {
+        key,
+        name,
+        location
+      },
+      biomassSeries {
+        key,
+        name,
+        location
+      },
+      metaboliteSeries {
+        key,
+        name,
+        location
+      }
+    }
+  }
+}

@@ -4,7 +4,7 @@ import { LandingPage } from "./pages/Landing";
 import "./App.css";
 import { DashboardPage } from "./pages/Dashboard";
 import { SummaryReviewPage } from "./pages/SummaryReview";
-import { ResultsPage } from "./pages/Results";
+import { Results } from "./pages/Results";
 import { ExperimentSubmittedPage } from "./pages/ExperimentSubmitted";
 import { ExperimentForm } from "./pages/ExperimentForm";
 import { ApolloClient, ApolloProvider, InMemoryCache, createHttpLink } from "@apollo/client";
@@ -37,7 +37,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/results/:id",
-        element: <ResultsPage />
+        element: <Results />
       }
     ],
   },

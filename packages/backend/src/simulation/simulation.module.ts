@@ -10,6 +10,7 @@ import { BullMQAdapter } from "@bull-board/api/bullMQAdapter";
 import { SimulationRequestConsumer } from './simulation.consumer';
 import { SimulationRequest, SimulationRequestSchema } from './models/request.model';
 import { SimulationCompletionProcessor } from './completion.consumer';
+import { SimulationPipe } from './pipes/simulation.pipe';
 
 @Module({
   imports: [
@@ -33,6 +34,6 @@ import { SimulationCompletionProcessor } from './completion.consumer';
     }),
     JobModule
   ],
-  providers: [SimulationResolver, SimulationService, SimulationRequestConsumer, SimulationCompletionProcessor]
+  providers: [SimulationResolver, SimulationService, SimulationRequestConsumer, SimulationCompletionProcessor, SimulationPipe]
 })
 export class SimulationModule {}

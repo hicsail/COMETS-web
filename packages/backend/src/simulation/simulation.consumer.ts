@@ -15,7 +15,7 @@ export class SimulationRequestConsumer extends WorkerHost {
     // await this.awaitCompletion(request._id);
   }
 
-  async awaitCompletion(requestID: string): Promise<void> {
+  private async awaitCompletion(requestID: string): Promise<void> {
     return new Promise(async (resolve, reject) => {
       const checkOperations = async () => {
         // Get the simulation
