@@ -12,7 +12,7 @@ export class SimulationRequestConsumer extends WorkerHost {
   async process(job: Job<SimulationRequest, any, string>): Promise<any> {
     const request = job.data;
     // await this.jobService.triggerJob(request);
-    await this.awaitCompletion(request._id);
+    // await this.awaitCompletion(request._id);
   }
 
   async awaitCompletion(requestID: string): Promise<void> {

@@ -7,7 +7,7 @@ export class SimulationResolver {
   constructor(private readonly simulationService: SimulationService) {}
 
   @Mutation(() => Boolean)
-  async requestSimuation(@Args('request') request: SimulationRequestInput): Promise<boolean> {
+  async requestSimulation(@Args('request') request: SimulationRequestInput): Promise<boolean> {
     await this.simulationService.requestSimulation(request);
     return true;
   }

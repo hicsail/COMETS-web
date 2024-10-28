@@ -1,0 +1,3 @@
+mutation requestSimulation($request: SimulationRequestInput!) {
+  requestSimulation(request: $request)
+}
