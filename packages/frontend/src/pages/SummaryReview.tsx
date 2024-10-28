@@ -12,9 +12,6 @@ import {
 } from "@mui/material";
 import FooterStepper from "../components/FooterStepper";
 import { Link, useLocation } from "react-router-dom";
-import { SidebarCard } from "../components/SidebarObject";
-import axios from 'axios';
-import { ModelParameters, SimulationRequestInput } from "../graphql/graphql";
 
 
 const bodyTheme = createTheme({
@@ -37,50 +34,11 @@ export function SummaryReviewPage() {
   const [email, setEmail] = useState('')
   const [textfieldError, setTextfieldError] = useState(false);
   const location = useLocation();
+  console.log(location);
   const { data } = location.state;
 
-  const handleSubmit = (email:string) => {
-    let body = {
-      global_params: {},
-      layout: {},
-      models: [{}],
-      media: {},
-      email: email
-    }
-    const models: ModelParameters[]  = []
-    data.map((item: any) =>{
-
-      const param: any = item.info.params
-      if(item.info.type === 'model'){
-        models.push(
-          {
-            name: item.label,
-            neutralDrift: param["demographicNoise"],
-            neutralDriftAmp: param["demographicNoiseAmplitude"],
-            deathRate: param["deathRate"],
-            linearDiffusivity: param["biomassLinearDiffusivity"],
-            nonlinearDiffusivity: param["biomassNonlinearDiffusivity"]
-          }
-        )
-      }else if(item.info.type === 'layout'){
-        body.layout = {
-          name: item.label,
-          volume: param["mediaVolume"]
-        }
-      }else if(item.info.type === 'media'){
-        body.media = {
-          name: item.label,
-          concentration: param["mediaConcentration"]
-        }
-      }else if(item.info.type === 'global_parameters'){
-        body.global_params = param
-      }
-
-    })
-    body['models'] = models;
-    console.log(`${import.meta.env.VITE_COMETS_BACKEND}`)
-    axios.post(`${import.meta.env.VITE_COMETS_BACKEND}/comets-request`, body ).then((ret) => {console.log(ret)})
-
+  const handleSubmit = (email: string) => {
+    console.log(data);
   }
 
   const handleTextChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -192,7 +150,6 @@ export function SummaryReviewPage() {
                   simulation to be processed.
                 </Typography>
 
-                <Link to="/experimentSubmitted" state={{data: data}}>
                   <Button
                     variant="contained"
                     fullWidth
@@ -200,7 +157,6 @@ export function SummaryReviewPage() {
                   >
                     Continue
                   </Button>
-                </Link>
               </Card>
 
               <Box
@@ -223,18 +179,6 @@ export function SummaryReviewPage() {
               }}
             ></Typography>
 
-            <Box sx={{ width: "100%"}} display={"flex"} flexDirection={"column"}>
-              {data.map((item: any, index: number) => (
-                <Box
-                  display={"flex"}
-                  flexDirection={"column"}
-                  sx={{ paddingBottom: "0.5vw" }}
-                  key={index}
-                >
-                  <SidebarCard item={item} key={index}/>
-                </Box>
-              ))}
-            </Box>
           </Grid>
         </Grid>
 

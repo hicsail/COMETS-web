@@ -4,6 +4,7 @@ import { JsonSchema } from '@jsonforms/core';
 import { Box, Stack, Button } from '@mui/material';
 import { ErrorObject } from 'ajv';
 import { useState } from 'react';
+import { useNavigate } from 'react-router';
 
 const schema: JsonSchema = {
   type: 'object',
@@ -149,15 +150,18 @@ const defaults = {
   }
 };
 
-
-
 export const ExperimentForm: React.FC = () => {
   const [hasErrors, setHasErrors] = useState<boolean>(false);
   const [data, setData] = useState<any>(defaults);
+  const navigate = useNavigate();
 
   const handleChange = (data: any, errors: ErrorObject[] | undefined) => {
     setData(data);
     setHasErrors(!!errors && errors.length > 0);
+  };
+
+  const handleSubmit = () => {
+    navigate('/summaryReview', { state: { data } });
   };
 
   return (
@@ -171,7 +175,12 @@ export const ExperimentForm: React.FC = () => {
           cells={materialCells}
           onChange={({ data, errors }) => handleChange(data, errors as any)}
         />
-        <Button variant='contained' sx={{ maxWidth: 100 }} disabled={hasErrors}>Submit</Button>
+        <Button
+          variant='contained'
+          sx={{ maxWidth: 100 }}
+          disabled={hasErrors}
+          onClick={() => handleSubmit()}
+        >Submit</Button>
       </Stack>
     </Box>
   );
