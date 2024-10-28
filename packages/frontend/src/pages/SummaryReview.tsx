@@ -1,4 +1,4 @@
-import { useState, ChangeEvent } from "react";
+import { useState, ChangeEvent, useEffect } from "react";
 import {
   Box,
   Button,
@@ -11,7 +11,8 @@ import {
   createTheme,
 } from "@mui/material";
 import FooterStepper from "../components/FooterStepper";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { useRequestSimulationMutation } from "../graphql/simulation";
 
 
 const bodyTheme = createTheme({
@@ -36,10 +37,27 @@ export function SummaryReviewPage() {
   const location = useLocation();
   console.log(location);
   const { data } = location.state;
+  const [requestSimulation, requestSimulationResults] = useRequestSimulationMutation();
 
   const handleSubmit = (email: string) => {
     console.log(data);
+    // The neutral drift field may not show up if the user has not selected it
+    for (const model of data['modelParams']) {
+      model['neutralDrift'] = !!model['neutralDrift'];
+    }
+    requestSimulation({
+      variables: {
+        request: {
+          ...data,
+          email
+        }
+      }
+    });
   }
+
+  useEffect(() => {
+    console.log(requestSimulationResults);
+  }, [requestSimulation]);
 
   const handleTextChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target) {
@@ -50,7 +68,6 @@ export function SummaryReviewPage() {
       }
     }
   };
-
 
   return (
     <ThemeProvider theme={bodyTheme}>

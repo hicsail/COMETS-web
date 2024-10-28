@@ -7,6 +7,7 @@ import { SummaryReviewPage } from "./pages/SummaryReview";
 import { ResultsPage } from "./pages/Results";
 import { ExperimentSubmittedPage } from "./pages/ExperimentSubmitted";
 import { ExperimentForm } from "./pages/ExperimentForm";
+import { ApolloClient, ApolloProvider, InMemoryCache, createHttpLink } from "@apollo/client";
 
 const router = createBrowserRouter([
   {
@@ -43,7 +44,16 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  const apolloClient = new ApolloClient({
+    cache: new InMemoryCache(),
+    link: createHttpLink({ uri: import.meta.env.VITE_COMETS_BACKEND })
+  });
+
+  return (
+    <ApolloProvider client={apolloClient}>
+      <RouterProvider router={router} />;
+    </ApolloProvider>
+  )
 }
 
 export default App;

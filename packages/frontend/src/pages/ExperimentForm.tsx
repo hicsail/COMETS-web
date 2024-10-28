@@ -17,15 +17,15 @@ const schema: JsonSchema = {
           type: 'string',
           oneOf: [
             {
-              const: 'glc__D_e',
+              const: 'GLUCOSE',
               title: 'Glucose'
             },
             {
-              const: 'ac_e',
+              const: 'ACETATE',
               title: 'Acetate'
             },
             {
-              const: 'rich',
+              const: 'RICH',
               title: 'Rich'
             }
           ]
@@ -46,15 +46,15 @@ const schema: JsonSchema = {
             type: 'string',
             oneOf: [
               {
-                const: 'escherichia coli core',
+                const: 'E_COLI',
                 title: 'Escherichia coli Core'
               },
               {
-                const: 'nitrosomonas europaea',
+                const: 'NITROSOMONAS',
                 title: 'Nitrosomonas europaea'
               },
               {
-                const: 'nitrobacter winogradskyi',
+                const: 'NITROBACTER',
                 title: 'Nitrobacter winogradskyi'
               }
             ]
