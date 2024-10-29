@@ -16,5 +16,16 @@ export default () => ({
   redis: {
     host: process.env.REDIS_HOST || 'localhost',
     port: process.env.REDIS_PORT || 6379
+  },
+  mail: {
+    host: process.env.MAIL_HOST || 'smtp.mailgun.org',
+    port: process.env.MAIL_HOST || 465,
+    secure: process.env.MAIL_SECURE || true,
+    username: process.env.MAIL_USERNAME,
+    password: process.env.MAIL_PASSWORD,
+    from: process.env.MAIL_FROM
+  },
+  frontend: {
+    url: process.env.FRONTEND_URL || 'http://localhost:5173'
   }
 });

@@ -13,6 +13,7 @@ import { SimulationCompletionProcessor } from './completion.consumer';
 import { SimulationPipe } from './pipes/simulation.pipe';
 import { ResultOutputResolver } from './result.resolver';
 import { S3Module } from '../s3/s3.module';
+import { EmailModule } from '../email/email.module';
 
 @Module({
   imports: [
@@ -35,7 +36,8 @@ import { S3Module } from '../s3/s3.module';
       adapter: BullMQAdapter
     }),
     JobModule,
-    S3Module
+    S3Module,
+    EmailModule
   ],
   providers: [SimulationResolver, SimulationService, SimulationRequestConsumer, SimulationCompletionProcessor, SimulationPipe, ResultOutputResolver]
 })

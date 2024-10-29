@@ -22,7 +22,6 @@ export function SummaryReviewPage() {
   const [requestSimulation, requestSimulationResults] = useRequestSimulationMutation();
 
   const handleSubmit = (email: string) => {
-    console.log(data);
     // The neutral drift field may not show up if the user has not selected it
     for (const model of data['modelParams']) {
       model['neutralDrift'] = !!model['neutralDrift'];
