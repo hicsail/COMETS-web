@@ -1,6 +1,8 @@
-import { MenuItem, Select } from '@mui/material';
+import { MenuItem, Select, Stack } from '@mui/material';
 import { SimulationRequest } from '../../graphql/graphql';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { BiomassView } from './Biomass';
+import { FluxView } from './Flux';
 
 export interface LayoutVisualizationProps {
   request: SimulationRequest;
@@ -10,20 +12,21 @@ type LayoutViews = 'biomass' | 'metabolite' | 'flux';
 
 export const LayoutVisualization: React.FC<LayoutVisualizationProps> = ({ request }) => {
   const [layoutView, setLayoutView] = useState<LayoutViews>('biomass');
-  const [targetLayoutURL, setTargetLayoutURL] = useState<string>(request.result!['biomass'][0].url);
-
-  useEffect(() => {
-  }, [layoutView])
-
 
   return (
     <>
-      <Select value={layoutView} onChange={(event) => setLayoutView(event.target.value as LayoutViews)}>
-        <MenuItem value={'biomass'}>Biomass</MenuItem>
-        <MenuItem value={'metabolite'}>Metabolite</MenuItem>
-        <MenuItem value={'flux'}>Flux</MenuItem>
-      </Select>
-        {targetLayoutURL && <img src={targetLayoutURL} />}
+      <Stack spacing={2}>
+        <Select
+          value={layoutView}
+          onChange={(event) => setLayoutView(event.target.value as LayoutViews)}
+          sx={{ maxWidth: 150 }}>
+          <MenuItem value={'biomass'}>Biomass</MenuItem>
+          <MenuItem value={'metabolite'}>Metabolite</MenuItem>
+          <MenuItem value={'flux'}>Flux</MenuItem>
+        </Select>
+        {layoutView == 'biomass' && <BiomassView biomassOutput={request.result!.biomass} />}
+        {layoutView == 'flux' && <FluxView fluxOutput={request.result!.flux} />}
+      </Stack>
     </>
   )
 };

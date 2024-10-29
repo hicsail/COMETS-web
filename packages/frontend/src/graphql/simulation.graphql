@@ -54,7 +54,8 @@ query getSimulationRequest($request: ID!) {
       biomassSeries {
         key,
         name,
-        location
+        location,
+        url
       },
       metaboliteSeries {
         key,

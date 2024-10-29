@@ -7,7 +7,9 @@ import { LayoutVisualization } from '../components/results/Layout';
 
 export const Results: React.FC = () => {
   const { id } = useParams();
-  const simulationRequestResponse = useGetSimulationRequestQuery({ variables: { request: id!  }});
+  const simulationRequestResponse = useGetSimulationRequestQuery({
+    variables: { request: id!  }
+  });
   const request = simulationRequestResponse.data?.getSimulationRequest;
 
   return (
