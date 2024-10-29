@@ -11,6 +11,7 @@ export class SimulationRequestConsumer extends WorkerHost {
 
   async process(job: Job<SimulationRequest, any, string>): Promise<any> {
     const request = job.data;
+    console.log(request);
     // await this.jobService.triggerJob(request);
     // await this.awaitCompletion(request._id);
   }

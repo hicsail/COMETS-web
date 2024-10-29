@@ -24,10 +24,11 @@ export class SimulationService {
     await this.simulationQueue.add('request', request);
   }
 
-  async makeComplete(requestID: string, result: SimulationResult): Promise<void> {
-    await this.simulationRequestModel.updateOne(
+  async makeComplete(requestID: string, result: SimulationResult): Promise<SimulationRequest | null> {
+    return await this.simulationRequestModel.findOneAndUpdate(
       { _id: requestID },
-      { $set: { status: SimulationStatus.SUCCESS, result }}
+      { $set: { status: SimulationStatus.SUCCESS, result }},
+      { new: true }
     );
   }
 
