@@ -12,6 +12,7 @@ import { SimulationRequest, SimulationRequestSchema } from './models/request.mod
 import { SimulationCompletionProcessor } from './completion.consumer';
 import { SimulationPipe } from './pipes/simulation.pipe';
 import { ResultOutputResolver } from './result.resolver';
+import { S3Module } from '../s3/s3.module';
 
 @Module({
   imports: [
@@ -33,7 +34,8 @@ import { ResultOutputResolver } from './result.resolver';
       name: 'completion',
       adapter: BullMQAdapter
     }),
-    JobModule
+    JobModule,
+    S3Module
   ],
   providers: [SimulationResolver, SimulationService, SimulationRequestConsumer, SimulationCompletionProcessor, SimulationPipe, ResultOutputResolver]
 })

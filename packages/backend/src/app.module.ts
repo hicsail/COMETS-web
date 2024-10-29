@@ -9,6 +9,7 @@ import configuration from './config/configuration';
 import { BullModule } from '@nestjs/bullmq';
 import { BullBoardModule } from '@bull-board/nestjs';
 import { ExpressAdapter } from '@bull-board/express';
+import { S3Module } from './s3/s3.module';
 
 
 @Module({
@@ -43,7 +44,8 @@ import { ExpressAdapter } from '@bull-board/express';
       route: '/queues',
       adapter: ExpressAdapter // Or FastifyAdapter from `@bull-board/fastify`
     }),
-    JobModule
+    JobModule,
+    S3Module
   ],
 })
 export class AppModule {}
