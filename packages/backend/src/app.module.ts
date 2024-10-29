@@ -10,6 +10,7 @@ import { BullModule } from '@nestjs/bullmq';
 import { BullBoardModule } from '@bull-board/nestjs';
 import { ExpressAdapter } from '@bull-board/express';
 import { S3Module } from './s3/s3.module';
+import { EmailModule } from './email/email.module';
 
 
 @Module({
@@ -45,7 +46,8 @@ import { S3Module } from './s3/s3.module';
       adapter: ExpressAdapter // Or FastifyAdapter from `@bull-board/fastify`
     }),
     JobModule,
-    S3Module
+    S3Module,
+    EmailModule
   ],
 })
 export class AppModule {}
