@@ -8,6 +8,7 @@ import { Results } from "./pages/Results";
 import { ExperimentSubmittedPage } from "./pages/ExperimentSubmitted";
 import { ExperimentForm } from "./pages/ExperimentForm";
 import { ApolloClient, ApolloProvider, InMemoryCache, createHttpLink } from "@apollo/client";
+import { CometsThemeProvider } from "./contexts/Theme.context";
 
 const router = createBrowserRouter([
   {
@@ -51,7 +52,9 @@ function App() {
 
   return (
     <ApolloProvider client={apolloClient}>
-      <RouterProvider router={router} />;
+      <CometsThemeProvider>
+        <RouterProvider router={router} />;
+      </CometsThemeProvider>
     </ApolloProvider>
   )
 }

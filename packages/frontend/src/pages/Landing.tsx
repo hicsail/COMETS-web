@@ -1,20 +1,10 @@
 import { AppBar, Box, Button, Grid, Toolbar, Typography } from "@mui/material";
 import { NavLink } from "react-router-dom";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Link } from 'react-router-dom';
-
-
-const navbarTheme = createTheme({
-  typography: {
-    fontFamily: "Inter",
-    fontSize: 20,
-  },
-});
 
 export function LandingPage() {
   return (
-    <div>
-      <ThemeProvider theme={navbarTheme}>
+    <>
         <AppBar
           component="nav"
           color="default"
@@ -53,8 +43,6 @@ export function LandingPage() {
             </NavLink>
           </Toolbar>
         </AppBar>
-      </ThemeProvider>
-
       <Box
         sx={{
           pt: "64px",
@@ -224,6 +212,6 @@ export function LandingPage() {
           </Grid>
         </Grid>
       </Box>
-    </div>
+    </>
   );
 }

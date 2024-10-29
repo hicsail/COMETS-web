@@ -1,24 +1,8 @@
 import { useState } from "react";
-import { Box, Button, Drawer, Grid, Typography, ThemeProvider, createTheme } from "@mui/material";
+import { Box, Button, Drawer, Grid, Typography } from "@mui/material";
 import FooterStepper from "../components/FooterStepper";
 import { Link, useLocation } from "react-router-dom";
 import { SidebarCard } from "../components/SidebarObject";
-
-const bodyTheme = createTheme({
-  typography: {
-    h1: {
-      fontSize: 45,
-      fontWeight: 700,
-    },
-    h2: {
-      fontSize: 25,
-      fontWeight: 600,
-    },
-    h3: {
-      fontSize: 18,
-    },
-  },
-});
 
 export function ExperimentSubmittedPage() {
   const [activeStep, _setActiveStep] = useState(2);
@@ -26,7 +10,7 @@ export function ExperimentSubmittedPage() {
   const { data } = location.state;
 
   return (
-    <ThemeProvider theme={bodyTheme}>
+    <>
       <Box
         component="main"
         sx={{
@@ -126,6 +110,6 @@ export function ExperimentSubmittedPage() {
           <FooterStepper activeStep={activeStep} />
         </Drawer>
       </Box>
-    </ThemeProvider>
+    </>
   );
 }
