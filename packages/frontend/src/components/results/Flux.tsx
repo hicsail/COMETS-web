@@ -1,6 +1,6 @@
-import { MenuItem, Select, Stack } from "@mui/material";
-import { FluxOutput, ResultOutput } from "../../graphql/graphql"
-import { useState } from "react";
+import { MenuItem, Select, Stack } from '@mui/material';
+import { FluxOutput } from '../../graphql/graphql'
+import { useState } from 'react';
 
 export interface FluxViewProps {
   fluxOutput: FluxOutput[];

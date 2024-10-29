@@ -3,6 +3,7 @@ import { SimulationRequest } from '../../graphql/graphql';
 import { useState } from 'react';
 import { BiomassView } from './Biomass';
 import { FluxView } from './Flux';
+import { MetaboliteView } from './Metabolite';
 
 export interface LayoutVisualizationProps {
   request: SimulationRequest;
@@ -25,6 +26,7 @@ export const LayoutVisualization: React.FC<LayoutVisualizationProps> = ({ reques
           <MenuItem value={'flux'}>Flux</MenuItem>
         </Select>
         {layoutView == 'biomass' && <BiomassView biomassOutput={request.result!.biomass} />}
+        {layoutView == 'metabolite' && <MetaboliteView metaboliteOutput={request.result!.metabolite} />}
         {layoutView == 'flux' && <FluxView fluxOutput={request.result!.flux} />}
       </Stack>
     </>
