@@ -11,7 +11,6 @@ export const FluxView: React.FC<FluxViewProps> = ({ fluxOutput }) => {
   const [targetModel, setTargetModel] = useState<FluxOutput>(fluxOutput[0]);
 
   const [fluxKey, setFluxKey] = useState<string>(fluxOutput[0].flux[0].key);
-  const [flux, setFlux] = useState<ResultOutput>(fluxOutput[0].flux[0]);
 
   const [targetView, setTargetView] = useState<string>(fluxOutput[0].flux[0].url);
 
@@ -23,7 +22,10 @@ export const FluxView: React.FC<FluxViewProps> = ({ fluxOutput }) => {
   };
 
   const handleFluxChange = (key: string) => {
+    setFluxKey(key);
 
+    const flux = targetModel.flux.find(flux => flux.key == key);
+    setTargetView(flux!.url);
   };
 
   return (
@@ -44,6 +46,7 @@ export const FluxView: React.FC<FluxViewProps> = ({ fluxOutput }) => {
           label='Flux'
           sx={{ width: 150 }}
           value={fluxKey}
+          onChange={(event) => handleFluxChange(event.target.value as string)}
         >
           {targetModel.flux.map(flux => (
             <MenuItem value={flux.key} key={flux.key}>{flux.name}</MenuItem>
