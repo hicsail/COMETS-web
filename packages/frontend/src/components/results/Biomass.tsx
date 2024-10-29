@@ -18,7 +18,6 @@ export const BiomassView: React.FC<BiomassViewProps> = ({ biomassOutput }) => {
     setTargetView(targetModel!.url);
   };
 
-
   return (
     <Stack spacing={2}>
       <FormControl>
