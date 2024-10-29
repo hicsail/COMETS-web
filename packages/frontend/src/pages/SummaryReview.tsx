@@ -7,28 +7,10 @@ import {
   Grid,
   TextField,
   Typography,
-  ThemeProvider,
-  createTheme,
 } from "@mui/material";
 import FooterStepper from "../components/FooterStepper";
 import { useLocation } from "react-router-dom";
 import { useRequestSimulationMutation } from "../graphql/simulation";
-
-
-const bodyTheme = createTheme({
-  typography: {
-    h1: {
-      fontSize: 50,
-      fontWeight: 700,
-    },
-    h2: {
-      fontSize: 40,
-    },
-    h3: {
-      fontSize: 18,
-    },
-  },
-});
 
 export function SummaryReviewPage() {
   const [activeStep, _setActiveStep] = useState(1);
@@ -70,7 +52,7 @@ export function SummaryReviewPage() {
   };
 
   return (
-    <ThemeProvider theme={bodyTheme}>
+    <>
       <Box
         component="main"
         sx={{
@@ -218,6 +200,6 @@ export function SummaryReviewPage() {
           <FooterStepper activeStep={activeStep} />
         </Drawer>
       </Box>
-    </ThemeProvider>
+    </>
   );
 }

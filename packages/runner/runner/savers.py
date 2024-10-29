@@ -234,7 +234,7 @@ class MetaboliteSeriesSaver(Saver):
         self.upload_file(config, bucket_location, output_path)
 
         output = dict()
-        output['metaboliteSseries'] = {
+        output['metaboliteSeries'] = {
             'key': 'Metabolite Series',
             'name': 'Metabolite Series',
             'location': bucket_location

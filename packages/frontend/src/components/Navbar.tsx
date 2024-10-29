@@ -4,23 +4,13 @@ import {
   Box,
   Toolbar,
   Typography,
-  ThemeProvider,
-  createTheme,
 } from "@mui/material";
 import { NavLink } from "react-router-dom";
-
-// Define the theme
-const navbarTheme = createTheme({
-  typography: {
-    fontFamily: "Inter",
-    fontSize: 20,
-  },
-});
 
 // Navbar component
 export const NavbarComponent = () => {
   return (
-    <ThemeProvider theme={navbarTheme}>
+    <>
       <AppBar
         component="nav"
         color="default"
@@ -54,6 +44,6 @@ export const NavbarComponent = () => {
           </NavLink>
         </Toolbar>
       </AppBar>
-    </ThemeProvider>
+    </>
   );
 };
