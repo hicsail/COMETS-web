@@ -1,4 +1,4 @@
-import { MenuItem, Select, Stack } from '@mui/material';
+import { FormControl, InputLabel, MenuItem, Select, Stack } from '@mui/material';
 import { ResultOutput } from '../../graphql/graphql';
 import { useState } from 'react';
 
@@ -20,15 +20,19 @@ export const MetaboliteView: React.FC<MetaboliteViewProps> = ({ metaboliteOutput
 
   return (
     <Stack spacing={2}>
-      <Select
-        label='Model'
-        sx={{ width: 150 }}
-        onChange={(event) => handleMetaboliteChange(event.target.value as string)}
-        value={metabolite}>
-        {metaboliteOutput.map(metabolite => (
-          <MenuItem value={metabolite.key} key={metabolite.key}>{metabolite.name}</MenuItem>
-        ))}
-      </Select>
+      <FormControl>
+        <InputLabel shrink={true}>Metabolite</InputLabel>
+        <Select
+          label='Model'
+          sx={{ width: 150 }}
+          onChange={(event) => handleMetaboliteChange(event.target.value as string)}
+          notched={true}
+          value={metabolite}>
+          {metaboliteOutput.map(metabolite => (
+            <MenuItem value={metabolite.key} key={metabolite.key}>{metabolite.name}</MenuItem>
+          ))}
+        </Select>
+      </FormControl>
 
       <img src={targetView} />
     </Stack>

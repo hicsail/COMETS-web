@@ -120,7 +120,7 @@ export function DashboardPage() {
                 alignContent: "center",
               }}
             >
-              <Typography variant="h5">CONTINUE TO LAYOUT BUILDER</Typography>
+              CONTINUE TO LAYOUT BUILDER
             </Button>
           </NavLink>
         </Grid>

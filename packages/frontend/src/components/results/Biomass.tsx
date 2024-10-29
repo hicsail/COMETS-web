@@ -1,4 +1,4 @@
-import { Select, MenuItem, Stack } from '@mui/material';
+import { Select, MenuItem, Stack, FormControl, InputLabel } from '@mui/material';
 import { ResultOutput } from '../../graphql/graphql';
 import { useState } from 'react';
 
@@ -21,15 +21,19 @@ export const BiomassView: React.FC<BiomassViewProps> = ({ biomassOutput }) => {
 
   return (
     <Stack spacing={2}>
-      <Select
-        label='Model'
-        sx={{ width: 150 }}
-        value={model}
-        onChange={(event) => handleModelChange(event.target.value as string)}>
-        {biomassOutput.map(biomass => (
-          <MenuItem value={biomass.key} key={biomass.key}>{biomass.name}</MenuItem>
-        ))}
-      </Select>
+      <FormControl>
+        <InputLabel shrink={true}>Model</InputLabel>
+        <Select
+          label='Model'
+          sx={{ width: 150 }}
+          value={model}
+          notched={true}
+          onChange={(event) => handleModelChange(event.target.value as string)}>
+          {biomassOutput.map(biomass => (
+            <MenuItem value={biomass.key} key={biomass.key}>{biomass.name}</MenuItem>
+          ))}
+        </Select>
+      </FormControl>
 
       {targetView && <img src={targetView} />}
     </Stack>

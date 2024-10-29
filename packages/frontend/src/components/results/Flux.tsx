@@ -1,4 +1,4 @@
-import { MenuItem, Select, Stack } from '@mui/material';
+import { FormControl, MenuItem, Select, Stack, InputLabel } from '@mui/material';
 import { FluxOutput } from '../../graphql/graphql'
 import { useState } from 'react';
 
@@ -31,27 +31,35 @@ export const FluxView: React.FC<FluxViewProps> = ({ fluxOutput }) => {
   return (
     <Stack spacing={2}>
       <Stack direction='row' spacing={2}>
-        <Select
-          label='Model'
-          sx={{ width: 150 }}
-          value={modelKey}
-          onChange={(event) => handleModelChange(event.target.value as string)}
-        >
-          {fluxOutput.map(output => (
-            <MenuItem value={output.modelID} key={output.modelID}>{output.modelName}</MenuItem>
-          ))}
-        </Select>
+        <FormControl>
+          <InputLabel>Model</InputLabel>
+          <Select
+            label='Model'
+            sx={{ width: 150 }}
+            value={modelKey}
+            onChange={(event) => handleModelChange(event.target.value as string)}
+            notched={true}
+          >
+            {fluxOutput.map(output => (
+              <MenuItem value={output.modelID} key={output.modelID}>{output.modelName}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
 
-        <Select
-          label='Flux'
-          sx={{ width: 150 }}
-          value={fluxKey}
-          onChange={(event) => handleFluxChange(event.target.value as string)}
-        >
-          {targetModel.flux.map(flux => (
-            <MenuItem value={flux.key} key={flux.key}>{flux.name}</MenuItem>
-          ))}
-        </Select>
+        <FormControl>
+          <InputLabel>Flux</InputLabel>
+          <Select
+            label='Flux'
+            sx={{ width: 150 }}
+            value={fluxKey}
+            onChange={(event) => handleFluxChange(event.target.value as string)}
+            notched={true}
+          >
+            {targetModel.flux.map(flux => (
+              <MenuItem value={flux.key} key={flux.key}>{flux.name}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
       </Stack>
       <img src={targetView} />
     </Stack>

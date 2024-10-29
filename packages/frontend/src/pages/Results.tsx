@@ -1,5 +1,4 @@
 import { Typography } from '@mui/material';
-import { Stack } from '@mui/system';
 import { useParams } from 'react-router';
 import { useGetSimulationRequestQuery } from '../graphql/simulation';
 import { LayoutVisualization } from '../components/results/Layout';
@@ -17,10 +16,7 @@ export const Results: React.FC = () => {
       {request && (
         <>
           <Typography variant='h1'>Simulation Run Results</Typography>
-          <Stack>
-            <Typography variant='h2'>Layout View</Typography>
-            <LayoutVisualization request={request}/>
-          </Stack>
+          <LayoutVisualization request={request}/>
         </>
       )}
     </>
