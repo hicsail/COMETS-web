@@ -1,19 +1,24 @@
 import { Processor, WorkerHost } from '@nestjs/bullmq';
 import { Job } from 'bullmq';
+import { JobService } from '../job/job.service';
 import { SimulationRequest, SimulationStatus } from './models/request.model';
 import { SimulationService } from './simulation.service';
 
 @Processor('simulationRequest')
 export class SimulationRequestConsumer extends WorkerHost {
-  constructor(private readonly simulationService: SimulationService) {
+  constructor(
+    private readonly simulationService: SimulationService,
+    private readonly jobService: JobService
+  ) {
     super();
   }
 
   async process(job: Job<SimulationRequest, any, string>): Promise<any> {
     const request = job.data;
-    console.log(request);
-    // await this.jobService.triggerJob(request);
-    // await this.awaitCompletion(request._id);
+    // Start the COMETs job
+    await this.jobService.triggerJob(request);
+    // Wait for the job to complete
+    await this.awaitCompletion(request._id);
   }
 
   private async awaitCompletion(requestID: string): Promise<void> {
