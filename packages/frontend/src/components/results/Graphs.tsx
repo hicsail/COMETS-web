@@ -1,6 +1,7 @@
 import { Paper, Stack, Typography, FormControl, Select, InputLabel, MenuItem } from '@mui/material';
 import { SimulationRequest } from '../../graphql/graphql'
 import { useState } from 'react';
+import { ImageView } from './ImageView';
 
 export interface GraphVisualizationProps {
   request: SimulationRequest;
@@ -26,8 +27,8 @@ export const GraphVisualization: React.FC<GraphVisualizationProps> = ({ request 
             <MenuItem value={'metabolite'}>Metabolite</MenuItem>
           </Select>
         </FormControl>
-        {graphView == 'biomass' && <img src={request.result!.biomassSeries.url} />}
-        {graphView == 'metabolite' && <img src={request.result!.metaboliteSeries.url} />}
+        {graphView == 'biomass' && <ImageView src={request.result!.biomassSeries.url} />}
+        {graphView == 'metabolite' && <ImageView src={request.result!.metaboliteSeries.url} />}
       </Stack>
     </Paper>
   );
