@@ -15,7 +15,11 @@ export default () => ({
   },
   redis: {
     host: process.env.REDIS_HOST || 'localhost',
-    port: process.env.REDIS_PORT || 6379
+    port: process.env.REDIS_PORT || 6379,
+    password: process.env.REDIS_PASSWORD,
+    jobHost: process.env.JOB_REDIS_HOST,
+    jobPort: process.env.JOB_REDIS_PORT,
+    jobPassword: process.env.JOB_REDIS_PASSWORD
   },
   mail: {
     host: process.env.MAIL_HOST || 'smtp.mailgun.org',

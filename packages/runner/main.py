@@ -26,7 +26,8 @@ s3_client = boto3.client(
 # Redis options for BullMQ Configuration
 redis_options = {
     'host': os.environ['REDIS_HOST'],
-    'port': os.environ['REDIS_PORT']
+    'port': os.environ['REDIS_PORT'],
+    'password': os.environ['REDIS_PASSWORD']
 }
 
 # System Variables

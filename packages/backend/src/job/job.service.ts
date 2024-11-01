@@ -41,6 +41,9 @@ export class JobService {
         { name: 'S3_ACCESS_KEY_ID', value: this.configService.getOrThrow<string>('s3.accessID') },
         { name: 'S3_SECRET_ACCESS_KEY', value: this.configService.getOrThrow<string>('s3.accessSecret') },
         { name: 'S3_ENDPOINT_URL', value: this.configService.getOrThrow<string>('s3.endpoint') },
+        { name: 'REDIS_HOST', value: this.configService.getOrThrow<string>('redis.jobHost') },
+        { name: 'REDIS_PORT', value: this.configService.getOrThrow<string>('redis.jobPort') },
+        { name: 'REDIS_PASSWORD', value: this.configService.get<string>('redis.jobPassword') },
         { name: 'COMETS_GLOP', value: './lib/comets_glop' }
       ]
     });

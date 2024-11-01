@@ -37,7 +37,8 @@ import { EmailModule } from './email/email.module';
       useFactory: (configService: ConfigService) => ({
         connection: {
           host: configService.getOrThrow<string>('redis.host'),
-          port: configService.getOrThrow<number>('redis.port')
+          port: configService.getOrThrow<number>('redis.port'),
+          password: configService.get<string>('redis.password')
         }
       })
     }),
