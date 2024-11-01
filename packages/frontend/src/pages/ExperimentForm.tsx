@@ -5,141 +5,157 @@ import { Box, Stack, Button } from '@mui/material';
 import { ErrorObject } from 'ajv';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
+import { MetaboliteType } from '../graphql/graphql';
 
-const schema: JsonSchema = {
-  type: 'object',
-  properties: {
-    metaboliteParams: {
-      type: 'object',
-      title: 'Metabolite Parameters',
-      properties: {
-        type: {
-          type: 'string',
-          oneOf: [
-            {
-              const: 'GLUCOSE',
-              title: 'Glucose'
-            },
-            {
-              const: 'ACETATE',
-              title: 'Acetate'
-            },
-            {
-              const: 'RICH',
-              title: 'Rich'
-            }
-          ]
-        },
-        amount: {
-          type: 'number',
-        }
+
+const getSchema = (metaboliteType: MetaboliteType | null) => {
+  // The models supported are based on the metabolite type
+  let models = [
+    {
+      const: 'E_COLI',
+      title: 'Escherichia coli Core'
+    }
+  ];
+  if (metaboliteType == MetaboliteType.Rich) {
+    models = [
+      {
+        const: 'NITROSOMONAS',
+        title: 'Nitrosomonas europaea'
       },
-      required: ['type', 'amount']
-    },
-    modelParams: {
-      type: 'array',
-      title: 'Model Parameters',
-      items: {
+      {
+        const: 'NITROBACTER',
+        title: 'Nitrobacter winogradskyi'
+      }
+    ]
+  }
+
+  const schema: JsonSchema = {
+    type: 'object',
+    properties: {
+      metaboliteParams: {
         type: 'object',
+        title: 'Metabolite Parameters',
         properties: {
-          name: {
+          type: {
             type: 'string',
             oneOf: [
               {
-                const: 'E_COLI',
-                title: 'Escherichia coli Core'
+                const: 'GLUCOSE',
+                title: 'Glucose'
               },
               {
-                const: 'NITROSOMONAS',
-                title: 'Nitrosomonas europaea'
+                const: 'ACETATE',
+                title: 'Acetate'
               },
               {
-                const: 'NITROBACTER',
-                title: 'Nitrobacter winogradskyi'
+                const: 'RICH',
+                title: 'Rich'
               }
             ]
           },
-          neutralDrift: {
-            type: 'boolean',
-          },
-          neutralDriftAmp: {
+          amount: {
             type: 'number',
-            default: 0.001
-          },
-          deathRate: {
-            type: 'number',
-            default: 0.001
-          },
-          linearDiffusivity: {
-            type: 'number',
-            default: 0.001
-          },
-          nonlinearDiffusivity: {
-            type: 'number',
-            default: 0.6
           }
         },
-        required: ['name', 'neutralDriftAmp', 'deathRate', 'linearDiffusivity', 'nonlinearDiffusivity']
-      }
-    },
-    globalParams: {
-      type: 'object',
-      title: 'Global Parameters',
-      properties: {
-        timeStep: {
-          type: 'number',
-          default: 0.1
-        },
-        logFreq: {
-          type: 'number',
-          default: 20
-        },
-        defaultDiffConst: {
-          type: 'number',
-          default: 0.000006
-        },
-        defaultVMax: {
-          type: 'number',
-          default: 10
-        },
-        defaultKm: {
-          type: 'number',
-          default: 0.00001
-        },
-        maxCycles: {
-          type: 'number',
-          default: 2000
+        required: ['type', 'amount']
+      },
+      modelParams: {
+        type: 'array',
+        title: 'Model Parameters',
+        items: {
+          type: 'object',
+          properties: {
+            name: {
+              type: 'string',
+              oneOf: models
+            },
+            neutralDrift: {
+              type: 'boolean',
+            },
+            neutralDriftAmp: {
+              type: 'number',
+              default: 0.001
+            },
+            deathRate: {
+              type: 'number',
+              default: 0.001
+            },
+            linearDiffusivity: {
+              type: 'number',
+              default: 0.001
+            },
+            nonlinearDiffusivity: {
+              type: 'number',
+              default: 0.6
+            }
+          },
+          required: ['name', 'neutralDriftAmp', 'deathRate', 'linearDiffusivity', 'nonlinearDiffusivity']
+        }
+      },
+      globalParams: {
+        type: 'object',
+        title: 'Global Parameters',
+        properties: {
+          timeStep: {
+            type: 'number',
+            default: 0.1
+          },
+          logFreq: {
+            type: 'number',
+            default: 20
+          },
+          defaultDiffConst: {
+            type: 'number',
+            default: 0.000006
+          },
+          defaultVMax: {
+            type: 'number',
+            default: 10
+          },
+          defaultKm: {
+            type: 'number',
+            default: 0.00001
+          },
+          maxCycles: {
+            type: 'number',
+            default: 2000
+          }
         }
       }
-    }
-  },
-  required: ['metaboliteParams', 'modelParams', 'globalParams']
-};
+    },
+    required: ['metaboliteParams', 'modelParams', 'globalParams']
+  };
 
-const uischema = {
-  type: 'VerticalLayout',
-  elements: [
-    {
-      type: 'Control',
-      scope: '#/properties/metaboliteParams'
-    },
-    {
-      type: 'Group',
-      elements: [
-        {
-          type: 'Control',
-          scope: '#/properties/modelParams'
-        }
-      ]
-    },
-    {
-      type: 'Control',
-      scope: '#/properties/globalParams'
-    }
-  ]
+  const uischema = {
+    type: 'VerticalLayout',
+    elements: [
+      {
+        type: 'Control',
+        scope: '#/properties/metaboliteParams'
+      },
+      {
+        type: 'Group',
+        elements: [
+          {
+            type: 'Control',
+            scope: '#/properties/modelParams'
+          }
+        ]
+      },
+      {
+        type: 'Control',
+        scope: '#/properties/globalParams'
+      }
+    ]
+  };
+
+  return { schema, uischema };
 };
 
 const defaults = {
+  metaboliteParams: {
+    type: 'GLUCOSE'
+  },
   globalParams: {
     timeStep: 0.1,
     logFreq: 20,
@@ -163,6 +179,8 @@ export const ExperimentForm: React.FC = () => {
   const handleSubmit = () => {
     navigate('/summaryReview', { state: { data } });
   };
+
+  const { schema, uischema } = getSchema(data.metaboliteParams?.type);
 
   return (
     <Box sx={{ maxWidth: '75%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
