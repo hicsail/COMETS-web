@@ -12,6 +12,8 @@ from pprint import pprint
 import asyncio
 from bullmq import Queue
 
+from runner.population import get_initial_population
+
 # Load environment variables
 load_dotenv()
 
@@ -59,7 +61,10 @@ async def main():
             1.0, 1.0, 0.0)
         model.change_bounds('EX_glc__D_e', -1000, 1000)
         model.change_bounds('EX_ac_e', -1000, 1000)
-        model.initial_pop = [[0, 0, 1e-6]]
+        model.initial_pop = get_initial_population(layout_type=args['layout']['layout_type'],
+                                                   max_x=args['layout']['grid_x_max'],
+                                                   max_y=args['layout']['grid_y_max'],
+                                                   initial_pop=1e-6)
         models.append(model)
 
     ## Layout setup
@@ -74,7 +79,7 @@ async def main():
     layout.set_specific_metabolite('pi_e', 1000)
 
     # Set size
-    layout.grid = [1, 1]
+    layout.grid = [args['layout']['grid_x_max'], args['layout']['grid_y_max']]
 
     # Add models
     [layout.add_model(model) for model in models]

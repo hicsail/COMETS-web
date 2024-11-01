@@ -1,11 +1,19 @@
 import cometspy as c
 from argparse import ArgumentParser
+from typing import Literal
 
-
+# Model values
 E_COLI = 'escherichia coli core'
 NITROSOMONAS = 'nitrosomonas europaea'
 NITROBACTER = 'nitrobacter winogradskyi'
 
+# Support layouts
+PETRI_CENTER = 'petri_center'
+PETRI_RANDOM = 'petri_random'
+TEST_TUBE = 'test_tube'
+LayoutType = Literal[PETRI_CENTER, PETRI_RANDOM, TEST_TUBE]
+
+# Helps convert the given model to the notebook to load
 MODEL_TO_NOTEBOOK = {
     E_COLI: 'textbook',
     NITROSOMONAS: './iGC535_modified_cobra.xml',
@@ -57,7 +65,13 @@ def argument_handling() -> dict:
     layout_args = argparser.add_argument_group('layout')
     layout_args.add_argument('--layout-type',
                            type=str,
-                           choices=['petri_center', 'petri_random', 'test_tube'])
+                           choices=[PETRI_CENTER, PETRI_RANDOM, TEST_TUBE])
+    layout_args.add_argument('--grid-x-max',
+                             type=int,
+                             required=True)
+    layout_args.add_argument('--grid-y-max',
+                             type=int,
+                             required=True)
 
     # Model settings
     model_args = argparser.add_argument_group('model')
@@ -134,6 +148,7 @@ def argument_handling() -> dict:
 
     resulting_args = {
         'app': arg_groups['app'],
+        'layout': arg_groups['layout'],
         'metabolite': arg_groups['metabolite'],
         'model': model_args,
         'global': arg_groups['global']
