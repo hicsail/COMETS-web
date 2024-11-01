@@ -1,18 +1,18 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { RootLayout } from "./pages/Root";
-import { LandingPage } from "./pages/Landing";
-import "./App.css";
-import { DashboardPage } from "./pages/Dashboard";
-import { SummaryReviewPage } from "./pages/SummaryReview";
-import { Results } from "./pages/Results";
-import { ExperimentSubmittedPage } from "./pages/ExperimentSubmitted";
-import { ExperimentForm } from "./pages/ExperimentForm";
-import { ApolloClient, ApolloProvider, InMemoryCache, createHttpLink } from "@apollo/client";
-import { CometsThemeProvider } from "./contexts/Theme.context";
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { RootLayout } from './pages/Root';
+import { LandingPage } from './pages/Landing';
+import './App.css';
+import { DashboardPage } from './pages/Dashboard';
+import { SummaryReviewPage } from './pages/SummaryReview';
+import { Results } from './pages/Results';
+import { ExperimentSubmittedPage } from './pages/ExperimentSubmitted';
+import { ExperimentForm } from './pages/ExperimentForm';
+import { ApolloClient, ApolloProvider, InMemoryCache, createHttpLink } from '@apollo/client';
+import { CometsThemeProvider } from './contexts/Theme.context';
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: <LandingPage />,
     children: [],
   },
@@ -20,24 +20,24 @@ const router = createBrowserRouter([
     element: <RootLayout />,
     children: [
       {
-        path: "/dashboard",
+        path: '/dashboard',
         element: <DashboardPage />,
       },
       {
-        path: "/experimentSetup",
+        path: '/experimentSetup',
         element: <ExperimentForm />,
         children: [],
       },
       {
-        path: "/summaryReview",
+        path: '/summaryReview',
         element: <SummaryReviewPage />
       },
       {
-        path: "/experimentSubmitted",
+        path: '/experimentSubmitted',
         element: <ExperimentSubmittedPage />
       },
       {
-        path: "/results/:id",
+        path: '/results/:id',
         element: <Results />
       }
     ],

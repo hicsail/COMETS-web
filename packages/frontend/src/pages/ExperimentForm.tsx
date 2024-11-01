@@ -1,11 +1,12 @@
 import { JsonForms } from '@jsonforms/react';
 import { materialRenderers, materialCells } from '@jsonforms/material-renderers';
 import { JsonSchema } from '@jsonforms/core';
-import { Box, Stack, Button } from '@mui/material';
+import { Box, Stack, Button, Drawer } from '@mui/material';
 import { ErrorObject } from 'ajv';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { MetaboliteType } from '../graphql/graphql';
+import FooterStepper from '../components/FooterStepper';
 
 
 const getSchema = (metaboliteType: MetaboliteType | null) => {
@@ -200,6 +201,23 @@ export const ExperimentForm: React.FC = () => {
           onClick={() => handleSubmit()}
         >Submit</Button>
       </Stack>
+      <Drawer
+        variant='permanent'
+        anchor='bottom'
+        PaperProps={{
+            display: "flex", // Enable flexbox
+            justifyContent: "center", // Center items horizontally
+            alignItems: "center", // Center items vertically
+            background: "white",
+            height: 100,
+            width: "90vw",
+            left: "15vw",
+            zIndex: 99,
+        }}
+      >
+        <FooterStepper activeStep={1} />
+      </Drawer>
+
     </Box>
   );
 };
