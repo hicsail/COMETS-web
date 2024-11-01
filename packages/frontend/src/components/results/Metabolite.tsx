@@ -1,6 +1,7 @@
 import { FormControl, InputLabel, MenuItem, Select, Stack } from '@mui/material';
 import { ResultOutput } from '../../graphql/graphql';
 import { useState } from 'react';
+import { ImageView } from './ImageView';
 
 
 export interface MetaboliteViewProps {
@@ -34,7 +35,7 @@ export const MetaboliteView: React.FC<MetaboliteViewProps> = ({ metaboliteOutput
         </Select>
       </FormControl>
 
-      <img src={targetView} />
+      <ImageView src={targetView} />
     </Stack>
   )
 };

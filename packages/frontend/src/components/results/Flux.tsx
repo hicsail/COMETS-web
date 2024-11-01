@@ -1,6 +1,7 @@
 import { FormControl, MenuItem, Select, Stack, InputLabel } from '@mui/material';
 import { FluxOutput } from '../../graphql/graphql'
 import { useState } from 'react';
+import { ImageView } from './ImageView';
 
 export interface FluxViewProps {
   fluxOutput: FluxOutput[];
@@ -61,7 +62,7 @@ export const FluxView: React.FC<FluxViewProps> = ({ fluxOutput }) => {
           </Select>
         </FormControl>
       </Stack>
-      <img src={targetView} />
+      <ImageView src={targetView} />
     </Stack>
   )
 };

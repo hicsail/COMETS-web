@@ -1,6 +1,7 @@
 import { Select, MenuItem, Stack, FormControl, InputLabel } from '@mui/material';
 import { ResultOutput } from '../../graphql/graphql';
 import { useState } from 'react';
+import { ImageView } from './ImageView';
 
 export interface BiomassViewProps {
   biomassOutput: ResultOutput[];
@@ -34,7 +35,7 @@ export const BiomassView: React.FC<BiomassViewProps> = ({ biomassOutput }) => {
         </Select>
       </FormControl>
 
-      {targetView && <img src={targetView} />}
+      {targetView && <ImageView src={targetView} />}
     </Stack>
   );
 };
