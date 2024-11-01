@@ -17,6 +17,15 @@ export const CometsThemeProvider: React.FC<ThemeProviderProps> = ({ children }) 
       h3: {
         fontSize: 18
       }
+    },
+    components: {
+      MuiAppBar: {
+        styleOverrides: {
+          root: {
+            backgroundColor: 'white'
+          }
+        }
+      }
     }
   });
 

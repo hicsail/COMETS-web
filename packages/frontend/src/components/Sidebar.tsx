@@ -35,25 +35,23 @@ export const Sidebar: React.FC<SidebarProps> = ({ open, drawerWidth }) => {
 
   return (
     <Drawer
-      variant="permanent"
-        sx={{
+      variant="persistent"
+      sx={{
+        width: drawerWidth,
+        flexShrink: 0,
+        '& .MuiDrawer-paper': {
           width: drawerWidth,
-          flexShrink: 0,
-          '& .MuiDrawer-paper': {
-            width: drawerWidth,
-            boxSizing: 'border-box',
-            backgroundColor: '#103F68',
-            color: 'white',
-            paddingTop: 2,
-            paddingBottom: 10,
-            mt: '64px'
-          }
-        }}
-        anchor="left"
-        open={open}
+          boxSizing: 'border-box',
+          paddingTop: 4,
+          paddingBottom: 10,
+          mt: '64px'
+        }
+      }}
+      anchor="left"
+      open={open}
     >
       <List sx={{ paddingTop: '30px' }}>
-        {navItems.map((item => <NavItem {...item} />))}
+        {navItems.map((item => <NavItem key={item.text} {...item} />))}
       </List>
     </Drawer>
   );
