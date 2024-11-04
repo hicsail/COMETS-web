@@ -27,7 +27,8 @@ export default () => ({
     secure: process.env.MAIL_SECURE || true,
     username: process.env.MAIL_USERNAME,
     password: process.env.MAIL_PASSWORD,
-    from: process.env.MAIL_FROM
+    from: process.env.MAIL_FROM,
+    internalEmail: process.env.MAIL_INTERNAL
   },
   frontend: {
     url: process.env.FRONTEND_URL || 'http://localhost:5173'
