@@ -1,23 +1,58 @@
 import { useState, ChangeEvent, useEffect } from "react";
 import {
-  Box,
   Button,
   Card,
   Drawer,
-  Grid,
+  Stack,
   TextField,
   Typography,
 } from "@mui/material";
 import FooterStepper from "../components/FooterStepper";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useRequestSimulationMutation } from "../graphql/simulation";
+import { ViewParameters } from "../components/parameters/ViewParameters";
 
 export function SummaryReviewPage() {
   const [activeStep, _setActiveStep] = useState(1);
-  const [email, setEmail] = useState('')
-  const [textfieldError, setTextfieldError] = useState(false);
   const location = useLocation();
   const { data } = location.state;
+
+  return (
+    <>
+      <Stack direction='row' spacing={4}>
+        <InformationSection data={data} />
+        <ViewParameters params={data} />
+      </Stack>
+
+      <Drawer
+        variant="permanent"
+        anchor="bottom"
+        PaperProps={{
+          sx: {
+            display: "flex", // Enable flexbox
+            justifyContent: "center", // Center items horizontally
+            alignItems: "center", // Center items vertically
+            background: "white",
+            height: 100,
+            width: "90vw",
+            left: "15vw",
+            zIndex: 99,
+          },
+        }}
+      >
+        <FooterStepper activeStep={activeStep} />
+      </Drawer>
+    </>
+  );
+}
+
+interface InformationSectionProps {
+  data: any;
+}
+
+const InformationSection: React.FC<InformationSectionProps> = ({ data }) => {
+  const [email, setEmail] = useState('')
+  const [textfieldError, setTextfieldError] = useState(false);
   const [requestSimulation, requestSimulationResults] = useRequestSimulationMutation();
   const navigate = useNavigate();
 
@@ -53,154 +88,65 @@ export function SummaryReviewPage() {
   };
 
   return (
-    <>
-      <Box
-        component="main"
+    <Stack spacing={2} direction="column">
+      <Typography variant="h1">3. Review</Typography>
+
+      <Typography variant="h3">
+        Please review your selected simulation. Once you have confirmed
+        the selection is correct, you can run your simulation by
+        entering your email below.
+      </Typography>
+
+      <Typography variant="h3">
+        We will notify you of your simulations results via email.
+      </Typography>
+
+      <Card
         sx={{
-          position: "relative",
-          height: "100vh",
+          width: "100%",
+          p: 2,
+          boxSizing: "border-box",
         }}
       >
-        <Grid container spacing={2}>
-          <Grid item xs={6}>
-            <Grid
-              container
-              spacing={2}
-              direction="column"
-              alignItems="left"
-              style={{
-                paddingLeft: "2vw",
-                paddingBottom: "10%",
-              }}
-            >
-              <Typography
-                variant="h1"
-                sx={{
-                  color: "black",
-                  textAlign: "left",
-                  paddingBottom: "10%",
-                  paddingTop: "5%",
-                }}
-              >
-                3. Review
-              </Typography>
-
-              <Typography
-                variant="h3"
-                sx={{
-                  textAlign: "left",
-                  color: "grey",
-                  paddingBottom: "10%",
-                }}
-              >
-                Please review your selected simulation. Once you have confirmed
-                the selection is correct, you can run your simulation by
-                entering your email below.
-              </Typography>
-
-              <Typography
-                variant="h3"
-                sx={{
-                  textAlign: "left",
-                  color: "grey",
-                  paddingBottom: "10%",
-                }}
-              >
-                We will notify you of your simulations results via email.
-              </Typography>
-
-              <Card
-                sx={{
-                  width: "100%",
-                  p: 2,
-                  boxSizing: "border-box",
-                  borderRadius: "16px",
-                }}
-              >
-                <Typography
-                  variant="h6"
-                  sx={{
-                    mb: 2,
-                    textAlign: "left",
-                  }}
-                >
-                  Continue with email
-                </Typography>
-
-                <TextField
-                  fullWidth
-                  label="Email address"
-                  variant="outlined"
-                  onChange={handleTextChange}
-                  helperText={
-                    textfieldError ? "Please input a valid email" : ""
-                  }
-                  sx={{
-                    mb: 2,
-                  }}
-                />
-
-                <Typography
-                  variant="body2"
-                  sx={{
-                    mb: 2,
-                  }}
-                >
-                  By continuing, you agree to the confirmation of the selected
-                  simulation to be processed.
-                </Typography>
-
-                  <Button
-                    variant="contained"
-                    fullWidth
-                    onClick={() => handleSubmit(email)}
-                  >
-                    Continue
-                  </Button>
-              </Card>
-
-              <Box
-                sx={{
-                  paddingTop: "5%",
-                }}
-              >
-                <Button variant="contained" fullWidth>
-                  Download CometsPY
-                </Button>
-              </Box>
-            </Grid>
-          </Grid>
-
-          <Grid item xs={6}>
-            <Typography
-              sx={{
-                color: "black",
-                fontSize: "26px",
-              }}
-            ></Typography>
-
-          </Grid>
-        </Grid>
-
-        <Drawer
-          variant="permanent"
-          anchor="bottom"
-          PaperProps={{
-            sx: {
-              display: "flex", // Enable flexbox
-              justifyContent: "center", // Center items horizontally
-              alignItems: "center", // Center items vertically
-              background: "white",
-              height: 100,
-              width: "90vw",
-              left: "15vw",
-              zIndex: 99,
-            },
+        <Typography
+          variant="h6"
+          sx={{
           }}
         >
-          <FooterStepper activeStep={activeStep} />
-        </Drawer>
-      </Box>
-    </>
-  );
-}
+          Continue with email
+        </Typography>
+
+        <TextField
+          fullWidth
+          label="Email address"
+          variant="outlined"
+          onChange={handleTextChange}
+          helperText={
+            textfieldError ? "Please input a valid email" : ""
+          }
+          sx={{
+            mb: 2,
+          }}
+        />
+
+        <Typography
+          variant="body2"
+          sx={{
+            mb: 2
+          }}
+        >
+          By continuing, you agree to the confirmation of the selected
+          simulation to be processed.
+        </Typography>
+
+          <Button
+            variant="contained"
+            fullWidth
+            onClick={() => handleSubmit(email)}
+          >
+            Continue
+          </Button>
+      </Card>
+    </Stack>
+  )
+};
