@@ -47,7 +47,7 @@ export function DashboardPage() {
 
         <Grid item>
           <Typography
-            variant="h3"
+            variant="h2"
             textOverflow={"initial"}
             sx={{
               textAlign: "left",
