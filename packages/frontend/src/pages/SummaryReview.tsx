@@ -6,6 +6,7 @@ import {
   Stack,
   TextField,
   Typography,
+  Grid2
 } from "@mui/material";
 import FooterStepper from "../components/FooterStepper";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -19,10 +20,14 @@ export function SummaryReviewPage() {
 
   return (
     <>
-      <Stack direction='row' spacing={4}>
-        <InformationSection data={data} />
-        <ViewParameters params={data} />
-      </Stack>
+      <Grid2 container direction='row' spacing={4}>
+        <Grid2 size={8}>
+          <InformationSection data={data} />
+        </Grid2>
+        <Grid2 size={4}>
+          <ViewParameters params={data} />
+        </Grid2>
+      </Grid2>
 
       <Drawer
         variant="permanent"
