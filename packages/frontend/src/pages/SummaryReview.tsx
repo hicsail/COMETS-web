@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import FooterStepper from "../components/FooterStepper";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useRequestSimulationMutation } from "../graphql/simulation";
 
 export function SummaryReviewPage() {
@@ -17,9 +17,9 @@ export function SummaryReviewPage() {
   const [email, setEmail] = useState('')
   const [textfieldError, setTextfieldError] = useState(false);
   const location = useLocation();
-  console.log(location);
   const { data } = location.state;
   const [requestSimulation, requestSimulationResults] = useRequestSimulationMutation();
+  const navigate = useNavigate();
 
   const handleSubmit = (email: string) => {
     // The neutral drift field may not show up if the user has not selected it
@@ -37,8 +37,10 @@ export function SummaryReviewPage() {
   }
 
   useEffect(() => {
-    console.log(requestSimulationResults);
-  }, [requestSimulation]);
+    if (requestSimulationResults.data) {
+      navigate('/experimentSubmitted');
+    }
+  }, [requestSimulationResults]);
 
   const handleTextChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target) {

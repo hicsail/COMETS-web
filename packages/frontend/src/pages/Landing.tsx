@@ -1,4 +1,4 @@
-import { AppBar, Box, Button, Grid, Toolbar, Typography } from "@mui/material";
+import { AppBar, Box, Button, Grid, Stack, Toolbar, Typography } from "@mui/material";
 import { NavLink } from "react-router-dom";
 import { Link } from 'react-router-dom';
 
@@ -18,7 +18,6 @@ export function LandingPage() {
               width: "100%",
               paddingTop: "25%",
               paddingRight: "10%",
-              paddingLeft: "10%",
             }}
           >
             <Typography
@@ -72,13 +71,7 @@ export function LandingPage() {
 
             </Typography>
 
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                width: "100%",
-              }}
-            >
+            <Stack direction="row" spacing={2}>
               <Button
                 component={Link}
                 to="https://www.runcomets.org/about"
@@ -86,7 +79,6 @@ export function LandingPage() {
                 sx={{
                   borderRadius: "20px",
                   backgroundColor: "white",
-                  color: "primary.main",
                   border: "none",
                   height: "10vh",
                   width: "18vw",
@@ -136,7 +128,7 @@ export function LandingPage() {
                   </Typography>
                 </Button>
               </NavLink>
-            </Box>
+            </Stack>
           </Box>
         </Grid>
 

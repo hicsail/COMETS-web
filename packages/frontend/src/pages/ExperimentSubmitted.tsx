@@ -1,13 +1,10 @@
 import { useState } from "react";
 import { Box, Button, Drawer, Grid, Typography } from "@mui/material";
 import FooterStepper from "../components/FooterStepper";
-import { Link, useLocation } from "react-router-dom";
-import { SidebarCard } from "../components/SidebarObject";
+import { Link } from "react-router-dom";
 
 export function ExperimentSubmittedPage() {
   const [activeStep, _setActiveStep] = useState(2);
-  const location = useLocation();
-  const { data } = location.state;
 
   return (
     <>
@@ -73,21 +70,6 @@ export function ExperimentSubmittedPage() {
                 Download CometsPY
               </Button>
             </Grid>
-          </Grid>
-
-          <Grid item xs={6}>
-            <Box sx={{ width: "100%" }} display={"flex"} flexDirection={"column"}>
-              {data.map((item: any, index: number) => (
-                <Box
-                  display={"flex"}
-                  flexDirection={"column"}
-                  sx={{ paddingBottom: "0.5vw" }}
-                  key={index}
-                >
-                  <SidebarCard item={item} key={index} />
-                </Box>
-              ))}
-            </Box>
           </Grid>
         </Grid>
 
