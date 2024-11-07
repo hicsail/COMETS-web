@@ -8,11 +8,10 @@ import boto3
 from pathlib import Path
 from runner import savers
 from runner import helpers
+from runner import layout_maker
 from pprint import pprint
 import asyncio
 from bullmq import Queue
-
-from runner.population import get_initial_population
 
 # Load environment variables
 load_dotenv()
@@ -50,6 +49,15 @@ async def main():
     ## Argument Parsing
     args = helpers.argument_handling()
 
+    ## Get layout settings
+    layout_builder = layout_maker.layout_factory(
+        layout_type=args['layout']['layout_type'],
+        width=args['layout']['width'],
+        height=args['layout']['height'],
+        drop_radius=args['layout']['drop_radius'],
+        dish_radius=args['layout']['dish_radius'],
+        num_innoculates=args['layout']['num_innoculates'])
+
     ## Model setup
     models = []
     for model_args in args['model']:
@@ -61,10 +69,7 @@ async def main():
             1.0, 1.0, 0.0)
         model.change_bounds('EX_glc__D_e', -1000, 1000)
         model.change_bounds('EX_ac_e', -1000, 1000)
-        model.initial_pop = get_initial_population(layout_type=args['layout']['layout_type'],
-                                                   max_x=args['layout']['grid_x_max'],
-                                                   max_y=args['layout']['grid_y_max'],
-                                                   initial_pop=1e-6)
+        model.initial_pop = layout_builder.get_initial_population()
         models.append(model)
 
     ## Layout setup
@@ -79,7 +84,8 @@ async def main():
     layout.set_specific_metabolite('pi_e', 1000)
 
     # Set size
-    layout.grid = [args['layout']['grid_x_max'], args['layout']['grid_y_max']]
+    layout.grid = layout_builder.get_grid_size()
+    layout.add_barriers(layout_builder.get_barrier())
 
     # Add models
     [layout.add_model(model) for model in models]

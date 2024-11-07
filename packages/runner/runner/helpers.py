@@ -66,12 +66,21 @@ def argument_handling() -> dict:
     layout_args.add_argument('--layout-type',
                            type=str,
                            choices=[PETRI_CENTER, PETRI_RANDOM, TEST_TUBE])
-    layout_args.add_argument('--grid-x-max',
+    layout_args.add_argument('--width',
                              type=int,
-                             required=True)
-    layout_args.add_argument('--grid-y-max',
+                             default=61)
+    layout_args.add_argument('--height',
                              type=int,
-                             required=True)
+                             default=61)
+    layout_args.add_argument('--drop-radius',
+                             type=float,
+                             default=5.0)
+    layout_args.add_argument('--dish-radius',
+                             type=float,
+                             default=9.0)
+    layout_args.add_argument('--num-innoculates',
+                             type=int,
+                             default=100)
 
     # Model settings
     model_args = argparser.add_argument_group('model')
