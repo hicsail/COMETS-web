@@ -29,6 +29,13 @@ class Saver(ABC):
 
 class BiomassSaver(Saver):
     def save(self, experiment: c.comets, config: SaveConfig) -> dict:
+        ##### BEGIN TEST OUTPUT
+        im = experiment.get_biomass_image('e_coli_core', 100)
+        plt.imshow(im, cmap = 'cividis')
+        plt.tick_params(left = False, right = False , labelleft = False ,
+                        labelbottom = False, bottom = False)
+        plt.savefig('ringcolony200.png')
+        ##### END TEST OUTPUT
         output = dict()
         output['biomass'] = []
 
