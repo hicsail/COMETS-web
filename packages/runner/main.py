@@ -64,9 +64,18 @@ async def main():
         # Select the correct model to load
         loaded_model = cobra.io.load_model(helpers.MODEL_TO_NOTEBOOK[model_args['model_name']])
         model = c.model(loaded_model)
-        model.add_nonlinear_diffusion_parameters(
-            model_args['model_linear_diffusivity'], model_args['model_nonlinear_diffusivity'],
-            1.0, 1.0, 0.0)
+
+        if model_args['model_neutral_drift'] == 'True':
+            model.add_neutral_drift_parameter(model_args['model_neutral_drift_amp'])
+
+
+        # model.add_nonlinear_diffusion_parameters(
+        #     model_args['model_linear_diffusivity'], model_args['model_nonlinear_diffusivity'],
+        #     1.0, 1.0, 0.0)
+        ##### BEGIN TEST CODE
+        model.add_nonlinear_diffusion_parameters(0.0, 6000e-6, 1.0, 1.0,0.00001)
+        ##### END TEST CODE
+
         model.change_bounds('EX_glc__D_e', -1000, 1000)
         model.change_bounds('EX_ac_e', -1000, 1000)
         model.initial_pop = layout_builder.get_initial_population()
@@ -98,9 +107,14 @@ async def main():
     params.set_param('defaultKm', args['global']['default_km'])
     params.set_param('maxCycles', args['global']['max_cycles'])
     params.set_param('timeStep', args['global']['time_step'])
-    params.set_param('spaceWidth', 1)
-    params.set_param('maxSpaceBiomass', 10)
-    params.set_param('minSpaceBiomass', 1e-11)
+    # params.set_param('spaceWidth', 1)
+    # params.set_param('maxSpaceBiomass', 10)
+    # params.set_param('minSpaceBiomass', 1e-11)
+    ##### BEGIN TEST CODE
+    params.set_param('spaceWidth', 0.05)
+    params.set_param('maxSpaceBiomass', 100)
+    params.set_param('minSpaceBiomass', 2.5e-11)
+    ##### END TEST CODE
 
     # Functional control
     params.set_param('BiomassLogRate', args['global']['log_freq'])

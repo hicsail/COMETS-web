@@ -77,7 +77,7 @@ def argument_handling() -> dict:
                              default=5.0)
     layout_args.add_argument('--dish-radius',
                              type=float,
-                             default=9.0)
+                             default=29.0)
     layout_args.add_argument('--num-innoculates',
                              type=int,
                              default=100)
@@ -89,7 +89,7 @@ def argument_handling() -> dict:
                             choices=[E_COLI, NITROSOMONAS, NITROBACTER],
                             action='append')
     model_args.add_argument('--model-neutral-drift',
-                            type=bool,
+                            type=str,
                             action='append')
     model_args.add_argument('--model-neutral-drift-amp',
                             type=float,
