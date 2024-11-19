@@ -82,16 +82,7 @@ async def main():
     layout = c.layout()
 
     # Set metabolite
-    metabolite_amount = 0.0
-    if args['layout']['layout_type'] == helpers.TEST_TUBE:
-        metabolite_amount = args['metabolite']['metabolite_amount'] * args['layout']['volume']
-    else:
-        linear_space = helpers.PETRI_DISH_DIAMETER / helpers.GRID_SIZE
-        petri_area = (0.5 * helpers.PETRI_DISH_DIAMETER) ** 2 * math.pi
-        metabolite_amount = args['metabolite']['metabolite_amount'] * args['layout']['volume'] * (linear_space) ** 2 / petri_area
-        print(metabolite_amount)
-
-    layout.set_specific_metabolite(args['metabolite']['metabolite_type'], metabolite_amount)
+    layout.set_specific_metabolite(args['metabolite']['metabolite_type'], args['metabolite']['metabolite_amount'])
     layout.set_specific_metabolite('o2_e', 1000)
     layout.set_specific_metabolite('nh4_e', 1000)
     layout.set_specific_metabolite('h2o_e', 1000)
@@ -115,11 +106,7 @@ async def main():
     params.set_param('timeStep', args['global']['time_step'])
     params.set_param('maxSpaceBiomass', 100)
     params.set_param('minSpaceBiomass', 2.5e-11)
-
-    if args['layout']['layout_type'] == helpers.TEST_TUBE:
-        params.set_param('spaceWidth', args['layout']['volume'] ** (1.0 / 3))
-    else:
-        params.set_param('spaceWidth', helpers.PETRI_DISH_DIAMETER / helpers.GRID_SIZE)
+    params.set_param('spaceWidth', args['layout']['space_width'])
 
     # Functional control
     params.set_param('BiomassLogRate', args['global']['log_freq'])

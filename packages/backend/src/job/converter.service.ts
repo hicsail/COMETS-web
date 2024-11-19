@@ -27,10 +27,18 @@ export class RequestConverter {
   }
 
   private async getLayoutParams(request: SimulationRequest): Promise<CometsLayoutParameters> {
+    let spaceWidth = Math.pow(request.layoutParams.volume, 1.0 / 3.0);
+    let gridSize = 1;
+
+    if (request.layoutParams.type != LayoutType.TEST_TUBE) {
+      spaceWidth = this.PETRI_DISH_DIAMETER / this.GRID_SIZE;
+      gridSize = this.GRID_SIZE;
+    }
+
     return {
       type: request.layoutParams.type,
-      spaceWidth: this.PETRI_DISH_DIAMETER / this.GRID_SIZE,
-      gridSize: this.GRID_SIZE
+      spaceWidth: spaceWidth,
+      gridSize: gridSize
     }
   }
 

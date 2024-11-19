@@ -70,6 +70,12 @@ def argument_handling() -> dict:
     layout_args.add_argument('--layout-type',
                            type=str,
                            choices=[PETRI_CENTER, PETRI_RANDOM, TEST_TUBE])
+    layout_args.add_argument('--space-width',
+                             type=float,
+                             required=True)
+    layout_args.add_argument('--grid-size',
+                             type=int,
+                             required=True)
     layout_args.add_argument('--drop-radius',
                              type=float,
                              default=5.0)
@@ -79,9 +85,6 @@ def argument_handling() -> dict:
     layout_args.add_argument('--num-innoculates',
                              type=int,
                              default=100)
-    layout_args.add_argument('--volume',
-                             type=float,
-                             default=1)
 
     # Model settings
     model_args = argparser.add_argument_group('model')
