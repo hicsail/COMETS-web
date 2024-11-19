@@ -1,4 +1,3 @@
-import math
 from dotenv import load_dotenv
 import cometspy as c
 import cobra

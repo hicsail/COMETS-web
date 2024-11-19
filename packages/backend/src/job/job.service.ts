@@ -75,7 +75,8 @@ export class JobService {
     const job: V1Job = JSON.parse(JSON.stringify(this.jobTemplate));
     const jobName = `comets-runner-${parameters.requestID}`;
     job.metadata!.name = jobName;
-    job.spec!.template.spec!.containers[0].command = this.createCommand(parameters);
+    const command = this.createCommand(parameters);
+    job.spec!.template.spec!.containers[0].command = command;
 
     // Start the job
     await this.batchClient.createNamespacedJob(this.namespace, job);
@@ -129,22 +130,24 @@ export class JobService {
     return [
       'python3',
       'main.py',
-      ` --s3-bucket=${this.bucket}`,
-      ` --s3-folder=${parameters.s3Folder}`,
-      ` --s3-save=True`,
-      ` --queue=completion`,
-      ` --id=${parameters.requestID}`,
-      ` --notify=True`,
-      ` --metabolite-type=${parameters.metaboliteParams.type}`,
-      ` --metabolite-amount=${parameters.metaboliteParams.amount}`,
-      ` --layout-type=test_tube`,
+      `--s3-bucket=${this.bucket}`,
+      `--s3-folder=${parameters.s3Folder}`,
+      `--s3-save`,
+      `--queue=completion`,
+      `--id=${parameters.requestID}`,
+      `--notify`,
+      `--metabolite-type=${parameters.metaboliteParams.type}`,
+      `--metabolite-amount=${parameters.metaboliteParams.amount}`,
+      `--layout-type=${parameters.layoutParams.type}`,
+      `--space-width=${parameters.layoutParams.spaceWidth}`,
+      `--grid-size=${parameters.layoutParams.gridSize}`,
       ...modelParams,
-      ` --time-step=${parameters.globalParams.timeStep}`,
-      ` --log-freq=${parameters.globalParams.logFreq}`,
-      ` --default-diff-const=${parameters.globalParams.defaultDiffConst}`,
-      ` --default-v-max=${parameters.globalParams.defaultVMax}`,
-      ` --default-km=${parameters.globalParams.defaultKm}`,
-      ` --max-cycles=${parameters.globalParams.maxCycles}`
+      `--time-step=${parameters.globalParams.timeStep}`,
+      `--log-freq=${parameters.globalParams.logFreq}`,
+      `--default-diff-const=${parameters.globalParams.defaultDiffConst}`,
+      `--default-v-max=${parameters.globalParams.defaultVMax}`,
+      `--default-km=${parameters.globalParams.defaultKm}`,
+      `--max-cycles=${parameters.globalParams.maxCycles}`
     ]
   }
 }
