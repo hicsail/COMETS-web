@@ -52,10 +52,10 @@ async def main():
     ## Get layout settings
     layout_builder = layout_maker.layout_factory(
         layout_type=args['layout']['layout_type'],
-        width=helpers.GRID_SIZE,
-        height=helpers.GRID_SIZE,
+        width=args['layout']['grid_size'],
+        height=args['layout']['grid_size'],
         drop_radius=args['layout']['drop_radius'],
-        dish_radius=args['layout']['dish_radius'],
+        dish_radius=args['layout']['grid_size'] / 2,
         num_innoculates=args['layout']['num_innoculates'])
 
     ## Model setup

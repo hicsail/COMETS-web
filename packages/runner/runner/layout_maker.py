@@ -97,7 +97,7 @@ class PetriDishRandom(LayoutMaker):
     def get_initial_population(self) -> list[list[float]]:
         # First double check that there is room for the number of innoculates
         max_positions = math.pi * self.dish_radius ** 2
-        if max_positions > self.num_innoculates:
+        if max_positions < self.num_innoculates:
             raise ValueError('Not enough room for the number of innoculates requested')
 
         # Figure up the minimum and maximum places where the microbe can even be placed
@@ -115,7 +115,7 @@ class PetriDishRandom(LayoutMaker):
             y = random.randint(min_y, max_y)
 
             # If we have already used this x,y coordinate, or if it lies outside the dish, ignore
-            if (x, y) in coordinates or not _in_circle(x, y, self.center_x, self.center_y, self.dish_radius):
+            if (x, y) in coordinates or not _in_circle(x, y, self.center_x, self.center_y, self.dish_radius - 1):
                 continue
 
             coordinates.add((x, y))

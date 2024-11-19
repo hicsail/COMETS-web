@@ -79,12 +79,9 @@ def argument_handling() -> dict:
     layout_args.add_argument('--drop-radius',
                              type=float,
                              default=5.0)
-    layout_args.add_argument('--dish-radius',
-                             type=float,
-                             default=29.0)
     layout_args.add_argument('--num-innoculates',
                              type=int,
-                             default=100)
+                             default=10)
 
     # Model settings
     model_args = argparser.add_argument_group('model')
