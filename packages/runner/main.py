@@ -1,3 +1,4 @@
+import math
 from dotenv import load_dotenv
 import cometspy as c
 import cobra
@@ -52,8 +53,8 @@ async def main():
     ## Get layout settings
     layout_builder = layout_maker.layout_factory(
         layout_type=args['layout']['layout_type'],
-        width=args['layout']['width'],
-        height=args['layout']['height'],
+        width=helpers.GRID_SIZE,
+        height=helpers.GRID_SIZE,
         drop_radius=args['layout']['drop_radius'],
         dish_radius=args['layout']['dish_radius'],
         num_innoculates=args['layout']['num_innoculates'])
@@ -85,7 +86,15 @@ async def main():
     layout = c.layout()
 
     # Set metabolite
-    layout.set_specific_metabolite(args['metabolite']['metabolite_type'], args['metabolite']['metabolite_amount'])
+    metabolite_amount = 0.0
+    if args['layout']['layout_type'] == helpers.TEST_TUBE:
+        metabolite_amount = args['metabolite']['metabolite_amount'] * args['layout']['volume']
+    else:
+        linear_space = helpers.PETRI_DISH_DIAMETER / helpers.GRID_SIZE
+        petri_area = (0.5 * helpers.PETRI_DISH_DIAMETER) ** 2 * math.pi
+        metabolite_amount = args['metabolite']['metabolite_amount'] * args['layout']['volume'] * (linear_space) ** 2 / petri_area
+
+    layout.set_specific_metabolite(args['metabolite']['metabolite_type'], metabolite_amount)
     layout.set_specific_metabolite('o2_e', 1000)
     layout.set_specific_metabolite('nh4_e', 1000)
     layout.set_specific_metabolite('h2o_e', 1000)
@@ -107,14 +116,13 @@ async def main():
     params.set_param('defaultKm', args['global']['default_km'])
     params.set_param('maxCycles', args['global']['max_cycles'])
     params.set_param('timeStep', args['global']['time_step'])
-    # params.set_param('spaceWidth', 1)
-    # params.set_param('maxSpaceBiomass', 10)
-    # params.set_param('minSpaceBiomass', 1e-11)
-    ##### BEGIN TEST CODE
-    params.set_param('spaceWidth', 0.05)
     params.set_param('maxSpaceBiomass', 100)
     params.set_param('minSpaceBiomass', 2.5e-11)
-    ##### END TEST CODE
+
+    if args['layout']['layout_type'] == helpers.TEST_TUBE:
+        params.set_param('spaceWidth', args['layout']['volume'] ** (1.0 / 3))
+    else:
+        params.set_param('spaceWidth', helpers.PETRI_DISH_DIAMETER / helpers.GRID_SIZE)
 
     # Functional control
     params.set_param('BiomassLogRate', args['global']['log_freq'])

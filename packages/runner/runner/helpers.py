@@ -13,6 +13,10 @@ PETRI_RANDOM = 'petri_random'
 TEST_TUBE = 'test_tube'
 LayoutType = Literal[PETRI_CENTER, PETRI_RANDOM, TEST_TUBE]
 
+# Layout Defaults
+GRID_SIZE = 61
+PETRI_DISH_DIAMETER = 3.0
+
 # Helps convert the given model to the notebook to load
 MODEL_TO_NOTEBOOK = {
     E_COLI: 'textbook',
@@ -66,12 +70,6 @@ def argument_handling() -> dict:
     layout_args.add_argument('--layout-type',
                            type=str,
                            choices=[PETRI_CENTER, PETRI_RANDOM, TEST_TUBE])
-    layout_args.add_argument('--width',
-                             type=int,
-                             default=61)
-    layout_args.add_argument('--height',
-                             type=int,
-                             default=61)
     layout_args.add_argument('--drop-radius',
                              type=float,
                              default=5.0)
@@ -81,6 +79,9 @@ def argument_handling() -> dict:
     layout_args.add_argument('--num-innoculates',
                              type=int,
                              default=100)
+    layout_args.add_argument('--volume',
+                             type=float,
+                             default=1)
 
     # Model settings
     model_args = argparser.add_argument_group('model')
