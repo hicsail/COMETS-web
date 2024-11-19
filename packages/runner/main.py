@@ -8,6 +8,7 @@ import boto3
 from pathlib import Path
 from runner import savers
 from runner import helpers
+from runner import layout_maker
 from pprint import pprint
 import asyncio
 from bullmq import Queue
@@ -48,18 +49,32 @@ async def main():
     ## Argument Parsing
     args = helpers.argument_handling()
 
+    ## Get layout settings
+    layout_builder = layout_maker.layout_factory(
+        layout_type=args['layout']['layout_type'],
+        width=args['layout']['grid_size'],
+        height=args['layout']['grid_size'],
+        drop_radius=args['layout']['drop_radius'],
+        dish_radius=args['layout']['grid_size'] / 2,
+        num_innoculates=args['layout']['num_innoculates'])
+
     ## Model setup
     models = []
     for model_args in args['model']:
         # Select the correct model to load
         loaded_model = cobra.io.load_model(helpers.MODEL_TO_NOTEBOOK[model_args['model_name']])
         model = c.model(loaded_model)
+
+        if model_args['model_neutral_drift'] == 'True':
+            model.add_neutral_drift_parameter(model_args['model_neutral_drift_amp'])
+
         model.add_nonlinear_diffusion_parameters(
-            model_args['model_linear_diffusivity'], model_args['model_nonlinear_diffusivity'],
-            1.0, 1.0, 0.0)
+                model_args['model_linear_diffusivity'], model_args['model_nonlinear_diffusivity'],
+                1.0, 1.0, 0.00001)
+
         model.change_bounds('EX_glc__D_e', -1000, 1000)
         model.change_bounds('EX_ac_e', -1000, 1000)
-        model.initial_pop = [[0, 0, 1e-6]]
+        model.initial_pop = layout_builder.get_initial_population()
         models.append(model)
 
     ## Layout setup
@@ -74,7 +89,8 @@ async def main():
     layout.set_specific_metabolite('pi_e', 1000)
 
     # Set size
-    layout.grid = [1, 1]
+    layout.grid = layout_builder.get_grid_size()
+    layout.add_barriers(layout_builder.get_barrier())
 
     # Add models
     [layout.add_model(model) for model in models]
@@ -87,9 +103,9 @@ async def main():
     params.set_param('defaultKm', args['global']['default_km'])
     params.set_param('maxCycles', args['global']['max_cycles'])
     params.set_param('timeStep', args['global']['time_step'])
-    params.set_param('spaceWidth', 1)
-    params.set_param('maxSpaceBiomass', 10)
-    params.set_param('minSpaceBiomass', 1e-11)
+    params.set_param('maxSpaceBiomass', 100)
+    params.set_param('minSpaceBiomass', 2.5e-11)
+    params.set_param('spaceWidth', args['layout']['space_width'])
 
     # Functional control
     params.set_param('BiomassLogRate', args['global']['log_freq'])

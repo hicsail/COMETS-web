@@ -8,7 +8,11 @@ query getSimulationRequest($request: ID!) {
     email,
     metaboliteParams {
       type,
-      amount
+      concentration
+    },
+    layoutParams {
+      type,
+      volume
     },
     modelParams {
       name,

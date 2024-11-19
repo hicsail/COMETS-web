@@ -3,6 +3,27 @@ import { Schema, SchemaFactory, Prop } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { SimulationResult } from './result.model';
 
+export enum LayoutType {
+  PETRI_CENTER = 'petri_center',
+  PETRI_RANDOM = 'petri_random',
+  TEST_TUBE ='test_tube'
+}
+
+registerEnumType(LayoutType, {
+  name: 'LayoutType'
+});
+
+@ObjectType()
+export class LayoutParameters {
+  @Prop({ type: String, enum: LayoutType })
+  @Field(() => LayoutType)
+  type: LayoutType;
+
+  @Prop()
+  @Field()
+  volume: number;
+}
+
 export enum MetaboliteType {
   GLUCOSE = 'glc__D_e',
   ACETATE = 'ac_e',
@@ -21,7 +42,7 @@ export class MetaboliteParameters {
 
   @Prop()
   @Field()
-  amount: number;
+  concentration: number;
 }
 export const MetaboliteParametersSchema = SchemaFactory.createForClass(MetaboliteParameters);
 
@@ -112,6 +133,10 @@ export class SimulationRequest {
   @Prop()
   @Field(() => String)
   email: string;
+
+  @Prop()
+  @Field(() => LayoutParameters)
+  layoutParams: LayoutParameters;
 
   @Prop({ type: MetaboliteParameters })
   @Field(() => MetaboliteParameters)
