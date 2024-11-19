@@ -11,9 +11,10 @@ import {
 } from '@kubernetes/client-node';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { SimulationRequest } from '../simulation/models/request.model';
 import { InjectKube } from './kubectl.provider';
-
+import { CometsParameters } from './comets-paramters.dto';
+import { SimulationRequest } from 'src/simulation/models/request.model';
+import { RequestConverter } from './converter.service';
 
 export enum JobStatus {
   SUCCESS,
@@ -29,7 +30,11 @@ export class JobService {
   private readonly namespace = this.configService.getOrThrow<string>('runner.namespace');
   private readonly bucket = this.configService.getOrThrow<string>('s3.bucket');
 
-  constructor(@InjectKube() private readonly kubeConfig: KubeConfig, private readonly configService: ConfigService) {
+  constructor(
+    @InjectKube() private readonly kubeConfig: KubeConfig,
+    private readonly configService: ConfigService,
+    private readonly converterService: RequestConverter
+  ) {
     // Fill in template for a job
     const metadata = new V1ObjectMeta();
     metadata.name = 'comets-runner';
@@ -62,12 +67,17 @@ export class JobService {
     this.jobTemplate.spec.template.spec.imagePullSecrets![0].name = this.configService.getOrThrow<string>('runner.imagePullSecret')
   }
 
-  async triggerJob(simulationRequest: SimulationRequest): Promise<string> {
-    const job: V1Job = JSON.parse(JSON.stringify(this.jobTemplate));
-    const jobName = `comets-runner-${simulationRequest._id}`;
-    job.metadata!.name = jobName;
-    job.spec!.template.spec!.containers[0].command = this.createCommand(simulationRequest);
+  async triggerJob(request: SimulationRequest): Promise<string> {
+    // Turn the request into COMETS parameters
+    const parameters = await this.converterService.convert(request);
 
+    // Create a Job configuration based on the paramters
+    const job: V1Job = JSON.parse(JSON.stringify(this.jobTemplate));
+    const jobName = `comets-runner-${parameters.requestID}`;
+    job.metadata!.name = jobName;
+    job.spec!.template.spec!.containers[0].command = this.createCommand(parameters);
+
+    // Start the job
     await this.batchClient.createNamespacedJob(this.namespace, job);
     return jobName;
   }
@@ -102,10 +112,10 @@ export class JobService {
     return logs.body;
   }
 
-  private createCommand(simulationRequest: SimulationRequest): string[] {
+  private createCommand(parameters: CometsParameters): string[] {
     let modelParams: string[] = [];
 
-    for (const param of simulationRequest.modelParams) {
+    for (const param of parameters.modelParams) {
       modelParams = modelParams.concat([
         `--model-name=${param.name}`,
         `--model-neutral-drift=${param.neutralDrift}`,
@@ -119,22 +129,22 @@ export class JobService {
     return [
       'python3',
       'main.py',
-      `--s3-bucket=${this.bucket}`,
-      `--s3-folder=${simulationRequest._id}`,
-      `--s3-save=True`,
-      `--queue=completion`,
-      `--id=${simulationRequest._id}`,
-      `--notify=True`,
-      `--metabolite-type=${simulationRequest.metaboliteParams.type}`,
-      `--metabolite-amount=${simulationRequest.metaboliteParams.amount}`,
-      `--layout-type=test_tube`,
+      ` --s3-bucket=${this.bucket}`,
+      ` --s3-folder=${parameters.s3Folder}`,
+      ` --s3-save=True`,
+      ` --queue=completion`,
+      ` --id=${parameters.requestID}`,
+      ` --notify=True`,
+      ` --metabolite-type=${parameters.metaboliteParams.type}`,
+      ` --metabolite-amount=${parameters.metaboliteParams.amount}`,
+      ` --layout-type=test_tube`,
       ...modelParams,
-      `--time-step=${simulationRequest.globalParams.timeStep}`,
-      `--log-freq=${simulationRequest.globalParams.logFreq}`,
-      `--default-diff-const=${simulationRequest.globalParams.defaultDiffConst}`,
-      `--default-v-max=${simulationRequest.globalParams.defaultVMax}`,
-      `--default-km=${simulationRequest.globalParams.defaultKm}`,
-      `--max-cycles=${simulationRequest.globalParams.maxCycles}`
+      ` --time-step=${parameters.globalParams.timeStep}`,
+      ` --log-freq=${parameters.globalParams.logFreq}`,
+      ` --default-diff-const=${parameters.globalParams.defaultDiffConst}`,
+      ` --default-v-max=${parameters.globalParams.defaultVMax}`,
+      ` --default-km=${parameters.globalParams.defaultKm}`,
+      ` --max-cycles=${parameters.globalParams.maxCycles}`
     ]
   }
 }
