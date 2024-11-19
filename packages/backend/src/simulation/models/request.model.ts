@@ -136,7 +136,7 @@ export class SimulationRequest {
 
   @Prop()
   @Field(() => LayoutParameters)
-  layoutParameters: LayoutParameters;
+  layoutParams: LayoutParameters;
 
   @Prop({ type: MetaboliteParameters })
   @Field(() => MetaboliteParameters)

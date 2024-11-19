@@ -16,14 +16,19 @@ export class SimulationRequestConsumer extends WorkerHost {
   async process(job: Job<SimulationRequest, any, string>): Promise<any> {
     const request = job.data;
     // Start the COMETs job
-    const jobName = await this.jobService.triggerJob(request);
-    // Wait for the job to complete
-    const status = await this.awaitCompletion(jobName);
-    // If the status is error, collect and send error data
-    if (status == JobStatus.FAILURE) {
-      await this.handleError(request, jobName);
-    } else {
-      await this.handleSuccess(request, jobName);
+    try {
+      const jobName = await this.jobService.triggerJob(request);
+      // Wait for the job to complete
+      const status = await this.awaitCompletion(jobName);
+      // If the status is error, collect and send error data
+      if (status == JobStatus.FAILURE) {
+        await this.handleError(request, jobName);
+      } else {
+        await this.handleSuccess(request, jobName);
+      }
+    } catch(e) {
+      console.error(e);
+      throw e;
     }
   }
 

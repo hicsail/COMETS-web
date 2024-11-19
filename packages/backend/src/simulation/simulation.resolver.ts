@@ -17,11 +17,6 @@ export class SimulationResolver {
     return true;
   }
 
-  @Query(() => String)
-  async example(): Promise<string> {
-    return 'hello';
-  }
-
   @Query(() => SimulationRequest)
   async getSimulationRequest(@Args('request', { type: () => ID }, SimulationPipe) request: SimulationRequest): Promise<SimulationRequest> {
     return request;

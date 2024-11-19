@@ -63,7 +63,7 @@ async def main():
     models = []
     for model_args in args['model']:
         # Select the correct model to load
-        loaded_model = cobra.io.read_sbml_model(helpers.MODEL_TO_NOTEBOOK[model_args['model_name']])
+        loaded_model = cobra.io.load_model(helpers.MODEL_TO_NOTEBOOK[model_args['model_name']])
         model = c.model(loaded_model)
 
         if model_args['model_neutral_drift'] == 'True':
@@ -89,6 +89,7 @@ async def main():
         linear_space = helpers.PETRI_DISH_DIAMETER / helpers.GRID_SIZE
         petri_area = (0.5 * helpers.PETRI_DISH_DIAMETER) ** 2 * math.pi
         metabolite_amount = args['metabolite']['metabolite_amount'] * args['layout']['volume'] * (linear_space) ** 2 / petri_area
+        print(metabolite_amount)
 
     layout.set_specific_metabolite(args['metabolite']['metabolite_type'], metabolite_amount)
     layout.set_specific_metabolite('o2_e', 1000)

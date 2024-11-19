@@ -28,7 +28,7 @@ export class RequestConverter {
 
   private async getLayoutParams(request: SimulationRequest): Promise<CometsLayoutParameters> {
     return {
-      type: request.layoutParameters.type,
+      type: request.layoutParams.type,
       spaceWidth: this.PETRI_DISH_DIAMETER / this.GRID_SIZE,
       gridSize: this.GRID_SIZE
     }
@@ -36,12 +36,12 @@ export class RequestConverter {
 
   private async getMetaboliteParams(request: SimulationRequest): Promise<CometsMetaboliteParameters> {
     let metaboliteAmount = 0;
-    if (request.layoutParameters.type == LayoutType.TEST_TUBE) {
-      metaboliteAmount = request.layoutParameters.volume * request.metaboliteParams.concentration;
+    if (request.layoutParams.type == LayoutType.TEST_TUBE) {
+      metaboliteAmount = request.layoutParams.volume * request.metaboliteParams.concentration;
     } else {
       const spaceWidth = this.PETRI_DISH_DIAMETER / this.GRID_SIZE;
       const area = Math.PI * Math.pow(0.5 * this.PETRI_DISH_DIAMETER, 2)
-      metaboliteAmount = request.metaboliteParams.concentration * request.layoutParameters.volume *
+      metaboliteAmount = request.metaboliteParams.concentration * request.layoutParams.volume *
                          Math.pow(spaceWidth, 2) / area;
     }
 
