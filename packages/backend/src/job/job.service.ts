@@ -47,6 +47,12 @@ export class JobService {
     this.jobTemplate.spec.template.spec = new V1PodSpec();
     this.jobTemplate.spec.template.spec.containers = [];
     this.jobTemplate.spec.template.spec.containers.push({
+      resources: {
+        limits: {
+          cpu: '1',
+          memory: '4Gi'
+        }
+      },
       name: 'comets-runner',
       image: configService.getOrThrow<string>('runner.image'),
       // NOTE: The command will be modified with the specific parameters later
