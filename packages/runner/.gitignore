@@ -4,3 +4,4 @@ sim_files/
 sample.sh
 sample-docker.sh
 sample-petri.sh
+sample-nitro.sh

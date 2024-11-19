@@ -63,7 +63,7 @@ async def main():
     models = []
     for model_args in args['model']:
         # Select the correct model to load
-        loaded_model = cobra.io.load_model(helpers.MODEL_TO_NOTEBOOK[model_args['model_name']])
+        loaded_model = cobra.io.read_sbml_model(helpers.MODEL_TO_NOTEBOOK[model_args['model_name']])
         model = c.model(loaded_model)
 
         if model_args['model_neutral_drift'] == 'True':
