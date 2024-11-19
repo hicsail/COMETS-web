@@ -32,6 +32,33 @@ const getSchema = (metaboliteType: MetaboliteType | null) => {
   const schema: JsonSchema = {
     type: 'object',
     properties: {
+      layoutParams: {
+        type: 'object',
+        title: 'Layout Parameters',
+        properties: {
+          type: {
+            type: 'string',
+            oneOf: [
+              {
+                const: 'PETRI_CENTER',
+                title: '3 cm Petri Dish (Center Colony)'
+              },
+              {
+                const: 'PETRI_RANDOM',
+                title: '3 cm Petri Dish (Random Lawn)'
+              },
+              {
+                const: 'TEST_TUBE',
+                title: 'Test Tube'
+              }
+            ]
+          },
+          volume: {
+            type: 'number'
+          }
+        },
+        required: ['type', 'volume']
+      },
       metaboliteParams: {
         type: 'object',
         title: 'Metabolite Parameters',
@@ -53,11 +80,11 @@ const getSchema = (metaboliteType: MetaboliteType | null) => {
               }
             ]
           },
-          amount: {
+          concentration: {
             type: 'number',
           }
         },
-        required: ['type', 'amount']
+        required: ['type', 'concentration']
       },
       modelParams: {
         type: 'array',
@@ -129,6 +156,10 @@ const getSchema = (metaboliteType: MetaboliteType | null) => {
   const uischema = {
     type: 'VerticalLayout',
     elements: [
+      {
+        type: 'Control',
+        scope: '#/properties/layoutParams'
+      },
       {
         type: 'Control',
         scope: '#/properties/metaboliteParams'

@@ -42,14 +42,31 @@ export type GlobalParametersInput = {
   timeStep: Scalars['Float']['input'];
 };
 
+export type LayoutParameters = {
+  __typename?: 'LayoutParameters';
+  type: LayoutType;
+  volume: Scalars['Float']['output'];
+};
+
+export type LayoutParametersInput = {
+  type: LayoutType;
+  volume: Scalars['Float']['input'];
+};
+
+export enum LayoutType {
+  PetriCenter = 'PETRI_CENTER',
+  PetriRandom = 'PETRI_RANDOM',
+  TestTube = 'TEST_TUBE'
+}
+
 export type MetaboliteParameters = {
   __typename?: 'MetaboliteParameters';
-  amount: Scalars['Float']['output'];
+  concentration: Scalars['Float']['output'];
   type: MetaboliteType;
 };
 
 export type MetaboliteParametersInput = {
-  amount: Scalars['Float']['input'];
+  concentration: Scalars['Float']['input'];
   type: MetaboliteType;
 };
 
@@ -96,7 +113,6 @@ export type MutationRequestSimulationArgs = {
 
 export type Query = {
   __typename?: 'Query';
-  example: Scalars['String']['output'];
   getSimulationRequest: SimulationRequest;
 };
 
@@ -118,6 +134,7 @@ export type SimulationRequest = {
   _id: Scalars['String']['output'];
   email: Scalars['String']['output'];
   globalParams: GlobalParameters;
+  layoutParams: LayoutParameters;
   metaboliteParams: MetaboliteParameters;
   modelParams: Array<ModelParameters>;
   result?: Maybe<SimulationResult>;
@@ -127,6 +144,7 @@ export type SimulationRequest = {
 export type SimulationRequestInput = {
   email: Scalars['String']['input'];
   globalParams: GlobalParametersInput;
+  layoutParams: LayoutParametersInput;
   metaboliteParams: MetaboliteParametersInput;
   modelParams: Array<ModelParametersInput>;
 };
