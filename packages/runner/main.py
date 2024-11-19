@@ -69,13 +69,9 @@ async def main():
         if model_args['model_neutral_drift'] == 'True':
             model.add_neutral_drift_parameter(model_args['model_neutral_drift_amp'])
 
-
-        # model.add_nonlinear_diffusion_parameters(
-        #     model_args['model_linear_diffusivity'], model_args['model_nonlinear_diffusivity'],
-        #     1.0, 1.0, 0.0)
-        ##### BEGIN TEST CODE
-        model.add_nonlinear_diffusion_parameters(0.0, 6000e-6, 1.0, 1.0,0.00001)
-        ##### END TEST CODE
+        model.add_nonlinear_diffusion_parameters(
+                model_args['model_linear_diffusivity'], model_args['model_nonlinear_diffusivity'],
+                1.0, 1.0, 0.00001)
 
         model.change_bounds('EX_glc__D_e', -1000, 1000)
         model.change_bounds('EX_ac_e', -1000, 1000)
