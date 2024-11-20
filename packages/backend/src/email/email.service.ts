@@ -21,7 +21,7 @@ export class EmailService {
       to: email,
       subject: 'Your COMETS SI simulation has been completed successfully',
       text: `Click here to view the results of your simulation: ${this.frontendURL}/results/${id}`
-    }
+    };
     await this.transporter.sendMail(mailOptions);
   }
 
@@ -39,7 +39,7 @@ export class EmailService {
       to: email,
       subject: 'COMETS Simulation Failed to Run',
       text: `Unfortunately your requested simulation has failed to run. We are looking into the issue now!`
-    }
+    };
     await this.transporter.sendMail(mailOptions);
   }
 
@@ -66,7 +66,7 @@ export class EmailService {
       to: this.internalEmail,
       subject: 'COMETS Simulation Failed',
       text: message
-    }
+    };
     await this.transporter.sendMail(mailOptions);
   }
 }

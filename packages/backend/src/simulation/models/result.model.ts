@@ -31,11 +31,10 @@ export class FluxOutput {
   @Field()
   modelName: string;
 
-  @Prop({ type: [ResultOutput]})
+  @Prop({ type: [ResultOutput] })
   @Field(() => [ResultOutput])
   flux: ResultOutput[];
 }
-
 
 @Schema()
 @ObjectType()
@@ -52,7 +51,7 @@ export class SimulationResult {
   @Field(() => [FluxOutput])
   flux: FluxOutput[];
 
-  @Prop({ type: [ResultOutput]})
+  @Prop({ type: [ResultOutput] })
   @Field(() => [ResultOutput])
   metabolite: ResultOutput[];
 

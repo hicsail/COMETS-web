@@ -1,5 +1,4 @@
-import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
-
+import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 
 export interface ThemeProviderProps {
   children: React.ReactNode;
@@ -19,7 +18,7 @@ export const CometsThemeProvider: React.FC<ThemeProviderProps> = ({ children }) 
       }
     },
     palette: {
-      background:{
+      background: {
         default: '#ced7e4'
       }
     },
@@ -40,4 +39,4 @@ export const CometsThemeProvider: React.FC<ThemeProviderProps> = ({ children }) 
       {children}
     </ThemeProvider>
   );
-}
+};

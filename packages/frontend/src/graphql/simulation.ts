@@ -9,23 +9,65 @@ export type RequestSimulationMutationVariables = Types.Exact<{
   request: Types.SimulationRequestInput;
 }>;
 
-
-export type RequestSimulationMutation = { __typename?: 'Mutation', requestSimulation: boolean };
+export type RequestSimulationMutation = { __typename?: 'Mutation'; requestSimulation: boolean };
 
 export type GetSimulationRequestQueryVariables = Types.Exact<{
   request: Types.Scalars['ID']['input'];
 }>;
 
-
-export type GetSimulationRequestQuery = { __typename?: 'Query', getSimulationRequest: { __typename?: 'SimulationRequest', _id: string, email: string, status: Types.SimulationStatus, metaboliteParams: { __typename?: 'MetaboliteParameters', type: Types.MetaboliteType, concentration: number }, layoutParams: { __typename?: 'LayoutParameters', type: Types.LayoutType, volume: number }, modelParams: Array<{ __typename?: 'ModelParameters', name: Types.ModelName, neutralDrift: boolean, neutralDriftAmp: number, deathRate: number, linearDiffusivity: number, nonlinearDiffusivity: number }>, globalParams: { __typename?: 'GlobalParameters', timeStep: number, logFreq: number, defaultDiffConst: number, defaultVMax: number, defaultKm: number, maxCycles: number }, result?: { __typename?: 'SimulationResult', requestID: string, biomass: Array<{ __typename?: 'ResultOutput', key: string, name: string, location: string, url: string }>, flux: Array<{ __typename?: 'FluxOutput', modelID: string, modelName: string, flux: Array<{ __typename?: 'ResultOutput', key: string, name: string, location: string, url: string }> }>, metabolite: Array<{ __typename?: 'ResultOutput', key: string, name: string, location: string, url: string }>, biomassSeries: { __typename?: 'ResultOutput', key: string, name: string, location: string, url: string }, metaboliteSeries: { __typename?: 'ResultOutput', key: string, name: string, location: string, url: string } } | null } };
-
+export type GetSimulationRequestQuery = {
+  __typename?: 'Query';
+  getSimulationRequest: {
+    __typename?: 'SimulationRequest';
+    _id: string;
+    email: string;
+    status: Types.SimulationStatus;
+    metaboliteParams: { __typename?: 'MetaboliteParameters'; type: Types.MetaboliteType; concentration: number };
+    layoutParams: { __typename?: 'LayoutParameters'; type: Types.LayoutType; volume: number };
+    modelParams: Array<{
+      __typename?: 'ModelParameters';
+      name: Types.ModelName;
+      neutralDrift: boolean;
+      neutralDriftAmp: number;
+      deathRate: number;
+      linearDiffusivity: number;
+      nonlinearDiffusivity: number;
+    }>;
+    globalParams: {
+      __typename?: 'GlobalParameters';
+      timeStep: number;
+      logFreq: number;
+      defaultDiffConst: number;
+      defaultVMax: number;
+      defaultKm: number;
+      maxCycles: number;
+    };
+    result?: {
+      __typename?: 'SimulationResult';
+      requestID: string;
+      biomass: Array<{ __typename?: 'ResultOutput'; key: string; name: string; location: string; url: string }>;
+      flux: Array<{
+        __typename?: 'FluxOutput';
+        modelID: string;
+        modelName: string;
+        flux: Array<{ __typename?: 'ResultOutput'; key: string; name: string; location: string; url: string }>;
+      }>;
+      metabolite: Array<{ __typename?: 'ResultOutput'; key: string; name: string; location: string; url: string }>;
+      biomassSeries: { __typename?: 'ResultOutput'; key: string; name: string; location: string; url: string };
+      metaboliteSeries: { __typename?: 'ResultOutput'; key: string; name: string; location: string; url: string };
+    } | null;
+  };
+};
 
 export const RequestSimulationDocument = gql`
-    mutation requestSimulation($request: SimulationRequestInput!) {
-  requestSimulation(request: $request)
-}
-    `;
-export type RequestSimulationMutationFn = Apollo.MutationFunction<RequestSimulationMutation, RequestSimulationMutationVariables>;
+  mutation requestSimulation($request: SimulationRequestInput!) {
+    requestSimulation(request: $request)
+  }
+`;
+export type RequestSimulationMutationFn = Apollo.MutationFunction<
+  RequestSimulationMutation,
+  RequestSimulationMutationVariables
+>;
 
 /**
  * __useRequestSimulationMutation__
@@ -44,83 +86,91 @@ export type RequestSimulationMutationFn = Apollo.MutationFunction<RequestSimulat
  *   },
  * });
  */
-export function useRequestSimulationMutation(baseOptions?: Apollo.MutationHookOptions<RequestSimulationMutation, RequestSimulationMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<RequestSimulationMutation, RequestSimulationMutationVariables>(RequestSimulationDocument, options);
-      }
+export function useRequestSimulationMutation(
+  baseOptions?: Apollo.MutationHookOptions<RequestSimulationMutation, RequestSimulationMutationVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<RequestSimulationMutation, RequestSimulationMutationVariables>(
+    RequestSimulationDocument,
+    options
+  );
+}
 export type RequestSimulationMutationHookResult = ReturnType<typeof useRequestSimulationMutation>;
 export type RequestSimulationMutationResult = Apollo.MutationResult<RequestSimulationMutation>;
-export type RequestSimulationMutationOptions = Apollo.BaseMutationOptions<RequestSimulationMutation, RequestSimulationMutationVariables>;
+export type RequestSimulationMutationOptions = Apollo.BaseMutationOptions<
+  RequestSimulationMutation,
+  RequestSimulationMutationVariables
+>;
 export const GetSimulationRequestDocument = gql`
-    query getSimulationRequest($request: ID!) {
-  getSimulationRequest(request: $request) {
-    _id
-    email
-    metaboliteParams {
-      type
-      concentration
-    }
-    layoutParams {
-      type
-      volume
-    }
-    modelParams {
-      name
-      neutralDrift
-      neutralDriftAmp
-      deathRate
-      linearDiffusivity
-      nonlinearDiffusivity
-    }
-    globalParams {
-      timeStep
-      logFreq
-      defaultDiffConst
-      defaultVMax
-      defaultKm
-      maxCycles
-    }
-    status
-    result {
-      requestID
-      biomass {
-        key
-        name
-        location
-        url
+  query getSimulationRequest($request: ID!) {
+    getSimulationRequest(request: $request) {
+      _id
+      email
+      metaboliteParams {
+        type
+        concentration
       }
-      flux {
-        modelID
-        modelName
+      layoutParams {
+        type
+        volume
+      }
+      modelParams {
+        name
+        neutralDrift
+        neutralDriftAmp
+        deathRate
+        linearDiffusivity
+        nonlinearDiffusivity
+      }
+      globalParams {
+        timeStep
+        logFreq
+        defaultDiffConst
+        defaultVMax
+        defaultKm
+        maxCycles
+      }
+      status
+      result {
+        requestID
+        biomass {
+          key
+          name
+          location
+          url
+        }
         flux {
+          modelID
+          modelName
+          flux {
+            key
+            name
+            location
+            url
+          }
+        }
+        metabolite {
+          key
+          name
+          location
+          url
+        }
+        biomassSeries {
+          key
+          name
+          location
+          url
+        }
+        metaboliteSeries {
           key
           name
           location
           url
         }
       }
-      metabolite {
-        key
-        name
-        location
-        url
-      }
-      biomassSeries {
-        key
-        name
-        location
-        url
-      }
-      metaboliteSeries {
-        key
-        name
-        location
-        url
-      }
     }
   }
-}
-    `;
+`;
 
 /**
  * __useGetSimulationRequestQuery__
@@ -138,19 +188,40 @@ export const GetSimulationRequestDocument = gql`
  *   },
  * });
  */
-export function useGetSimulationRequestQuery(baseOptions: Apollo.QueryHookOptions<GetSimulationRequestQuery, GetSimulationRequestQueryVariables> & ({ variables: GetSimulationRequestQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetSimulationRequestQuery, GetSimulationRequestQueryVariables>(GetSimulationRequestDocument, options);
-      }
-export function useGetSimulationRequestLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetSimulationRequestQuery, GetSimulationRequestQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetSimulationRequestQuery, GetSimulationRequestQueryVariables>(GetSimulationRequestDocument, options);
-        }
-export function useGetSimulationRequestSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetSimulationRequestQuery, GetSimulationRequestQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetSimulationRequestQuery, GetSimulationRequestQueryVariables>(GetSimulationRequestDocument, options);
-        }
+export function useGetSimulationRequestQuery(
+  baseOptions: Apollo.QueryHookOptions<GetSimulationRequestQuery, GetSimulationRequestQueryVariables> &
+    ({ variables: GetSimulationRequestQueryVariables; skip?: boolean } | { skip: boolean })
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetSimulationRequestQuery, GetSimulationRequestQueryVariables>(
+    GetSimulationRequestDocument,
+    options
+  );
+}
+export function useGetSimulationRequestLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetSimulationRequestQuery, GetSimulationRequestQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetSimulationRequestQuery, GetSimulationRequestQueryVariables>(
+    GetSimulationRequestDocument,
+    options
+  );
+}
+export function useGetSimulationRequestSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<GetSimulationRequestQuery, GetSimulationRequestQueryVariables>
+) {
+  const options = baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<GetSimulationRequestQuery, GetSimulationRequestQueryVariables>(
+    GetSimulationRequestDocument,
+    options
+  );
+}
 export type GetSimulationRequestQueryHookResult = ReturnType<typeof useGetSimulationRequestQuery>;
 export type GetSimulationRequestLazyQueryHookResult = ReturnType<typeof useGetSimulationRequestLazyQuery>;
 export type GetSimulationRequestSuspenseQueryHookResult = ReturnType<typeof useGetSimulationRequestSuspenseQuery>;
-export type GetSimulationRequestQueryResult = Apollo.QueryResult<GetSimulationRequestQuery, GetSimulationRequestQueryVariables>;
+export type GetSimulationRequestQueryResult = Apollo.QueryResult<
+  GetSimulationRequestQuery,
+  GetSimulationRequestQueryVariables
+>;

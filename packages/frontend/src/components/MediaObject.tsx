@@ -1,16 +1,7 @@
-import {
-  Box,
-  TextField,
-  FormGroup,
-  FormControlLabel,
-  Checkbox,
-  Divider,
-  Tooltip,
-  IconButton,
-} from "@mui/material";
-import { FC, useState, ChangeEvent } from "react";
-import { Media } from "../types/ExperimentTypes";
-import InfoIcon from "@mui/icons-material/Info";
+import { Box, TextField, FormGroup, FormControlLabel, Checkbox, Divider, Tooltip, IconButton } from '@mui/material';
+import { FC, useState, ChangeEvent } from 'react';
+import { Media } from '../types/ExperimentTypes';
+import InfoIcon from '@mui/icons-material/Info';
 
 interface MediaComponentProps {
   mediaOptions: Media[];
@@ -19,10 +10,8 @@ interface MediaComponentProps {
 }
 
 export const MediaComponent: FC<MediaComponentProps> = (props) => {
-  const [selectedOption, setSelectedOption] = useState<Media | null>(
-    props.mediaOptions[0],
-  );
-  const [mediaVol, setMediaVol] = useState("");
+  const [selectedOption, setSelectedOption] = useState<Media | null>(props.mediaOptions[0]);
+  const [mediaVol, setMediaVol] = useState('');
   const [textfieldError, setTextfieldError] = useState(false);
   const handleCheckboxChange = (option: Media) => {
     if (selectedOption === option) {
@@ -45,53 +34,49 @@ export const MediaComponent: FC<MediaComponentProps> = (props) => {
     }
   };
   return (
-      <Box component="form" noValidate autoComplete="off" width={"100%"}>
-        <FormGroup>
-          {props.mediaOptions.map((option, index) => {
-            return (
-              <Box key={index} display={"flex"} flexDirection={'column'}>
-                <FormControlLabel
-                  sx={{ marginTop: 2 }}
-                  key={index}
-                  label={option.name}
-                  control={
-                    <>
-                      <Tooltip title={option.desc}>
-                        <IconButton
-                          onClick={() => {
-                            navigator.clipboard.writeText(option.desc);
-                          }}
-                        >
-                          <InfoIcon />
-                        </IconButton>
-                      </Tooltip>
-                      <Checkbox
-                        value={props.value}
-                        onChange={() => handleCheckboxChange(option)}
-                        checked={selectedOption === option}
-                      />
-                    </>
-                  }
+    <Box component="form" noValidate autoComplete="off" width={'100%'}>
+      <FormGroup>
+        {props.mediaOptions.map((option, index) => {
+          return (
+            <Box key={index} display={'flex'} flexDirection={'column'}>
+              <FormControlLabel
+                sx={{ marginTop: 2 }}
+                key={index}
+                label={option.name}
+                control={
+                  <>
+                    <Tooltip title={option.desc}>
+                      <IconButton
+                        onClick={() => {
+                          navigator.clipboard.writeText(option.desc);
+                        }}
+                      >
+                        <InfoIcon />
+                      </IconButton>
+                    </Tooltip>
+                    <Checkbox
+                      value={props.value}
+                      onChange={() => handleCheckboxChange(option)}
+                      checked={selectedOption === option}
+                    />
+                  </>
+                }
+              />
+              {selectedOption === option && (
+                <TextField
+                  variant="filled"
+                  label={`${props.value.mainMetabolites} concentration (mmol/cm3)`}
+                  value={mediaVol}
+                  onChange={handleTextChange}
+                  error={textfieldError}
+                  helperText={textfieldError ? 'Please input numbers only' : ''}
                 />
-                {selectedOption === option && (
-                  <TextField
-                    variant="filled"
-                    label={`${props.value.mainMetabolites} concentration (mmol/cm3)`}
-                    value={mediaVol}
-                    onChange={handleTextChange}
-                    
-                    error={textfieldError}
-                    helperText={
-                      textfieldError ? "Please input numbers only" : ""
-                    }
-                  />
-                )}
-                <Divider />
-              </Box>
-            );
-          })}
-        </FormGroup>
-      </Box>
-    
+              )}
+              <Divider />
+            </Box>
+          );
+        })}
+      </FormGroup>
+    </Box>
   );
 };

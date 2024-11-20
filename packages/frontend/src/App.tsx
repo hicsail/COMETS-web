@@ -22,7 +22,7 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
   padding: theme.spacing(3),
   transition: theme.transitions.create('margin', {
     easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
+    duration: theme.transitions.duration.leavingScreen
   }),
   marginLeft: `-${drawerWidth}px`,
   variants: [
@@ -31,14 +31,13 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
       style: {
         transition: theme.transitions.create('margin', {
           easing: theme.transitions.easing.easeOut,
-          duration: theme.transitions.duration.enteringScreen,
+          duration: theme.transitions.duration.enteringScreen
         }),
-        marginLeft: 0,
-      },
-    },
-  ],
+        marginLeft: 0
+      }
+    }
+  ]
 }));
-
 
 function App() {
   const apolloClient = new ApolloClient({
@@ -71,7 +70,7 @@ function App() {
         </BrowserRouter>
       </CometsThemeProvider>
     </ApolloProvider>
-  )
+  );
 }
 
 export default App;

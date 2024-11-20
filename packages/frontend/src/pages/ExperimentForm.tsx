@@ -7,7 +7,6 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { MetaboliteType } from '../graphql/graphql';
 
-
 const getSchema = (metaboliteType: MetaboliteType | null) => {
   // The models supported are based on the metabolite type
   let models = [
@@ -26,7 +25,7 @@ const getSchema = (metaboliteType: MetaboliteType | null) => {
         const: 'NITROBACTER',
         title: 'Nitrobacter winogradskyi'
       }
-    ]
+    ];
   }
 
   const schema: JsonSchema = {
@@ -81,7 +80,7 @@ const getSchema = (metaboliteType: MetaboliteType | null) => {
             ]
           },
           concentration: {
-            type: 'number',
+            type: 'number'
           }
         },
         required: ['type', 'concentration']
@@ -97,7 +96,7 @@ const getSchema = (metaboliteType: MetaboliteType | null) => {
               oneOf: models
             },
             neutralDrift: {
-              type: 'boolean',
+              type: 'boolean'
             },
             neutralDriftAmp: {
               type: 'number',
@@ -215,7 +214,7 @@ export const ExperimentForm: React.FC = () => {
 
   return (
     <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
-      <Stack direction='column' sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <Stack direction="column" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <JsonForms
           schema={schema}
           uischema={uischema}
@@ -224,12 +223,9 @@ export const ExperimentForm: React.FC = () => {
           cells={materialCells}
           onChange={({ data, errors }) => handleChange(data, errors as any)}
         />
-        <Button
-          variant='contained'
-          sx={{ maxWidth: 100 }}
-          disabled={hasErrors}
-          onClick={() => handleSubmit()}
-        >Submit</Button>
+        <Button variant="contained" sx={{ maxWidth: 100 }} disabled={hasErrors} onClick={() => handleSubmit()}>
+          Submit
+        </Button>
       </Stack>
     </Box>
   );

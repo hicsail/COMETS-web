@@ -11,10 +11,9 @@ interface ViewParametersProps {
 }
 
 export const ViewParameters: React.FC<ViewParametersProps> = ({ params }) => {
-
   return (
     <Stack>
-      <Typography variant='h2'>Parameters</Typography>
+      <Typography variant="h2">Parameters</Typography>
       <MetaboliteParamsView params={params.metaboliteParams} />
       <ModelParamsView params={params.modelParams} />
       <GlobalParamsView params={params.globalParams} />

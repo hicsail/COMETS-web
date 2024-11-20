@@ -6,7 +6,7 @@ import { SimulationResult } from './result.model';
 export enum LayoutType {
   PETRI_CENTER = 'petri_center',
   PETRI_RANDOM = 'petri_random',
-  TEST_TUBE ='test_tube'
+  TEST_TUBE = 'test_tube'
 }
 
 registerEnumType(LayoutType, {

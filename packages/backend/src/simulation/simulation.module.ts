@@ -6,7 +6,7 @@ import { SimulationResult, SimulationResultSchema } from './models/result.model'
 import { SimulationResolver } from './simulation.resolver';
 import { SimulationService } from './simulation.service';
 import { BullBoardModule } from '@bull-board/nestjs';
-import { BullMQAdapter } from "@bull-board/api/bullMQAdapter";
+import { BullMQAdapter } from '@bull-board/api/bullMQAdapter';
 import { SimulationRequestConsumer } from './simulation.consumer';
 import { SimulationRequest, SimulationRequestSchema } from './models/request.model';
 import { SimulationCompletionProcessor } from './completion.consumer';
@@ -39,6 +39,13 @@ import { EmailModule } from '../email/email.module';
     S3Module,
     EmailModule
   ],
-  providers: [SimulationResolver, SimulationService, SimulationRequestConsumer, SimulationCompletionProcessor, SimulationPipe, ResultOutputResolver]
+  providers: [
+    SimulationResolver,
+    SimulationService,
+    SimulationRequestConsumer,
+    SimulationCompletionProcessor,
+    SimulationPipe,
+    ResultOutputResolver
+  ]
 })
 export class SimulationModule {}

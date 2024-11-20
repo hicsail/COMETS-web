@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, ListItem, List } from '@mui/material';
-import { GlobalParametersInput } from '../../graphql/graphql'
+import { GlobalParametersInput } from '../../graphql/graphql';
 
 export interface GlobalParamsViewProps {
   params: GlobalParametersInput;
@@ -8,7 +8,7 @@ export interface GlobalParamsViewProps {
 export const GlobalParamsView: React.FC<GlobalParamsViewProps> = ({ params }) => {
   return (
     <Card>
-      <CardHeader title='Global Parameters' titleTypographyProps={{ variant: 'h3' }} />
+      <CardHeader title="Global Parameters" titleTypographyProps={{ variant: 'h3' }} />
       <CardContent>
         <List>
           <ListItem>Time Step: {params.timeStep}</ListItem>
