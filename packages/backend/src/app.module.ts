@@ -12,7 +12,6 @@ import { ExpressAdapter } from '@bull-board/express';
 import { S3Module } from './s3/s3.module';
 import { EmailModule } from './email/email.module';
 
-
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
@@ -49,6 +48,6 @@ import { EmailModule } from './email/email.module';
     JobModule,
     S3Module,
     EmailModule
-  ],
+  ]
 })
 export class AppModule {}

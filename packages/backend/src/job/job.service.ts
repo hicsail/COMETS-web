@@ -70,7 +70,8 @@ export class JobService {
     this.jobTemplate.spec.template.spec.restartPolicy = 'Never';
     this.jobTemplate.spec.backoffLimit = 0;
     this.jobTemplate.spec.template.spec.imagePullSecrets = [new V1LocalObjectReference()];
-    this.jobTemplate.spec.template.spec.imagePullSecrets![0].name = this.configService.getOrThrow<string>('runner.imagePullSecret')
+    this.jobTemplate.spec.template.spec.imagePullSecrets[0].name =
+      this.configService.getOrThrow<string>('runner.imagePullSecret');
   }
 
   async triggerJob(request: SimulationRequest): Promise<string> {
@@ -111,8 +112,14 @@ export class JobService {
   }
 
   async getPodLogs(jobName: string): Promise<string> {
-    const pods = await this.coreClient.listNamespacedPod(this.namespace,
-      undefined, undefined, undefined, undefined, `batch.kubernetes.io/job-name=${jobName}`);
+    const pods = await this.coreClient.listNamespacedPod(
+      this.namespace,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      `batch.kubernetes.io/job-name=${jobName}`
+    );
     const podName = pods.body!.items[0].metadata!.name;
 
     const logs = await this.coreClient.readNamespacedPodLog(podName!, this.namespace);
@@ -154,6 +161,6 @@ export class JobService {
       `--default-v-max=${parameters.globalParams.defaultVMax}`,
       `--default-km=${parameters.globalParams.defaultKm}`,
       `--max-cycles=${parameters.globalParams.maxCycles}`
-    ]
+    ];
   }
 }

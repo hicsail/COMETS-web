@@ -27,7 +27,7 @@ export class SimulationService {
   async makeComplete(requestID: string, result: SimulationResult): Promise<SimulationRequest | null> {
     return await this.simulationRequestModel.findOneAndUpdate(
       { _id: requestID },
-      { $set: { status: SimulationStatus.SUCCESS, result }},
+      { $set: { status: SimulationStatus.SUCCESS, result } },
       { new: true }
     );
   }

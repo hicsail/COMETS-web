@@ -1,16 +1,12 @@
 import { Processor, WorkerHost } from '@nestjs/bullmq';
 import { SimulationResult } from './models/result.model';
 import { Job } from 'bullmq';
-import { SimulationService  } from './simulation.service';
+import { SimulationService } from './simulation.service';
 import { EmailService } from '../email/email.service';
 
 @Processor('completion')
 export class SimulationCompletionProcessor extends WorkerHost {
-
-  constructor(
-    private readonly simulationService: SimulationService,
-    private readonly emailService: EmailService
-  ) {
+  constructor(private readonly simulationService: SimulationService, private readonly emailService: EmailService) {
     super();
   }
 

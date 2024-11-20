@@ -6,10 +6,7 @@ import { SimulationRequest } from './models/request.model';
 
 @Processor('simulationRequest')
 export class SimulationRequestConsumer extends WorkerHost {
-  constructor(
-    private readonly jobService: JobService,
-    private readonly emailService: EmailService
-  ) {
+  constructor(private readonly jobService: JobService, private readonly emailService: EmailService) {
     super();
   }
 
@@ -26,7 +23,7 @@ export class SimulationRequestConsumer extends WorkerHost {
       } else {
         await this.handleSuccess(request, jobName);
       }
-    } catch(e) {
+    } catch (e) {
       console.error(e);
       throw e;
     }
@@ -48,7 +45,6 @@ export class SimulationRequestConsumer extends WorkerHost {
     // gracefully completed
     await this.jobService.deleteJob(jobName);
   }
-
 
   /**
    * Keep checking the status of the job once a second

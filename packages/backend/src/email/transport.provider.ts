@@ -2,7 +2,6 @@ import { Provider } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Transporter, createTransport } from 'nodemailer';
 
-
 export const TRANSPORT_PROVIDER = 'TRANSPORT_PROVIDER';
 
 export const transportProvider: Provider<Transporter> = {
