@@ -13,7 +13,8 @@ export const s3Provider: Provider<S3Client> = {
         secretAccessKey: configService.getOrThrow<string>('s3.accessSecret')
       },
       endpoint: configService.getOrThrow<string>('s3.endpoint'),
-      forcePathStyle: true
+      forcePathStyle: true,
+      region: configService.getOrThrow<string>('s3.region')
     });
   },
   inject: [ConfigService]

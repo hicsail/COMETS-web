@@ -6,7 +6,8 @@ export default () => ({
     accessID: process.env.S3_ACCESS_KEY_ID,
     accessSecret: process.env.S3_SECRET_ACCESS_KEY,
     endpoint: process.env.S3_ENDPOINT_URL,
-    bucket: process.env.S3_BUCKET
+    bucket: process.env.S3_BUCKET,
+    region: process.env.S3_REGION || 'us-east-1'
   },
   runner: {
     image: process.env.RUNNER_IMAGE || 'hicsail/comets-runner:latest',

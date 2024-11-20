@@ -103,7 +103,7 @@ export class JobService {
     } else if (status.active && status.active > 0) {
       return JobStatus.RUNNING;
     } else {
-      throw new Error(`Unknown job status: ${status}`);
+      return JobStatus.RUNNING;
     }
   }
 
