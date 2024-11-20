@@ -68,37 +68,32 @@ export interface SummaryCardArray extends Array<SummaryCard> {
 
 export function cometsType(obj: any): string {
   if (metabolicModels.includes(obj.name)) {
-    return "MetabolicModel";
+    return 'MetabolicModel';
   } else if (media.includes(obj.name)) {
-    return "Media";
+    return 'Media';
   } else if (layout.includes(obj.name)) {
-    return "Layout";
+    return 'Layout';
   } else {
-    return "Global Parameters";
+    return 'Global Parameters';
   }
 }
 
 // Private Helper Functions and consts
 
 const metabolicModels = [
-  "Escherichia coli Core",
-  "Escherichia coli",
-  "Nitrosomonas europaea",
-  "Nitrobacter winogradskyi",
-  "E. Coli Core",
-  "E. Coli",
-  "S. Enterica"
+  'Escherichia coli Core',
+  'Escherichia coli',
+  'Nitrosomonas europaea',
+  'Nitrobacter winogradskyi',
+  'E. Coli Core',
+  'E. Coli',
+  'S. Enterica'
 ];
-const layout = [
-  "9 cm Petri Dish (Center Colony)",
-  "9 cm Petri Dish (Random Lawn)",
-  "Test Tube",
-  "EcoFab",
-];
+const layout = ['9 cm Petri Dish (Center Colony)', '9 cm Petri Dish (Random Lawn)', 'Test Tube', 'EcoFab'];
 const media = [
-  "Minimal Core Glucose",
-  "Minimal Core Acetate",
-  "M9 Minimal Glucose",
-  "M9 Minimal Acetate",
-  "Rich Media",
+  'Minimal Core Glucose',
+  'Minimal Core Acetate',
+  'M9 Minimal Glucose',
+  'M9 Minimal Acetate',
+  'Rich Media'
 ];

@@ -1,20 +1,17 @@
-import { Box, Container, Grid, Link, Typography } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
-import FacebookIcon from "@mui/icons-material/Facebook";
-import TwitterIcon from "@mui/icons-material/Twitter";
-import { FC } from "react";
-import fhslogo from "../assets/react.svg";
+import { Box, Container, Grid, Link, Typography } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import FacebookIcon from '@mui/icons-material/Facebook';
+import TwitterIcon from '@mui/icons-material/Twitter';
+import { FC } from 'react';
+import fhslogo from '../assets/react.svg';
 
 export const Footer: FC = () => {
   return (
     <Box
       component="footer"
       sx={{
-        background: (theme) =>
-          theme.palette.mode === "light"
-            ? theme.palette.grey[900]
-            : theme.palette.grey[900],
-        p: 6,
+        background: (theme) => (theme.palette.mode === 'light' ? theme.palette.grey[900] : theme.palette.grey[900]),
+        p: 6
       }}
     >
       <Container maxWidth="lg">
@@ -25,25 +22,20 @@ export const Footer: FC = () => {
                 src={fhslogo}
                 alt="FHS logo"
                 style={{
-                  width: "55px",
-                  marginRight: "10px",
-                  shapeRendering: "geometricPrecision",
+                  width: '55px',
+                  marginRight: '10px',
+                  shapeRendering: 'geometricPrecision'
                 }}
               />
             </Link>
           </Grid>
           <Grid item xs={12} sm={4}>
-            <Typography
-              variant="h5"
-              textAlign="left"
-              fontWeight={600}
-              fontFamily="serif"
-            >
+            <Typography variant="h5" textAlign="left" fontWeight={600} fontFamily="serif">
               <Link
                 color="inherit"
                 underline="none"
                 href="https://www.runcomets.org/"
-                sx={{ "&:hover": { color: "inherit" } }}
+                sx={{ '&:hover': { color: 'inherit' } }}
               >
                 Framingham Heart Study
               </Link>
@@ -53,7 +45,7 @@ export const Footer: FC = () => {
                 color="inherit"
                 underline="none"
                 href="https://www.runcomets.org/"
-                sx={{ "&:hover": { color: "inherit" } }}
+                sx={{ '&:hover': { color: 'inherit' } }}
               >
                 Three Generations of Dedication
               </Link>
@@ -109,16 +101,10 @@ export const Footer: FC = () => {
               Social
             </Typography>
             <Grid container justifyContent="flex-start">
-              <IconButton
-                aria-label="facebook"
-                href="https://www.facebook.com/framinghamheartstudy/"
-              >
+              <IconButton aria-label="facebook" href="https://www.facebook.com/framinghamheartstudy/">
                 <FacebookIcon />
               </IconButton>
-              <IconButton
-                aria-label="twitter"
-                href="https://twitter.com/framinghamstudy/"
-              >
+              <IconButton aria-label="twitter" href="https://twitter.com/framinghamstudy/">
                 <TwitterIcon />
               </IconButton>
             </Grid>

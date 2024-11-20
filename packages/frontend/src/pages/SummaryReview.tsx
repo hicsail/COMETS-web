@@ -1,17 +1,9 @@
-import { useState, ChangeEvent, useEffect } from "react";
-import {
-  Button,
-  Card,
-  Drawer,
-  Stack,
-  TextField,
-  Typography,
-  Grid2
-} from "@mui/material";
-import FooterStepper from "../components/FooterStepper";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useRequestSimulationMutation } from "../graphql/simulation";
-import { ViewParameters } from "../components/parameters/ViewParameters";
+import { useState, ChangeEvent, useEffect } from 'react';
+import { Button, Card, Drawer, Stack, TextField, Typography, Grid2 } from '@mui/material';
+import FooterStepper from '../components/FooterStepper';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useRequestSimulationMutation } from '../graphql/simulation';
+import { ViewParameters } from '../components/parameters/ViewParameters';
 
 export function SummaryReviewPage() {
   const [activeStep, _setActiveStep] = useState(1);
@@ -20,7 +12,7 @@ export function SummaryReviewPage() {
 
   return (
     <>
-      <Grid2 container direction='row' spacing={4}>
+      <Grid2 container direction="row" spacing={4}>
         <Grid2 size={8}>
           <InformationSection data={data} />
         </Grid2>
@@ -34,15 +26,15 @@ export function SummaryReviewPage() {
         anchor="bottom"
         PaperProps={{
           sx: {
-            display: "flex", // Enable flexbox
-            justifyContent: "center", // Center items horizontally
-            alignItems: "center", // Center items vertically
-            background: "white",
+            display: 'flex', // Enable flexbox
+            justifyContent: 'center', // Center items horizontally
+            alignItems: 'center', // Center items vertically
+            background: 'white',
             height: 100,
-            width: "90vw",
-            left: "15vw",
-            zIndex: 99,
-          },
+            width: '90vw',
+            left: '15vw',
+            zIndex: 99
+          }
         }}
       >
         <FooterStepper activeStep={activeStep} />
@@ -56,7 +48,7 @@ interface InformationSectionProps {
 }
 
 const InformationSection: React.FC<InformationSectionProps> = ({ data }) => {
-  const [email, setEmail] = useState('')
+  const [email, setEmail] = useState('');
   const [textfieldError, setTextfieldError] = useState(false);
   const [requestSimulation, requestSimulationResults] = useRequestSimulationMutation();
   const navigate = useNavigate();
@@ -74,13 +66,13 @@ const InformationSection: React.FC<InformationSectionProps> = ({ data }) => {
         }
       }
     });
-  }
+  };
 
   useEffect(() => {
     if (requestSimulationResults.data) {
       navigate('/experimentSubmitted');
     }
-  }, [requestSimulationResults]);
+  }, [requestSimulationResults, navigate]);
 
   const handleTextChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target) {
@@ -97,27 +89,20 @@ const InformationSection: React.FC<InformationSectionProps> = ({ data }) => {
       <Typography variant="h1">3. Review</Typography>
 
       <Typography variant="h3">
-        Please review your selected simulation. Once you have confirmed
-        the selection is correct, you can run your simulation by
-        entering your email below.
+        Please review your selected simulation. Once you have confirmed the selection is correct, you can run your
+        simulation by entering your email below.
       </Typography>
 
-      <Typography variant="h3">
-        We will notify you of your simulations results via email.
-      </Typography>
+      <Typography variant="h3">We will notify you of your simulations results via email.</Typography>
 
       <Card
         sx={{
-          width: "100%",
+          width: '100%',
           p: 2,
-          boxSizing: "border-box",
+          boxSizing: 'border-box'
         }}
       >
-        <Typography
-          variant="h6"
-          sx={{
-          }}
-        >
+        <Typography variant="h6" sx={{}}>
           Continue with email
         </Typography>
 
@@ -126,11 +111,9 @@ const InformationSection: React.FC<InformationSectionProps> = ({ data }) => {
           label="Email address"
           variant="outlined"
           onChange={handleTextChange}
-          helperText={
-            textfieldError ? "Please input a valid email" : ""
-          }
+          helperText={textfieldError ? 'Please input a valid email' : ''}
           sx={{
-            mb: 2,
+            mb: 2
           }}
         />
 
@@ -140,18 +123,13 @@ const InformationSection: React.FC<InformationSectionProps> = ({ data }) => {
             mb: 2
           }}
         >
-          By continuing, you agree to the confirmation of the selected
-          simulation to be processed.
+          By continuing, you agree to the confirmation of the selected simulation to be processed.
         </Typography>
 
-          <Button
-            variant="contained"
-            fullWidth
-            onClick={() => handleSubmit(email)}
-          >
-            Continue
-          </Button>
+        <Button variant="contained" fullWidth onClick={() => handleSubmit(email)}>
+          Continue
+        </Button>
       </Card>
     </Stack>
-  )
+  );
 };

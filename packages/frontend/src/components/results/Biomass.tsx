@@ -9,8 +9,7 @@ export interface BiomassViewProps {
 
 export const BiomassView: React.FC<BiomassViewProps> = ({ biomassOutput }) => {
   const [model, setModel] = useState<string>(biomassOutput[0].key);
-  const [targetView, setTargetView] = useState<string | null>(biomassOutput.length > 0 ?
-    biomassOutput[0].url : null);
+  const [targetView, setTargetView] = useState<string | null>(biomassOutput.length > 0 ? biomassOutput[0].url : null);
 
   const handleModelChange = (key: string) => {
     setModel(key);
@@ -24,13 +23,16 @@ export const BiomassView: React.FC<BiomassViewProps> = ({ biomassOutput }) => {
       <FormControl>
         <InputLabel shrink={true}>Model</InputLabel>
         <Select
-          label='Model'
+          label="Model"
           sx={{ width: 150 }}
           value={model}
           notched={true}
-          onChange={(event) => handleModelChange(event.target.value as string)}>
-          {biomassOutput.map(biomass => (
-            <MenuItem value={biomass.key} key={biomass.key}>{biomass.name}</MenuItem>
+          onChange={(event) => handleModelChange(event.target.value as string)}
+        >
+          {biomassOutput.map((biomass) => (
+            <MenuItem value={biomass.key} key={biomass.key}>
+              {biomass.name}
+            </MenuItem>
           ))}
         </Select>
       </FormControl>

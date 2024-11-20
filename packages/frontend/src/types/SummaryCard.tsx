@@ -1,6 +1,6 @@
-import { MetabolicModel } from "./Model";
-import { Layout } from "./Layout";
-import { Media } from "./Media";
+import { MetabolicModel } from './Model';
+import { Layout } from './Layout';
+import { Media } from './Media';
 
 export type SummaryCard = {
   label: string;

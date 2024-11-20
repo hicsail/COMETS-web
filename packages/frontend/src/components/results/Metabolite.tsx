@@ -3,7 +3,6 @@ import { ResultOutput } from '../../graphql/graphql';
 import { useState } from 'react';
 import { ImageView } from './ImageView';
 
-
 export interface MetaboliteViewProps {
   metaboliteOutput: ResultOutput[];
 }
@@ -15,7 +14,7 @@ export const MetaboliteView: React.FC<MetaboliteViewProps> = ({ metaboliteOutput
   const handleMetaboliteChange = (key: string) => {
     setMetabolite(key);
 
-    const targetMetabolite = metaboliteOutput.find(metabolite => metabolite.key == key);
+    const targetMetabolite = metaboliteOutput.find((metabolite) => metabolite.key == key);
     setTargetView(targetMetabolite!.url);
   };
 
@@ -24,18 +23,21 @@ export const MetaboliteView: React.FC<MetaboliteViewProps> = ({ metaboliteOutput
       <FormControl>
         <InputLabel shrink={true}>Metabolite</InputLabel>
         <Select
-          label='Model'
+          label="Model"
           sx={{ width: 150 }}
           onChange={(event) => handleMetaboliteChange(event.target.value as string)}
           notched={true}
-          value={metabolite}>
-          {metaboliteOutput.map(metabolite => (
-            <MenuItem value={metabolite.key} key={metabolite.key}>{metabolite.name}</MenuItem>
+          value={metabolite}
+        >
+          {metaboliteOutput.map((metabolite) => (
+            <MenuItem value={metabolite.key} key={metabolite.key}>
+              {metabolite.name}
+            </MenuItem>
           ))}
         </Select>
       </FormControl>
 
       <ImageView src={targetView} />
     </Stack>
-  )
+  );
 };

@@ -1,7 +1,7 @@
-import { Book, ChevronRight, Home, Info, Mail } from "@mui/icons-material";
-import { Drawer, ListItemButton, ListItemIcon, ListItemText, ListItem, List } from "@mui/material";
-import { ReactNode } from "react";
-import { NavLink } from "react-router-dom";
+import { Book, ChevronRight, Home, Info, Mail } from '@mui/icons-material';
+import { Drawer, ListItemButton, ListItemIcon, ListItemText, ListItem, List } from '@mui/material';
+import { ReactNode } from 'react';
+import { NavLink } from 'react-router-dom';
 
 interface SidebarProps {
   open: boolean;
@@ -9,7 +9,6 @@ interface SidebarProps {
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({ open, drawerWidth }) => {
-
   const navItems: NavItemProps[] = [
     {
       text: 'Dashboard',
@@ -30,7 +29,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ open, drawerWidth }) => {
       text: 'Contact Us',
       icon: <Mail />,
       link: 'https://www.runcomets.org/collaborate'
-    },
+    }
   ];
 
   return (
@@ -51,7 +50,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ open, drawerWidth }) => {
       open={open}
     >
       <List sx={{ paddingTop: '30px' }}>
-        {navItems.map((item => <NavItem key={item.text} {...item} />))}
+        {navItems.map((item) => (
+          <NavItem key={item.text} {...item} />
+        ))}
       </List>
     </Drawer>
   );
@@ -66,7 +67,7 @@ interface NavItemProps {
 const NavItem: React.FC<NavItemProps> = ({ icon, link, text }) => {
   return (
     <ListItem>
-      <ListItemButton component={NavLink} to={link} >
+      <ListItemButton component={NavLink} to={link}>
         <ListItemIcon>{icon}</ListItemIcon>
         <ListItemText primary={text} />
         <ChevronRight />

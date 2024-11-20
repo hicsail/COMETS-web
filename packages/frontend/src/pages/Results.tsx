@@ -5,11 +5,10 @@ import { LayoutVisualization } from '../components/results/Layout';
 import { GraphVisualization } from '../components/results/Graphs';
 import { ViewParameters } from '../components/parameters/ViewParameters';
 
-
 export const Results: React.FC = () => {
   const { id } = useParams();
   const simulationRequestResponse = useGetSimulationRequestQuery({
-    variables: { request: id!  }
+    variables: { request: id! }
   });
   const request = simulationRequestResponse.data?.getSimulationRequest;
 
@@ -19,8 +18,8 @@ export const Results: React.FC = () => {
         <Grid2 container spacing={4}>
           <Grid2 size={8}>
             <Stack spacing={2}>
-              <Typography variant='h1'>Simulation Run Results</Typography>
-              <LayoutVisualization request={request}/>
+              <Typography variant="h1">Simulation Run Results</Typography>
+              <LayoutVisualization request={request} />
               <GraphVisualization request={request} />
             </Stack>
           </Grid2>
@@ -30,5 +29,5 @@ export const Results: React.FC = () => {
         </Grid2>
       )}
     </>
-  )
+  );
 };
