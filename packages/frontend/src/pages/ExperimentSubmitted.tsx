@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Box, Drawer, Grid, Typography } from '@mui/material';
+import { Box, Drawer, Grid, Stack, Typography } from '@mui/material';
 import FooterStepper from '../components/FooterStepper';
 
 export function ExperimentSubmittedPage() {
@@ -7,62 +7,19 @@ export function ExperimentSubmittedPage() {
 
   return (
     <>
-      <Box
-        component="main"
-        sx={{
-          position: 'relative',
-          height: '100vh'
-        }}
-      >
-        <Grid container spacing={2}>
-          <Grid item xs={6}>
-            <Grid
-              container
-              spacing={2}
-              direction="column"
-              alignItems="left"
-              style={{
-                paddingLeft: '2vw',
-                paddingBottom: '10%'
-              }}
-            >
-              <Typography
-                variant="h1"
-                sx={{
-                  color: 'black',
-                  textAlign: 'left',
-                  paddingBottom: '10%',
-                  paddingTop: '5%'
-                }}
-              >
-                EXPERIMENT SUBMITTED!
-              </Typography>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-left', alignItems: 'left', width: '100%'}}>
+        <Stack spacing={5} sx={{ alignItems: 'left', justifyContent: 'left' }}>
+          <Typography variant='h1'>EXPERIMENT SUBMITTED!</Typography>
 
-              <Typography
-                variant="h2"
-                sx={{
-                  textAlign: 'left',
-                  color: 'black',
-                  paddingBottom: '10%'
-                }}
-              >
-                Thank you for using the COMETS Layout Builder!
-              </Typography>
+          <Typography variant="h2">
+            Thank you for using the COMETS Layout Builder!
+          </Typography>
 
-              <Typography
-                variant="h3"
-                sx={{
-                  textAlign: 'left',
-                  color: 'grey',
-                  paddingBottom: '10%'
-                }}
-              >
-                Your layout is now running. You will be sent an email with a link to the results of your layout once
-                it’s done running.
-              </Typography>
-            </Grid>
-          </Grid>
-        </Grid>
+          <Typography variant="h3">
+            Your layout is now running. You will be sent an email with a link to the results of your layout once
+            it’s done running.
+          </Typography>
+        </Stack>
 
         <Drawer
           variant="permanent"
