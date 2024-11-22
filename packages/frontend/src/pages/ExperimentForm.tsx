@@ -53,7 +53,8 @@ const getSchema = (metaboliteType: MetaboliteType | null) => {
             ]
           },
           volume: {
-            type: 'number'
+            type: 'number',
+            title: 'Volume (ml)'
           }
         },
         required: ['type', 'volume']
@@ -80,7 +81,8 @@ const getSchema = (metaboliteType: MetaboliteType | null) => {
             ]
           },
           concentration: {
-            type: 'number'
+            type: 'number',
+            title: 'Concentration (mmol/cm3)'
           }
         },
         required: ['type', 'concentration']
@@ -132,7 +134,8 @@ const getSchema = (metaboliteType: MetaboliteType | null) => {
           },
           defaultDiffConst: {
             type: 'number',
-            default: 0.000006
+            default: 0.000006,
+            title: 'Nutrient Diffusivity (cm2/s)'
           },
           defaultVMax: {
             type: 'number',
