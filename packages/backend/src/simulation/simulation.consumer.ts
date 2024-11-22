@@ -55,7 +55,7 @@ export class SimulationRequestConsumer extends WorkerHost {
           } else {
             resolve(status);
           }
-        } catch(e) {
+        } catch (e) {
           reject(e);
         }
       };
