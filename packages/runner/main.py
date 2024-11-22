@@ -97,6 +97,7 @@ async def main():
     # Set size
     layout.grid = layout_builder.get_grid_size()
     layout.add_barriers(layout_builder.get_barrier())
+    layout.write_necessary_files('./sim_files/')
 
     # Add models
     [layout.add_model(model) for model in models]
