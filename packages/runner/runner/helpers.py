@@ -2,10 +2,17 @@ import cometspy as c
 from argparse import ArgumentParser
 from typing import Literal
 
+from cometspy.model import cobra
+
 # Model values
 E_COLI = 'escherichia coli core'
 NITROSOMONAS = 'nitrosomonas europaea'
 NITROBACTER = 'nitrobacter winogradskyi'
+
+# Metabolite types
+RICH = 'rich'
+GLUCOSE = 'glc__D_e'
+ACETATE = 'ac_e'
 
 # Support layouts
 PETRI_CENTER = 'petri_center'
@@ -18,11 +25,19 @@ GRID_SIZE = 61
 PETRI_DISH_DIAMETER = 3.0
 
 # Helps convert the given model to the notebook to load
-MODEL_TO_NOTEBOOK = {
-    E_COLI: 'textbook',
-    NITROSOMONAS: './iGC535_modified_cobra.xml',
-    NITROBACTER: './iFC579_modified_cobra.xml',
-}
+def load_model(model_type: str) -> cobra.Model:
+    if model_type == E_COLI:
+        return cobra.io.load_model('textbook')
+    elif model_type == NITROSOMONAS:
+        return cobra.io.read_sbml_model('./iGC535_modified_cobra.xml')
+    elif model_type == NITROBACTER:
+        return cobra.io.read_sbml_model('./iFC579_modified_cobra.xml')
+    else:
+        raise ValueError(f'Unknown model type: {model_type}')
+
+
+def get_metabolites(model: cobra.Model) -> list:
+    return list(list(model.metabolites.__dict__.values())[0].keys())
 
 
 def get_target_flux(experiment: c.comets, model_id: str) -> list[str]:
@@ -60,7 +75,7 @@ def argument_handling() -> dict:
     metabolite_args = argparser.add_argument_group('metabolite')
     metabolite_args.add_argument('--metabolite-type',
                                  type=str,
-                                 choices=['glc__D_e', 'ac_e', 'rich'],
+                                 choices=[GLUCOSE, ACETATE, RICH],
                                  required=True)
     metabolite_args.add_argument('--metabolite-amount',
                                  type=float,
