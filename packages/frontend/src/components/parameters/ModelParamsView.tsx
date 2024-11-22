@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, List, ListItem, Paper } from '@mui/material';
 import { ModelParametersInput } from '../../graphql/graphql';
+import { getModelName } from '../../helpers/names';
 
 export interface ModelParamsViewProps {
   params: ModelParametersInput[];
@@ -22,8 +23,8 @@ const SingleModelParamsView: React.FC<{ params: ModelParametersInput }> = ({ par
   return (
     <Paper elevation={2}>
       <List>
-        <ListItem>Name: {params.name}</ListItem>
-        <ListItem>Neutral Drift: {params.neutralDrift}</ListItem>
+        <ListItem>Name:  <i>{getModelName(params.name)}</i></ListItem>
+        <ListItem>Neutral Drift: {params.neutralDrift ? 'True': 'False'}</ListItem>
         <ListItem>Neutral Drift Amp: {params.neutralDriftAmp}</ListItem>
         <ListItem>Death Rate: {params.deathRate}</ListItem>
         <ListItem>Linear Diffusivity: {params.linearDiffusivity}</ListItem>

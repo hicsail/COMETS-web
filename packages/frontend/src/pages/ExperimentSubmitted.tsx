@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { Box, Button, Drawer, Grid, Typography } from '@mui/material';
+import { Box, Drawer, Grid, Typography } from '@mui/material';
 import FooterStepper from '../components/FooterStepper';
-import { Link } from 'react-router-dom';
 
 export function ExperimentSubmittedPage() {
   const [activeStep, _setActiveStep] = useState(2);

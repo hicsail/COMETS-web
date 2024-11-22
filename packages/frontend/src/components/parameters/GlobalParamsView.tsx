@@ -13,7 +13,7 @@ export const GlobalParamsView: React.FC<GlobalParamsViewProps> = ({ params }) =>
         <List>
           <ListItem>Time Step: {params.timeStep}</ListItem>
           <ListItem>Log Frequency: {params.logFreq}</ListItem>
-          <ListItem>Default Diff Const: {params.defaultDiffConst}</ListItem>
+          <ListItem>Nutrient Diffusivity: {params.defaultDiffConst} cm2/s</ListItem>
           <ListItem>Default VMax: {params.defaultVMax}</ListItem>
           <ListItem>Default KM: {params.defaultKm}</ListItem>
           <ListItem>Max Cycles: {params.maxCycles}</ListItem>

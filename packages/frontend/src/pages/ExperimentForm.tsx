@@ -5,25 +5,26 @@ import { Box, Stack, Button } from '@mui/material';
 import { ErrorObject } from 'ajv';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { MetaboliteType } from '../graphql/graphql';
+import { LayoutType, MetaboliteType, ModelName } from '../graphql/graphql';
+import { getLayoutName, getMetaboliteName, getModelName } from '../helpers/names';
 
 const getSchema = (metaboliteType: MetaboliteType | null) => {
   // The models supported are based on the metabolite type
   let models = [
     {
-      const: 'E_COLI',
-      title: 'Escherichia coli Core'
+      const: ModelName.EColi,
+      title: getModelName(ModelName.EColi)
     }
   ];
   if (metaboliteType == MetaboliteType.Rich) {
     models = [
       {
-        const: 'NITROSOMONAS',
-        title: 'Nitrosomonas europaea'
+        const: ModelName.Nitrosomonas,
+        title: getModelName(ModelName.Nitrosomonas)
       },
       {
-        const: 'NITROBACTER',
-        title: 'Nitrobacter winogradskyi'
+        const: ModelName.Nitrobacter,
+        title: getModelName(ModelName.Nitrobacter)
       }
     ];
   }
@@ -39,16 +40,16 @@ const getSchema = (metaboliteType: MetaboliteType | null) => {
             type: 'string',
             oneOf: [
               {
-                const: 'PETRI_CENTER',
-                title: '3 cm Petri Dish (Center Colony)'
+                const: LayoutType.PetriCenter,
+                title: getLayoutName(LayoutType.PetriCenter)
               },
               {
-                const: 'PETRI_RANDOM',
-                title: '3 cm Petri Dish (Random Lawn)'
+                const: LayoutType.PetriRandom,
+                title: getLayoutName(LayoutType.PetriRandom)
               },
               {
-                const: 'TEST_TUBE',
-                title: 'Test Tube'
+                const: LayoutType.TestTube,
+                title: getLayoutName(LayoutType.TestTube)
               }
             ]
           },
@@ -67,16 +68,16 @@ const getSchema = (metaboliteType: MetaboliteType | null) => {
             type: 'string',
             oneOf: [
               {
-                const: 'GLUCOSE',
-                title: 'Glucose'
+                const: MetaboliteType.Glucose,
+                title: getMetaboliteName(MetaboliteType.Glucose)
               },
               {
-                const: 'ACETATE',
-                title: 'Acetate'
+                const: MetaboliteType.Acetate,
+                title: getMetaboliteName(MetaboliteType.Acetate)
               },
               {
-                const: 'RICH',
-                title: 'Rich'
+                const: MetaboliteType.Rich,
+                title: getMetaboliteName(MetaboliteType.Rich)
               }
             ]
           },
