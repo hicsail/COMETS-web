@@ -61,10 +61,6 @@ export function ExperimentSubmittedPage() {
                 Your layout is now running. You will be sent an email with a link to the results of your layout once
                 it’s done running.
               </Typography>
-
-              <Button component={Link} to="https://www.runcomets.org/get-started" variant="contained" fullWidth>
-                Download CometsPY
-              </Button>
             </Grid>
           </Grid>
         </Grid>
