@@ -13,19 +13,14 @@ export class SimulationRequestConsumer extends WorkerHost {
   async process(job: Job<SimulationRequest, any, string>): Promise<any> {
     const request = job.data;
     // Start the COMETs job
-    try {
-      const jobName = await this.jobService.triggerJob(request);
-      // Wait for the job to complete
-      const status = await this.awaitCompletion(jobName);
-      // If the status is error, collect and send error data
-      if (status == JobStatus.FAILURE) {
-        await this.handleError(request, jobName);
-      } else {
-        await this.handleSuccess(request, jobName);
-      }
-    } catch (e) {
-      console.error(e);
-      throw e;
+    const jobName = await this.jobService.triggerJob(request);
+    // Wait for the job to complete
+    const status = await this.awaitCompletion(jobName);
+    // If the status is error, collect and send error data
+    if (status == JobStatus.FAILURE) {
+      await this.handleError(request, jobName);
+    } else {
+      await this.handleSuccess(request, jobName);
     }
   }
 
@@ -50,14 +45,18 @@ export class SimulationRequestConsumer extends WorkerHost {
    * Keep checking the status of the job once a second
    */
   private async awaitCompletion(jobName: string): Promise<JobStatus> {
-    return new Promise(async (resolve, _reject) => {
+    return new Promise(async (resolve, reject) => {
       const checkOperations = async () => {
-        const status = await this.jobService.getJobStatus(jobName);
-        if (status == JobStatus.RUNNING) {
-          setTimeout(checkOperations, 1000);
-          return;
-        } else {
-          resolve(status);
+        try {
+          const status = await this.jobService.getJobStatus(jobName);
+          if (status == JobStatus.RUNNING) {
+            setTimeout(checkOperations, 1000);
+            return;
+          } else {
+            resolve(status);
+          }
+        } catch (e) {
+          reject(e);
         }
       };
       await checkOperations();

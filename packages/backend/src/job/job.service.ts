@@ -45,6 +45,13 @@ export class JobService {
     // this.jobTemplate.spec.ttlSecondsAfterFinished = 30;
     this.jobTemplate.spec.template = new V1PodTemplateSpec();
     this.jobTemplate.spec.template.spec = new V1PodSpec();
+
+    this.jobTemplate.spec.template.spec.volumes = [];
+    this.jobTemplate.spec.template.spec.volumes.push({
+      name: 'sim-files',
+      emptyDir: {}
+    });
+
     this.jobTemplate.spec.template.spec.containers = [];
     this.jobTemplate.spec.template.spec.containers.push({
       resources: {
@@ -65,7 +72,9 @@ export class JobService {
         { name: 'REDIS_PORT', value: this.configService.getOrThrow<string>('redis.jobPort') },
         { name: 'REDIS_PASSWORD', value: this.configService.get<string>('redis.jobPassword') },
         { name: 'COMETS_GLOP', value: './lib/comets_glop' }
-      ]
+      ],
+      imagePullPolicy: 'Always',
+      volumeMounts: [{ name: 'sim-files', mountPath: '/app/sim_files/' }]
     });
     this.jobTemplate.spec.template.spec.restartPolicy = 'Never';
     this.jobTemplate.spec.backoffLimit = 0;

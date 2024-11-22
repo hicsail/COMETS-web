@@ -1,6 +1,5 @@
 venv/
-sim_files/
-!sim_files/.gitkeep
+sim_files/*
 sample.sh
 sample-docker.sh
 sample-petri.sh
