@@ -1,7 +1,5 @@
-from operator import mod
 from dotenv import load_dotenv
 import cometspy as c
-import cobra
 import matplotlib.pyplot as plt
 from dotenv import load_dotenv
 import os
