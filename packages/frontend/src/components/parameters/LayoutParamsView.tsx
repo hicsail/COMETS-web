@@ -1,4 +1,4 @@
-import { LayoutParametersInput } from '../../graphql/graphql'
+import { LayoutParametersInput } from '../../graphql/graphql';
 import { Card, CardHeader, CardContent, List, ListItem } from '@mui/material';
 import { getLayoutName } from '../../helpers/names';
 
@@ -9,7 +9,7 @@ export interface LayoutParamsViewProps {
 export const LayoutParamsView: React.FC<LayoutParamsViewProps> = ({ params }) => {
   return (
     <Card>
-      <CardHeader title='Global Parameters' titleTypographyProps={{ variant: 'h3' }} />
+      <CardHeader title="Global Parameters" titleTypographyProps={{ variant: 'h3' }} />
       <CardContent>
         <List>
           <ListItem>Type: {getLayoutName(params.type)}</ListItem>
@@ -18,4 +18,4 @@ export const LayoutParamsView: React.FC<LayoutParamsViewProps> = ({ params }) =>
       </CardContent>
     </Card>
   );
-}
+};

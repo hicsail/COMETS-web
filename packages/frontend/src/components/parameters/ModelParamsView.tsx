@@ -23,8 +23,10 @@ const SingleModelParamsView: React.FC<{ params: ModelParametersInput }> = ({ par
   return (
     <Paper elevation={2}>
       <List>
-        <ListItem>Name:  <i>{getModelName(params.name)}</i></ListItem>
-        <ListItem>Neutral Drift: {params.neutralDrift ? 'True': 'False'}</ListItem>
+        <ListItem>
+          Name: <i>{getModelName(params.name)}</i>
+        </ListItem>
+        <ListItem>Neutral Drift: {params.neutralDrift ? 'True' : 'False'}</ListItem>
         <ListItem>Neutral Drift Amp: {params.neutralDriftAmp}</ListItem>
         <ListItem>Death Rate: {params.deathRate}</ListItem>
         <ListItem>Linear Diffusivity: {params.linearDiffusivity}</ListItem>

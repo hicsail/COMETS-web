@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Box, Drawer, Grid, Stack, Typography } from '@mui/material';
+import { Box, Drawer, Stack, Typography } from '@mui/material';
 import FooterStepper from '../components/FooterStepper';
 
 export function ExperimentSubmittedPage() {
@@ -7,17 +7,15 @@ export function ExperimentSubmittedPage() {
 
   return (
     <>
-      <Box sx={{ display: 'flex', justifyContent: 'flex-left', alignItems: 'left', width: '100%'}}>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-left', alignItems: 'left', width: '100%' }}>
         <Stack spacing={5} sx={{ alignItems: 'left', justifyContent: 'left' }}>
-          <Typography variant='h1'>EXPERIMENT SUBMITTED!</Typography>
+          <Typography variant="h1">EXPERIMENT SUBMITTED!</Typography>
 
-          <Typography variant="h2">
-            Thank you for using the COMETS Layout Builder!
-          </Typography>
+          <Typography variant="h2">Thank you for using the COMETS Layout Builder!</Typography>
 
           <Typography variant="h3">
-            Your layout is now running. You will be sent an email with a link to the results of your layout once
-            it’s done running.
+            Your layout is now running. You will be sent an email with a link to the results of your layout once it’s
+            done running.
           </Typography>
         </Stack>
 
