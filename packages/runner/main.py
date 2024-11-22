@@ -1,3 +1,4 @@
+from operator import mod
 from dotenv import load_dotenv
 import cometspy as c
 import cobra
@@ -60,9 +61,11 @@ async def main():
 
     ## Model setup
     models = []
+    metabolites_list = []
     for model_args in args['model']:
         # Select the correct model to load
-        loaded_model = cobra.io.load_model(helpers.MODEL_TO_NOTEBOOK[model_args['model_name']])
+        loaded_model = helpers.load_model(model_args['model_name'])
+        metabolites_list = helpers.get_metabolites(loaded_model)
         model = c.model(loaded_model)
 
         if model_args['model_neutral_drift'] == 'True':
@@ -81,12 +84,17 @@ async def main():
     layout = c.layout()
 
     # Set metabolite
-    layout.set_specific_metabolite(args['metabolite']['metabolite_type'], args['metabolite']['metabolite_amount'])
-    layout.set_specific_metabolite('o2_e', 1000)
-    layout.set_specific_metabolite('nh4_e', 1000)
-    layout.set_specific_metabolite('h2o_e', 1000)
-    layout.set_specific_metabolite('h_e', 1000)
-    layout.set_specific_metabolite('pi_e', 1000)
+    if args['metabolite']['metabolite_type'] == helpers.RICH:
+        for metab in metabolites_list:
+            if metab.endswith('e'):
+                layout.set_specific_metabolite(metab, 1000);
+    else:
+        layout.set_specific_metabolite(args['metabolite']['metabolite_type'], args['metabolite']['metabolite_amount'])
+        layout.set_specific_metabolite('o2_e', 1000)
+        layout.set_specific_metabolite('nh4_e', 1000)
+        layout.set_specific_metabolite('h2o_e', 1000)
+        layout.set_specific_metabolite('h_e', 1000)
+        layout.set_specific_metabolite('pi_e', 1000)
 
     # Set size
     layout.grid = layout_builder.get_grid_size()
