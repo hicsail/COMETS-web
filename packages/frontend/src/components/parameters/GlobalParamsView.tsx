@@ -11,11 +11,11 @@ export const GlobalParamsView: React.FC<GlobalParamsViewProps> = ({ params }) =>
       <CardHeader title="Global Parameters" titleTypographyProps={{ variant: 'h3' }} />
       <CardContent>
         <List>
-          <ListItem>Time Step: {params.timeStep}</ListItem>
+          <ListItem>Time Step: {params.timeStep} (h)</ListItem>
           <ListItem>Log Frequency: {params.logFreq}</ListItem>
-          <ListItem>Nutrient Diffusivity: {params.defaultDiffConst} cm2/s</ListItem>
-          <ListItem>Default VMax: {params.defaultVMax}</ListItem>
-          <ListItem>Default KM: {params.defaultKm}</ListItem>
+          <ListItem>Nutrient Diffusivity: {params.defaultDiffConst} (cm^2/s)</ListItem>
+          <ListItem>Default VMax: {params.defaultVMax} (mmol/gh)</ListItem>
+          <ListItem>Default KM: {params.defaultKm} (M)</ListItem>
           <ListItem>Max Cycles: {params.maxCycles}</ListItem>
         </List>
       </CardContent>

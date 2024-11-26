@@ -13,7 +13,7 @@ export const MetaboliteParamsView: React.FC<MetaboliteParamsViewProps> = ({ para
       <CardContent>
         <List>
           <ListItem>Type: {getMetaboliteName(params.type)}</ListItem>
-          <ListItem>Amount: {params.concentration} mmol/cm3</ListItem>
+          <ListItem>Amount: {params.concentration} (M)</ListItem>
         </List>
       </CardContent>
     </Card>
