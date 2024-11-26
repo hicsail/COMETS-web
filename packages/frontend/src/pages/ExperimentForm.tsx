@@ -1,6 +1,6 @@
 import { JsonForms } from '@jsonforms/react';
 import { materialRenderers, materialCells } from '@jsonforms/material-renderers';
-import { JsonSchema } from '@jsonforms/core';
+import { JsonSchema, JsonSchema7 } from '@jsonforms/core';
 import { Box, Stack, Button } from '@mui/material';
 import { ErrorObject } from 'ajv';
 import { useState } from 'react';
@@ -29,7 +29,40 @@ const getSchema = (metaboliteType: MetaboliteType | null) => {
     ];
   }
 
-  const schema: JsonSchema = {
+  let metaboliteParams: JsonSchema7 = {
+    type: 'object',
+    title: 'Metabolite Parameters',
+    properties: {
+      type: {
+        type: 'string',
+        oneOf: [
+          {
+            const: MetaboliteType.Glucose,
+            title: getMetaboliteName(MetaboliteType.Glucose)
+          },
+          {
+            const: MetaboliteType.Acetate,
+            title: getMetaboliteName(MetaboliteType.Acetate)
+          },
+          {
+            const: MetaboliteType.Rich,
+            title: getMetaboliteName(MetaboliteType.Rich)
+          }
+        ]
+      }
+    },
+    required: ['type']
+  }
+
+  if (metaboliteType != MetaboliteType.Rich) {
+    metaboliteParams!.properties!['concentration'] = {
+      type: 'number',
+      title: 'Concentration (mmol/cm3)'
+    };
+    metaboliteParams.required!.push('concentration');
+  }
+
+  const schema: JsonSchema7 = {
     type: 'object',
     properties: {
       layoutParams: {
@@ -60,34 +93,7 @@ const getSchema = (metaboliteType: MetaboliteType | null) => {
         },
         required: ['type', 'volume']
       },
-      metaboliteParams: {
-        type: 'object',
-        title: 'Metabolite Parameters',
-        properties: {
-          type: {
-            type: 'string',
-            oneOf: [
-              {
-                const: MetaboliteType.Glucose,
-                title: getMetaboliteName(MetaboliteType.Glucose)
-              },
-              {
-                const: MetaboliteType.Acetate,
-                title: getMetaboliteName(MetaboliteType.Acetate)
-              },
-              {
-                const: MetaboliteType.Rich,
-                title: getMetaboliteName(MetaboliteType.Rich)
-              }
-            ]
-          },
-          concentration: {
-            type: 'number',
-            title: 'Concentration (mmol/cm3)'
-          }
-        },
-        required: ['type', 'concentration']
-      },
+      metaboliteParams: metaboliteParams,
       modelParams: {
         type: 'array',
         title: 'Model Parameters',
