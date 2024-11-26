@@ -1,6 +1,6 @@
 import { JsonForms } from '@jsonforms/react';
 import { materialRenderers, materialCells } from '@jsonforms/material-renderers';
-import { JsonSchema } from '@jsonforms/core';
+import { JsonSchema7 } from '@jsonforms/core';
 import { Box, Stack, Button } from '@mui/material';
 import { ErrorObject } from 'ajv';
 import { useState } from 'react';
@@ -29,7 +29,40 @@ const getSchema = (metaboliteType: MetaboliteType | null) => {
     ];
   }
 
-  const schema: JsonSchema = {
+  const metaboliteParams: JsonSchema7 = {
+    type: 'object',
+    title: 'Metabolite Parameters',
+    properties: {
+      type: {
+        type: 'string',
+        oneOf: [
+          {
+            const: MetaboliteType.Glucose,
+            title: getMetaboliteName(MetaboliteType.Glucose)
+          },
+          {
+            const: MetaboliteType.Acetate,
+            title: getMetaboliteName(MetaboliteType.Acetate)
+          },
+          {
+            const: MetaboliteType.Rich,
+            title: getMetaboliteName(MetaboliteType.Rich)
+          }
+        ]
+      }
+    },
+    required: ['type']
+  };
+
+  if (metaboliteType != MetaboliteType.Rich) {
+    metaboliteParams!.properties!['concentration'] = {
+      type: 'number',
+      title: 'Concentration (M)'
+    };
+    metaboliteParams.required!.push('concentration');
+  }
+
+  const schema: JsonSchema7 = {
     type: 'object',
     properties: {
       layoutParams: {
@@ -60,34 +93,7 @@ const getSchema = (metaboliteType: MetaboliteType | null) => {
         },
         required: ['type', 'volume']
       },
-      metaboliteParams: {
-        type: 'object',
-        title: 'Metabolite Parameters',
-        properties: {
-          type: {
-            type: 'string',
-            oneOf: [
-              {
-                const: MetaboliteType.Glucose,
-                title: getMetaboliteName(MetaboliteType.Glucose)
-              },
-              {
-                const: MetaboliteType.Acetate,
-                title: getMetaboliteName(MetaboliteType.Acetate)
-              },
-              {
-                const: MetaboliteType.Rich,
-                title: getMetaboliteName(MetaboliteType.Rich)
-              }
-            ]
-          },
-          concentration: {
-            type: 'number',
-            title: 'Concentration (mmol/cm3)'
-          }
-        },
-        required: ['type', 'concentration']
-      },
+      metaboliteParams: metaboliteParams,
       modelParams: {
         type: 'array',
         title: 'Model Parameters',
@@ -111,11 +117,13 @@ const getSchema = (metaboliteType: MetaboliteType | null) => {
             },
             linearDiffusivity: {
               type: 'number',
-              default: 0.001
+              default: 0.001,
+              title: 'Linear Diffusivity (cm^2/s)'
             },
             nonlinearDiffusivity: {
               type: 'number',
-              default: 0.6
+              default: 0.6,
+              title: 'Nonlinear Diffusivity (cm^2/sg)'
             }
           },
           required: ['name', 'neutralDriftAmp', 'deathRate', 'linearDiffusivity', 'nonlinearDiffusivity']
@@ -127,7 +135,8 @@ const getSchema = (metaboliteType: MetaboliteType | null) => {
         properties: {
           timeStep: {
             type: 'number',
-            default: 0.1
+            default: 0.1,
+            title: 'Timestep (Hours/Cycle)'
           },
           logFreq: {
             type: 'number',
@@ -136,15 +145,17 @@ const getSchema = (metaboliteType: MetaboliteType | null) => {
           defaultDiffConst: {
             type: 'number',
             default: 0.000006,
-            title: 'Nutrient Diffusivity (cm2/s)'
+            title: 'Nutrient Diffusivity (cm^2/s)'
           },
           defaultVMax: {
             type: 'number',
-            default: 10
+            default: 10,
+            title: 'Default VMax (mmol/gh)'
           },
           defaultKm: {
             type: 'number',
-            default: 0.00001
+            default: 0.00001,
+            title: 'Default KM (M)'
           },
           maxCycles: {
             type: 'number',

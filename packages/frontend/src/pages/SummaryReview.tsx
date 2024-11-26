@@ -58,6 +58,12 @@ const InformationSection: React.FC<InformationSectionProps> = ({ data }) => {
     for (const model of data['modelParams']) {
       model['neutralDrift'] = !!model['neutralDrift'];
     }
+
+    // If the concentration value is not present, provide a default
+    if (!data.metaboliteParams.concentration) {
+      data.metaboliteParams.concentration = 0.0;
+    }
+
     requestSimulation({
       variables: {
         request: {

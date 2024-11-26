@@ -23,9 +23,9 @@ class Saver(ABC):
 
     @abstractmethod
     def save(self, experiment: c.comets, config: SaveConfig) -> dict:
-        """
+        '''
         Handles saving a component of the comets experiment
-        """
+        '''
 
 class BiomassSaver(Saver):
     def save(self, experiment: c.comets, config: SaveConfig) -> dict:
@@ -219,17 +219,16 @@ class MetaboliteSeriesSaver(Saver):
         output_path = config.output_folder / filename
         bucket_location = f'{config.s3_folder}/{filename}'
 
-        media = experiment.media.copy()
-        media['time'] = media['cycle'] * experiment.parameters.get_param('timeStep')
-        media = media[media.conc_mmol<900]
+        # Get the time series media data and convert time to hours
+        media = experiment.get_metabolite_time_series(upper_threshold=900)
+        media['cycle'] = media['cycle'] * experiment.parameters.get_param('timeStep')
 
+        # Plot the media time series
         fig, ax = plt.subplots()
-        media.groupby('metabolite').plot(x='time', ax =ax, y='conc_mmol')
-        ax.legend(('acetate','CO2', 'formate', 'glucose'))
-        ax.set_ylabel("Concentration (mmol)")
-        ax.set_xlabel("Time (h)")
+        ax = media.plot(x='cycle', ax=ax)
+        ax.set_ylabel('Concentration (mmol)')
+        ax.set_xlabel('Time (h)')
 
-        # Save the file and upload
         plt.savefig(output_path, format='png', bbox_inches='tight')
         self.upload_file(config, bucket_location, output_path)
 
