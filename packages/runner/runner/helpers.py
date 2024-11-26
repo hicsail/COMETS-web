@@ -1,6 +1,7 @@
 import cometspy as c
 from argparse import ArgumentParser
 from typing import Literal
+import math
 
 from cometspy.model import cobra
 
@@ -45,6 +46,36 @@ def get_target_flux(experiment: c.comets, model_id: str) -> list[str]:
     filtered_flux = experiment.fluxes_by_species[model_id].filter(regex='^EX', axis=1)
     # Return just the column names
     return list(filtered_flux.columns)
+
+
+def get_time_ranges(experiment: c.comets, increments=5) -> tuple[list[int], list[int]]:
+    time_step = experiment.parameters.get_param('timeStep')
+    max_cycles = experiment.parameters.get_param('maxCycles')
+    log_freq = experiment.parameters.get_param('BiosmassLogRate')
+
+    # Find out the total amount of time
+    total_time = time_step * max_cycles
+
+    # Find out the division
+    time_division = total_time / increments
+
+    # Round the time divisions into "nicer" units
+    if time_division > 100:
+        # Round to tens place
+        time_division = round(time_division / 10) * 10
+    else:
+        time_division = round(time_division)
+
+    # Ensure the time division is an int
+    time_division = int(time_division)
+
+    divisions = list(range(0, max_cycles, time_division))
+
+    # Make sure the last value isn't rounded to a value past the max cycles
+    if divisions[-1] > total_time:
+        divisions[-1] = math.floor(total_time)
+
+    return divisions, [int(division / time_step) for division in divisions]
 
 
 def argument_handling() -> dict:
