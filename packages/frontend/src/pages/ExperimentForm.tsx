@@ -1,6 +1,6 @@
 import { JsonForms } from '@jsonforms/react';
 import { materialRenderers, materialCells } from '@jsonforms/material-renderers';
-import { JsonSchema, JsonSchema7 } from '@jsonforms/core';
+import { JsonSchema7 } from '@jsonforms/core';
 import { Box, Stack, Button } from '@mui/material';
 import { ErrorObject } from 'ajv';
 import { useState } from 'react';
@@ -29,7 +29,7 @@ const getSchema = (metaboliteType: MetaboliteType | null) => {
     ];
   }
 
-  let metaboliteParams: JsonSchema7 = {
+  const metaboliteParams: JsonSchema7 = {
     type: 'object',
     title: 'Metabolite Parameters',
     properties: {
@@ -52,7 +52,7 @@ const getSchema = (metaboliteType: MetaboliteType | null) => {
       }
     },
     required: ['type']
-  }
+  };
 
   if (metaboliteType != MetaboliteType.Rich) {
     metaboliteParams!.properties!['concentration'] = {
