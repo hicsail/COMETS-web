@@ -37,7 +37,7 @@ class BiomassSaver(Saver):
             filename = f'biomass_{model.id}.png'
             output_path = config.output_folder / filename
             bucket_location = f'{config.s3_folder}/{filename}'
-            image_index = [20, 40, 60, 80, 100]
+            image_index, time_hr = helpers.get_time_steps(experiment)
             figsize = (20, 8)
 
             images = [experiment.get_biomass_image(model.id, index) for index in image_index]
@@ -50,7 +50,7 @@ class BiomassSaver(Saver):
                 # Display the subplot in the given row
                 ax = fig.add_subplot(gs[0, index])
                 # Title based on the timestep in hours
-                ax.set_title(str(image_index[index] // 10) + 'h')
+                ax.set_title(str(round(time_hr[index])) + 'h')
                 # Add the image in
                 cax = ax.imshow(img, cmap='viridis')
                 ax.axis('off')
@@ -96,7 +96,7 @@ class FluxSaver(Saver):
                 filename = f'flux_{model.id}_{flux}.png'
                 output_path = config.output_folder / filename
                 bucket_location = f'{config.s3_folder}/{filename}'
-                image_index = [20, 40, 60, 80, 100]
+                image_index, time_hr = helpers.get_time_steps(experiment)
                 figsize = (20, 4)
 
                 images = [experiment.get_flux_image(model.id, flux, index) for index in image_index]
@@ -111,7 +111,7 @@ class FluxSaver(Saver):
                     # Display the subplot in the given row
                     ax = fig.add_subplot(gs[0, index])
                     # Title based on the timestep in hours
-                    ax.set_title(str(image_index[index] // 10) + 'h')
+                    ax.set_title(str(round(time_hr[index])) + 'h')
                     # Add the image in
                     cax = ax.imshow(img, cmap='viridis')
                     ax.axis('off')
@@ -145,7 +145,7 @@ class MetaboliteSaver(Saver):
             filename = f'metabolite_{metabolite}.png'
             output_path = config.output_folder / filename
             bucket_location = f'{config.s3_folder}/{filename}'
-            image_index = [20, 40, 60, 80, 100]
+            image_index, time_hr = helpers.get_time_steps(experiment)
             figsize = (20, 8)
 
             images = [experiment.get_metabolite_image(metabolite, index) for index in image_index]
@@ -159,7 +159,7 @@ class MetaboliteSaver(Saver):
                 # Display the subplot in the given row
                 ax = fig.add_subplot(gs[0, index])
                 # Title based on the timestep in hours
-                ax.set_title(str(image_index[index] // 10) + 'h')
+                ax.set_title(str(round(time_hr[index])) + 'h')
                 # Add the image in
                 cax = ax.imshow(img, cmap='viridis')
                 ax.axis('off')
