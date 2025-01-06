@@ -19,9 +19,9 @@ export const getMetaboliteName = (type: MetaboliteType) => {
     case MetaboliteType.Rich:
       return 'Rich';
     case MetaboliteType.Glucose:
-      return 'Glucose';
+      return 'Minimal Media with Glucose';
     case MetaboliteType.Acetate:
-      return 'Acetate';
+      return 'Minimal Media with Acetate';
     default:
       throw Error(`Unknown metabolite type: ${type}`);
   }

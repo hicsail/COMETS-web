@@ -1,4 +1,4 @@
-import { FormControl, InputLabel, MenuItem, Paper, Select, Stack, Typography } from '@mui/material';
+import { FormControl, InputLabel, MenuItem, Paper, Select, Stack, Typography, OutlinedInput } from '@mui/material';
 import { SimulationRequest } from '../../graphql/graphql';
 import { useState } from 'react';
 import { BiomassView } from './Biomass';
@@ -19,12 +19,12 @@ export const LayoutVisualization: React.FC<LayoutVisualizationProps> = ({ reques
       <Stack spacing={2}>
         <Typography variant="h2">Layout Visualizations</Typography>
         <FormControl>
-          <InputLabel>View Type</InputLabel>
+          <InputLabel shrink={true}>View Type</InputLabel>
           <Select
-            value={layoutView}
-            onChange={(event) => setLayoutView(event.target.value as LayoutViews)}
-            notched={true}
             sx={{ maxWidth: 150 }}
+            value={layoutView}
+            notched={true}
+            onChange={(event) => setLayoutView(event.target.value as LayoutViews)}
           >
             <MenuItem value={'biomass'}>Biomass</MenuItem>
             <MenuItem value={'metabolite'}>Metabolite</MenuItem>
