@@ -180,3 +180,24 @@ def argument_handling() -> dict:
     }
 
     return resulting_args
+
+
+def get_time_steps(experiment: c.comets, num_steps = 5) -> tuple[list[int], list[float]]:
+    max_cycles = experiment.parameters.get_param('maxCycles')
+    log_freq = experiment.parameters.get_param('BiomassLogRate')
+    time_convertion = experiment.parameters.get_param('timeStep')
+
+    # First determine which cycles to sample
+    cycle_step = max_cycles // num_steps
+    # Next round down based on the log frequency
+    cycle_step -= cycle_step % log_freq
+    # Now produce two lists, the cycle id and the time in hours
+
+    cycle_num = []
+    time_hr = []
+    for i in range(num_steps):
+        cycle = cycle_step * (i + 1)
+        cycle_num.append(cycle)
+        time_hr.append(cycle * time_convertion)
+
+    return cycle_num, time_hr
