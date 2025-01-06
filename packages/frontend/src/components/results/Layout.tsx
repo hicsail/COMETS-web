@@ -1,4 +1,4 @@
-import { FormControl, InputLabel, MenuItem, Paper, Select, Stack, Typography, OutlinedInput } from '@mui/material';
+import { FormControl, InputLabel, MenuItem, Paper, Select, Stack, Typography } from '@mui/material';
 import { SimulationRequest } from '../../graphql/graphql';
 import { useState } from 'react';
 import { BiomassView } from './Biomass';
