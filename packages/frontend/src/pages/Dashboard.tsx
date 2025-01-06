@@ -74,7 +74,7 @@ export function DashboardPage() {
             }}
           >
             Simulating the complex growth patterns of bacterial colonies takes a lot of computational power and time to
-            complete but COMETS Layout builder allows you to make lightweight simulations within the web application.
+            complete, but COMETS Layout builder allows you to make lightweight simulations within the web application.
           </Typography>
         </Grid>
 
@@ -90,7 +90,7 @@ export function DashboardPage() {
               opacity: '45%'
             }}
           >
-            Just chose your Model, Setup, and Metabolites. Set Your parameters. Then, you are done!
+            Just choose your Model, Setup, and Metabolites. Set your parameters. Then, you are done!
           </Typography>
         </Grid>
 

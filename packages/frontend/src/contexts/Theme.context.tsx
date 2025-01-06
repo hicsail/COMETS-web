@@ -29,6 +29,15 @@ export const CometsThemeProvider: React.FC<ThemeProviderProps> = ({ children }) 
             backgroundColor: 'white'
           }
         }
+      },
+      MuiInputLabel: {
+        styleOverrides: {
+          root: {
+            backgroundColor: '#ffffff',
+            paddingLeft: '4px',
+            paddingRight: '4px'
+          }
+        }
       }
     }
   });

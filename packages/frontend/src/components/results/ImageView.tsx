@@ -11,7 +11,7 @@ export const ImageView: React.FC<ImageViewProps> = ({ src }) => {
         component="img"
         src={src}
         sx={{
-          maxWidth: '75%'
+          maxWidth: '100%'
         }}
       />
     </Box>

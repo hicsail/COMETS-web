@@ -118,12 +118,12 @@ const getSchema = (metaboliteType: MetaboliteType | null) => {
             linearDiffusivity: {
               type: 'number',
               default: 0.001,
-              title: 'Linear Diffusivity (cm^2/s)'
+              title: 'Linear Diffusivity (cm²/s)'
             },
             nonlinearDiffusivity: {
               type: 'number',
               default: 0.6,
-              title: 'Nonlinear Diffusivity (cm^2/sg)'
+              title: 'Nonlinear Diffusivity (cm²/sg)'
             }
           },
           required: ['name', 'neutralDriftAmp', 'deathRate', 'linearDiffusivity', 'nonlinearDiffusivity']
@@ -145,7 +145,7 @@ const getSchema = (metaboliteType: MetaboliteType | null) => {
           defaultDiffConst: {
             type: 'number',
             default: 0.000006,
-            title: 'Nutrient Diffusivity (cm^2/s)'
+            title: 'Nutrient Diffusivity (cm²/s)'
           },
           defaultVMax: {
             type: 'number',
@@ -189,7 +189,7 @@ const getSchema = (metaboliteType: MetaboliteType | null) => {
       },
       {
         type: 'Control',
-        scope: '#/properties/globalParams'
+        scope: '#/properties/globalParams/'
       }
     ]
   };

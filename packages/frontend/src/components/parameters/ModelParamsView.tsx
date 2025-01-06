@@ -29,8 +29,8 @@ const SingleModelParamsView: React.FC<{ params: ModelParametersInput }> = ({ par
         <ListItem>Neutral Drift: {params.neutralDrift ? 'True' : 'False'}</ListItem>
         <ListItem>Neutral Drift Amp: {params.neutralDriftAmp}</ListItem>
         <ListItem>Death Rate: {params.deathRate}</ListItem>
-        <ListItem>Linear Diffusivity: {params.linearDiffusivity} (cm^2/s)</ListItem>
-        <ListItem>Nonlinear Diffusivity: {params.nonlinearDiffusivity} (cm^2/sg)</ListItem>
+        <ListItem>Linear Diffusivity: {params.linearDiffusivity} (cm²/s)</ListItem>
+        <ListItem>Nonlinear Diffusivity: {params.nonlinearDiffusivity} (cm²/sg)</ListItem>
       </List>
     </Paper>
   );
