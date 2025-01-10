@@ -24,7 +24,61 @@ The code is divided into a frontend, backend, and runner which handles the major
 
 ## Running Locally
 
-Each component can be run locally and tested individually either with another locally run component or with a component running remotely. Refer to the README of each component on how to run each component. Follow the instructions below for running the supporting software (MongoDB, Redis, and Ngrok).
+The instructions for running each component are documented in their respective READMEs. For running the supporting software (MongoDB, Redis, Ngrok), refer to the instructions below.
+
+### 1. Create Ngrok Account
+
+Ngrok is needed to tunnel the local Redis connection. This enables having the COMETS runner notify the backend on competition through the locally running Redis instance.
+
+* Signup for Ngrok [here](https://dashboard.ngrok.com/signup)
+* Copy your auth token for the next step from [here](https://dashboard.ngrok.com/get-started/your-authtoken)
+
+### 2. Make Configuration
+
+* Navigate to `./local`
+* Copy `.env.sample` to `.env`
+* Fill out the `.env` file 
+
+### 3. Start up Services
+
+From `./local` run the command
+
+```bash
+docker compose up
+```
+
+### 4. Capture the Tunneled URL
+
+Ngrok will have generated a tunnel for the Redis connection, this will change each time docker compose is run.
+
+* Navigate to `localhost:4040` in the browser
+* Copy the tunnel URL for later use
+
+## System Overview
+
+### Sample Usage
+
+```mermaid
+sequenceDiagram
+	actor User
+	User ->> Frontend: Enter parameters, email, submit
+	Frontend ->> Backend: Submit simulation request
+	Backend ->> K8s: Create job
+	K8s -->> Backend: Job ID
+	Note over K8s,Backend: Backend will poll for pod status <br /> and report on failure
+	K8s ->> Runner: Create job
+	Runner ->> COMETS: Run simulation
+	COMETS -->> Runner: Simulation results
+	Runner ->> S3: Upload generated graphs
+	Runner -->> Backend: Notify of completion
+	Note over Runner,Backend: Completion notification is actually handled through <br /> Redis + BullMQ
+	Backend -->> User: Email notification
+	User ->> Frontend: View results
+	Frontend ->> Backend: Get results
+	Backend ->> S3: Get signed URLs
+	S3 -->> Backend: Signed URLs
+	Frontend -->> User: Graph visualizations
+```
 
 
 
