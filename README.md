@@ -86,12 +86,31 @@ sequenceDiagram
 
 ### Glossary
 
-| Term       | Definition                                                   |
-| ---------- | ------------------------------------------------------------ |
-| COMETS     | Computation Of Microbial Ecosystems in Time and Space        |
-| COMETS-web | Software in this repository which handles running COMETS in a web environment |
-|            |                                                              |
-|            |                                                              |
+| Term             | Definition                                                   |
+| ---------------- | ------------------------------------------------------------ |
+| COMETS           | Computation Of Microbial Ecosystems in Time and Space        |
+| COMETS-web       | Software in this repository which handles running COMETS in a web environment |
+| Kubernetes (K8s) | Container management environment                             |
+| NERC             | New England Research Cloud                                   |
+| OpenShift        | Red Hat maintained Kubernetes cluster/environment            |
+
+### Tech Stack
+
+| Task                       | Tool           |
+| -------------------------- | -------------- |
+| Backend Framework          | NestJS         |
+| Backend Language           | Typescript     |
+| Database                   | MongoDB        |
+| Deployment Environment     | NERC OpenShift |
+| Frontend Component Library | MUI            |
+| Frontend Form Library      | JSON Forms     |
+| Frontend Framework         | React          |
+| Frontend Language          | Typescript     |
+| Job Runner                 | Kubernetes Job |
+| Queue Database             | Redis          |
+| Runner Language            | Python         |
+| Runner Container           | Docker         |
+| Work Queue Management      | BullMQ         |
 
 
 
