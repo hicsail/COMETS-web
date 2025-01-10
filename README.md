@@ -63,6 +63,7 @@ sequenceDiagram
 	actor User
 	User ->> Frontend: Enter parameters, email, submit
 	Frontend ->> Backend: Submit simulation request
+	Backend ->> MongoDB: Store Request
 	Backend ->> K8s: Create job
 	K8s -->> Backend: Job ID
 	Note over K8s,Backend: Backend will poll for pod status <br /> and report on failure
@@ -72,9 +73,12 @@ sequenceDiagram
 	Runner ->> S3: Upload generated graphs
 	Runner -->> Backend: Notify of completion
 	Note over Runner,Backend: Completion notification is actually handled through <br /> Redis + BullMQ
+	Backend ->> MongoDB: Store results
 	Backend -->> User: Email notification
 	User ->> Frontend: View results
 	Frontend ->> Backend: Get results
+	Backend ->> MongoDB: Get results
+	MongoDB -->> Backend: Results
 	Backend ->> S3: Get signed URLs
 	S3 -->> Backend: Signed URLs
 	Frontend -->> User: Graph visualizations
