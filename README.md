@@ -24,7 +24,7 @@ The code is divided into a frontend, backend, and runner which handles the major
 
 ## Running Locally
 
-Each component can be run locally and tested individually either with another locally run component or with a component running remotely. Refer to the README of each component on how to run each component. Follow the instructions below for running the supporting software (MongoDB and Redis).
+Each component can be run locally and tested individually either with another locally run component or with a component running remotely. Refer to the README of each component on how to run each component. Follow the instructions below for running the supporting software (MongoDB, Redis, and Ngrok).
 
 
 
