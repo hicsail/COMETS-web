@@ -4,6 +4,10 @@ import { Transporter, createTransport } from 'nodemailer';
 
 export const TRANSPORT_PROVIDER = 'TRANSPORT_PROVIDER';
 
+/**
+ * Provides a email transport object based on environment variable
+ * configuration.
+ */
 export const transportProvider: Provider<Transporter> = {
   provide: TRANSPORT_PROVIDER,
   useFactory: (configService: ConfigService) => {

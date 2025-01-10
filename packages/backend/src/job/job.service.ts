@@ -22,6 +22,10 @@ export enum JobStatus {
   FAILURE
 }
 
+/**
+ * Handles management of Kubernetes Job. Provides an interface for launching an instance of
+ * the COMETS-Runner and for checking on the status of the pod.
+ */
 @Injectable()
 export class JobService {
   private readonly jobTemplate = new V1Job();
@@ -35,7 +39,7 @@ export class JobService {
     private readonly configService: ConfigService,
     private readonly converterService: RequestConverter
   ) {
-    // Fill in template for a job
+    // Fill in template for a job, includes what is needed to define the Kubernetes Job
     const metadata = new V1ObjectMeta();
     metadata.name = 'comets-runner';
     this.jobTemplate.metadata = metadata;
@@ -83,6 +87,14 @@ export class JobService {
       this.configService.getOrThrow<string>('runner.imagePullSecret');
   }
 
+  /**
+   * Logic to start an instance of the COMETS-Runner. Copies the Kubernetes Job template,
+   * updates the templates with run specific settings such as the job name and the COMETS
+   * parameters. Returns the job name to identify the specific run.
+   *
+   * @param request The user simulation request
+   * @returns The job name
+   */
   async triggerJob(request: SimulationRequest): Promise<string> {
     // Turn the request into COMETS parameters
     const parameters = await this.converterService.convert(request);
@@ -99,6 +111,14 @@ export class JobService {
     return jobName;
   }
 
+  /**
+   * Logic to get the status of the Kubernetes Job. Leveraged the Kubernetes
+   * API to get the status then converts it into a `JobStatus` enum for easier
+   * parsing.
+   *
+   * @param jobName The name of the job to check the status of
+   * @retuns The status of the job
+   */
   async getJobStatus(jobName: string): Promise<JobStatus> {
     const jobStatus = await this.batchClient.readNamespacedJob(jobName, this.namespace);
     const status = jobStatus.body!.status!;
@@ -116,11 +136,23 @@ export class JobService {
     }
   }
 
+  /**
+   * Delete the Kubernetes Job.
+   *
+   * @param jobName The name of the job to delete
+   */
   async deleteJob(jobName: string): Promise<void> {
     await this.batchClient.deleteNamespacedJob(jobName, this.namespace);
   }
 
+  /**
+   * Get the logs from the pod associated with the job.
+   *
+   * @param jobName The job to get the logs from
+   * @returns The stdout logs from the job
+   */
   async getPodLogs(jobName: string): Promise<string> {
+    // Figure out the pod from the job name
     const pods = await this.coreClient.listNamespacedPod(
       this.namespace,
       undefined,
@@ -131,10 +163,19 @@ export class JobService {
     );
     const podName = pods.body!.items[0].metadata!.name;
 
+    // Get the logs from the target pod
     const logs = await this.coreClient.readNamespacedPodLog(podName!, this.namespace);
     return logs.body;
   }
 
+  /**
+   * Creates the command for the COMETS-Runner (see ./packages/runner for more information).
+   * Handles both passing the user provided parameters as well as application level information
+   * on how to store the results.
+   *
+   * @params parameters The COMETS-Runner ready parameters
+   * @returns The CLI command for COMETS-Runner
+   */
   private createCommand(parameters: CometsParameters): string[] {
     let modelParams: string[] = [];
 
