@@ -7,13 +7,13 @@ import { SimulationResolver } from './simulation.resolver';
 import { SimulationService } from './simulation.service';
 import { BullBoardModule } from '@bull-board/nestjs';
 import { BullMQAdapter } from '@bull-board/api/bullMQAdapter';
-import { SimulationRequestConsumer } from './simulation.consumer';
 import { SimulationRequest, SimulationRequestSchema } from './models/request.model';
 import { SimulationCompletionProcessor } from './completion.consumer';
 import { SimulationPipe } from './pipes/simulation.pipe';
 import { ResultOutputResolver } from './result.resolver';
 import { S3Module } from '../s3/s3.module';
 import { EmailModule } from '../email/email.module';
+import { SimulationErrorProcessor } from './error.consumer';
 
 @Module({
   imports: [
@@ -27,12 +27,19 @@ import { EmailModule } from '../email/email.module';
     BullModule.registerQueue({
       name: 'completion'
     }),
+    BullModule.registerQueue({
+      name: 'error'
+    }),
     BullBoardModule.forFeature({
       name: 'simulationRequest',
       adapter: BullMQAdapter
     }),
     BullBoardModule.forFeature({
       name: 'completion',
+      adapter: BullMQAdapter
+    }),
+    BullBoardModule.forFeature({
+      name: 'error',
       adapter: BullMQAdapter
     }),
     JobModule,
@@ -42,10 +49,10 @@ import { EmailModule } from '../email/email.module';
   providers: [
     SimulationResolver,
     SimulationService,
-    SimulationRequestConsumer,
     SimulationCompletionProcessor,
     SimulationPipe,
-    ResultOutputResolver
+    ResultOutputResolver,
+    SimulationErrorProcessor
   ]
 })
 export class SimulationModule {}

@@ -131,25 +131,36 @@ async def main():
     experiment.set_classpath('bin', './lib/comets_glop/bin/comets_scr.jar')
 
     ## Run the experiment
-    experiment.run(False)
+    try:
+        experiment.run(False)
 
-    ## Capture the output
-    save_config = savers.SaveConfig(
-        s3_client=s3_client,
-        output_folder=OUTPUT_DIR,
-        s3_bucket=args['app']['s3_bucket'],
-        s3_folder=args['app']['s3_folder'],
-        do_upload=args['app']['s3_save'])
-    output = dict()
-    for saver in output_savers:
-        output.update(saver.save(experiment, save_config))
+        ## Capture the output
+        save_config = savers.SaveConfig(
+            s3_client=s3_client,
+            output_folder=OUTPUT_DIR,
+            s3_bucket=args['app']['s3_bucket'],
+            s3_folder=args['app']['s3_folder'],
+            do_upload=args['app']['s3_save'])
+        output = dict()
+        for saver in output_savers:
+            output.update(saver.save(experiment, save_config))
 
-    ## Notify of completion
-    if args['app']['notify']:
-        output['requestID'] = args['app']['id']
-        queue = Queue(args['app']['queue'], redis_options)
-        await queue.add('result', output)
-    pprint(output)
+        ## Notify of completion
+        if args['app']['notify']:
+            output['requestID'] = args['app']['id']
+            queue = Queue(args['app']['queue'], redis_options)
+            await queue.add('result', output)
+        pprint(output)
+
+    ## If an error took place, log the error and try to pass the error back
+    except Exception as e:
+        print(e)
+
+        if args['app']['notify']:
+            output = dict()
+            output['requestID'] = args['app']['id']
+            queue = Queue(args['app']['error_queue'], redis_options)
+            await queue.add('result', output)
 
 
 

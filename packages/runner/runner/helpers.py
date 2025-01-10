@@ -64,6 +64,9 @@ def argument_handling() -> dict:
     applevel_args.add_argument('--queue',
                                type=str,
                                required=True)
+    applevel_args.add_argument('--error-queue',
+                               type=str,
+                               required=True)
     applevel_args.add_argument('--id',
                                type=str,
                                required=True)
