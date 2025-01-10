@@ -54,22 +54,28 @@ def argument_handling() -> dict:
     applevel_args = argparser.add_argument_group('app')
     applevel_args.add_argument('--s3-bucket',
                                type=str,
-                               required=True)
+                               required=True,
+                               help='Where to save the output')
     applevel_args.add_argument('--s3-folder',
                                type=str,
-                               required=True)
+                               required=True,
+                               help='Folder in bucket to save output')
     applevel_args.add_argument('--s3-save',
                                action='store_true',
-                               default=False)
+                               default=False,
+                               help='Flag to decide if the contents should be saved')
     applevel_args.add_argument('--queue',
                                type=str,
-                               required=True)
+                               required=True,
+                               help='BullMQ queue name to send results')
     applevel_args.add_argument('--id',
                                type=str,
-                               required=True)
+                               required=True,
+                               help='Identifier for the simulation')
     applevel_args.add_argument('--notify',
                                action='store_true',
-                               default=False)
+                               default=False,
+                               help='Flag for if the queue should be notified')
 
     # Metabolite settings
     metabolite_args = argparser.add_argument_group('metabolite')
