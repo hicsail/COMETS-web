@@ -10,6 +10,10 @@ def _in_circle(x: float, y: float, center_x: float, center_y: float, radius: flo
 
 
 class LayoutMaker(ABC):
+    """
+    Interface for building the layout including the barriers and the
+    initial population seeding.
+    """
     def __init__(self, initial_pop_num=1e-6):
         self.initial_pop_num = initial_pop_num
 
@@ -33,21 +37,33 @@ class LayoutMaker(ABC):
         """
 
 class TestTubeMaker(LayoutMaker):
+    """ Layout builder for making a test tube """
     def __init__(self):
         super().__init__()
 
     def get_initial_population(self) -> list[list[float]]:
+        """ A test tube only has a single location with a single initial pop """
         return [[0, 0, self.initial_pop_num]]
 
     def get_barrier(self) -> list[list[float]]:
+        """ No barrier in a test tube """
         return []
 
     def get_grid_size(self) -> list[int]:
+        """ A test tube is always 1x1 """
         return [1, 1]
 
 
 class PetriDishCenter(LayoutMaker):
     def __init__(self, width: int, height: int, drop_radius: float, dish_radius: float):
+        """
+        Setup a center petri dish layout
+
+        :param width: The width of the whole petri dish environment
+        :param height: The height of the whole petri dish environment
+        :param drop_radius: The radius in which to innoculate
+        :param dish_radius: The radius of the petri dish itself
+        """
         super().__init__()
 
         self.width = width
@@ -59,6 +75,11 @@ class PetriDishCenter(LayoutMaker):
         self.center_y = self.height // 2
 
     def get_initial_population(self) -> list[list[float]]:
+        """
+        Fills in initial population in a center drop radius excluding outside the drop dish_radius
+
+        :returns: List of points within the drop radius at the center of the petri dish
+        """
         init_population = []
 
         for x in range(self.width):
@@ -69,6 +90,11 @@ class PetriDishCenter(LayoutMaker):
         return init_population
 
     def get_barrier(self) -> list[list[float]]:
+        """
+        Creates a barrier outside the radius of the petri dish
+
+        :returns: List of points that lie outside the petri dish
+        """
         barrier = []
 
         for x in range(self.width):
@@ -84,6 +110,14 @@ class PetriDishCenter(LayoutMaker):
 
 class PetriDishRandom(LayoutMaker):
     def __init__(self, width: int, height: int, num_innoculates: int, dish_radius: float):
+        """
+        Setup a petri dish with random innoculation sites
+
+        :param width: The width of the whole petri dish environment
+        :param height: The height of the whole petri dish environment
+        :param num_innoculates: The number of sites to innoculate
+        :param dish_radius: The radius of the petri dish itself
+        """
         super().__init__()
 
         self.width = width
@@ -95,6 +129,12 @@ class PetriDishRandom(LayoutMaker):
         self.center_y = self.height // 2
 
     def get_initial_population(self) -> list[list[float]]:
+        """
+        Generates initial population by sampling a number of random places
+        within the petri dish radius
+
+        :returns: List of points within the petri dish to innoculate
+        """
         # First double check that there is room for the number of innoculates
         max_positions = math.pi * self.dish_radius ** 2
         if max_positions < self.num_innoculates:
@@ -109,6 +149,7 @@ class PetriDishRandom(LayoutMaker):
         coordinates = set()
         init_population = []
 
+        # Keep generating innoculate sites until the number is reached
         while len(coordinates) < self.num_innoculates:
             # Generate random coordinates
             x = random.randint(min_x, max_x)
@@ -124,6 +165,11 @@ class PetriDishRandom(LayoutMaker):
         return init_population
 
     def get_barrier(self) -> list[list[float]]:
+        """
+        Creates a barrier outside the radius of the petri dish
+
+        :returns: List of points that lie outside the petri dish
+        """
         barrier = []
 
         for x in range(self.width):
@@ -139,6 +185,17 @@ class PetriDishRandom(LayoutMaker):
 
 def layout_factory(layout_type: LayoutType, width: int,
                    height: int, drop_radius: float, dish_radius: float, num_innoculates: int) -> LayoutMaker:
+    """
+    Helper function which determins which layout builder to use based
+    on the selected layout.
+
+    :param layout_type: The type of layout selected for the simulation
+    :param width: The width of the simulation environment
+    :param height: The height of the simulation environment
+    :param drop_radius: How big the drop radius would be (if a center petri dish layout)
+    :param num_innoculates: Number of innoculation sites (if a random petri dish layout)
+    :returns: The correct layout builder for the layout type
+    """
     if layout_type == PETRI_CENTER:
         return PetriDishCenter(width, height, drop_radius, dish_radius)
     elif layout_type == PETRI_RANDOM:

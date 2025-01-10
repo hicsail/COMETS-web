@@ -26,6 +26,12 @@ PETRI_DISH_DIAMETER = 3.0
 
 # Helps convert the given model to the notebook to load
 def load_model(model_type: str) -> cobra.Model:
+    """
+    Loads a model based on the type specified. Maps the model to a cobra model
+
+    :param model_type: The type of model to load
+    :returns: Cobra loaded model
+    """
     if model_type == E_COLI:
         return cobra.io.load_model('textbook')
     elif model_type == NITROSOMONAS:
@@ -37,10 +43,23 @@ def load_model(model_type: str) -> cobra.Model:
 
 
 def get_metabolites(model: cobra.Model) -> list:
+    """
+    Gets the list of metabolites associated with a model. Performs some
+    realtively gross dictionary conversion.
+
+    :param model: The cobra model
+    :returns: The list of metabolite names
+    """
     return list(list(model.metabolites.__dict__.values())[0].keys())
 
 
 def get_target_flux(experiment: c.comets, model_id: str) -> list[str]:
+    """
+    Gets the fluxes for a specific model
+
+    :param experiment: The COMETS experiment
+    :param model_id: The ID of the model to get fluxes for
+    """
     # Get only the fluxes start start with "EX"
     filtered_flux = experiment.fluxes_by_species[model_id].filter(regex='^EX', axis=1)
     # Return just the column names
@@ -48,6 +67,12 @@ def get_target_flux(experiment: c.comets, model_id: str) -> list[str]:
 
 
 def argument_handling() -> dict:
+    """
+    Handles parsing the CLI arguments. Does some logic to group
+    together associated parameters including the list of model parameters.
+
+    :returns: The parsed and cleaned CLI arguments
+    """
     argparser = ArgumentParser()
 
     # Application specific
@@ -189,6 +214,16 @@ def argument_handling() -> dict:
 
 
 def get_time_steps(experiment: c.comets, num_steps = 5) -> tuple[list[int], list[float]]:
+    """
+    Calculate the time steps for viewing the layout across the experiment.
+    Balances the number of cycles and when the logs are captured.
+
+    :param experiment: The COMETS parameters
+    :param num_steps: The number of time steps to view
+    :returns: Tuple, first element is the cycle number to get a view for,
+              second element is the cycle number converted to an hour representation
+    """
+
     max_cycles = experiment.parameters.get_param('maxCycles')
     log_freq = experiment.parameters.get_param('BiomassLogRate')
     time_convertion = experiment.parameters.get_param('timeStep')

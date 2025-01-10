@@ -45,6 +45,16 @@ output_savers = [
 
 
 async def main():
+    """
+    Main entry point into the CLI. Completes the following actions
+
+    1. Parses the CLI arguments
+    2. Calculates/populates COMETS parameters from the CLI arguments
+    3. Runs the experiment
+    4. Generates specific graphs from the experiment output
+    5. (Optional) Stores the graphs in an S3 bucket
+    6. (Optional) Sends a completion notification along a BullMQ queue
+    """
     ## Argument Parsing
     args = helpers.argument_handling()
 
