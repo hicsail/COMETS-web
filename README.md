@@ -102,6 +102,7 @@ sequenceDiagram
 
 | Task                       | Tool           |
 | -------------------------- | -------------- |
+| Backend API Interface      | GraphQL        |
 | Backend Framework          | NestJS         |
 | Backend Language           | Typescript     |
 | Database                   | MongoDB        |
