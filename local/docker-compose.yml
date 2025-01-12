@@ -1,0 +1,29 @@
+services:
+  mongo:
+    container_name: comets-mongo
+    image: mongo:4
+    ports:
+      - '27017:27017'
+    volumes:
+      - ./volumes/mongo:/data/db
+
+  redis:
+    container_name: comets-redis
+    image: 'redis:latest'
+    command:
+      - /bin/sh
+      - -c
+      - redis-server --requirepass "$${REDIS_PASSWORD:?REDIS_PASSWORD variable is not set}"
+    env_file: .env
+    ports:
+      - '6379:6379'
+
+  ngrok:
+    image: ngrok/ngrok:latest
+    restart: unless-stopped
+    command:
+      - "tcp"
+      - "host.docker.internal:6379"
+    env_file: .env
+    ports:
+      - '4040:4040'

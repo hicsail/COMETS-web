@@ -5,6 +5,7 @@ import { ResultOutput } from './models/result.model';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { Inject } from '@nestjs/common';
 
+/** GraphQL resolver for viewing results */
 @Resolver(() => ResultOutput)
 export class ResultOutputResolver {
   private readonly bucket: string = this.configService.getOrThrow<string>('s3.bucket');
@@ -14,6 +15,11 @@ export class ResultOutputResolver {
     private readonly configService: ConfigService
   ) {}
 
+  /**
+   * Handles generating the URL for the given resource. This handles
+   * converting the bucket location to a signed, expiring URL for the
+   * end user to view the results.
+   */
   @ResolveField(() => String)
   async url(@Parent() resultOutput: ResultOutput): Promise<string> {
     const command = new GetObjectCommand({

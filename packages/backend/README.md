@@ -1,73 +1,56 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# COMETS-Web Backend
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Running Locally
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+### 1. Make Config
 
-## Description
+* Copy `.env.sample` to `.env`
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+* Modify as needed, you will need settings you established in the top level README instructions
 
-## Installation
+### 2.  Install Requirements and Run
 
 ```bash
-$ npm install
+npm install
+npm run start:dev
 ```
 
-## Running the app
+## Software Organization
 
-```bash
-# development
-$ npm run start
+The software is broken up using NestJS's module structure. A description of each module's purpose is below.
 
-# watch mode
-$ npm run start:dev
+* `config`: Simply stores the configurations for the backend
+* `email`: Contains the logic for emailing users and maintiners
+* `job`: Contains the logic for running the COMETS-Runner Kubernetes job
+* `s3`: Interface to the S3 bucket
+* `simulation`: Main container for backend logic. Handles taking in simulation requests, queuing jobs, triggering the job, and maintaining the results.
 
-# production mode
-$ npm run start:prod
-```
+## Deployment
 
-## Test
+### Description
 
-```bash
-# unit tests
-$ npm run test
+The COMETS-Backend is just a NestJS project so the deployment is handled as having an image deployed with an accessible URL.
 
-# e2e tests
-$ npm run test:e2e
+### Steps
 
-# test coverage
-$ npm run test:cov
-```
+### 1. Make Changes
 
-## Support
+Edit any code in the package, ensuring that the Dockerfile is updated if needed.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+### 2. Make PR
 
-## Stay in touch
+Make a PR against the main repo, a workflow will check off to ensure the Docker image can be built (but not pushed yet). Once all checks have passed, the PR is ready to be merged.
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### 3. Merge PR
 
-## License
+Merge the PR, this will kick off a workflow which will build and push the Docker image to DockerHub.
 
-Nest is [MIT licensed](LICENSE).
+### 4. Restart Rollout
+
+OpenShift in NERC currently has an issue related to automatically redeploying so the instance needs to be manually rolledout. 
+
+*  Navigate to the [OpenShift Project](https://console.apps.shift.nerc.mghpcc.org/topology/ns/comets-smart-interface-d17eea?view=graph&selectId=9175c380-e700-4946-b199-1f1c484b0f16)
+* Right click on the backend in the Topology view
+* Select "Restart Rollout"
+
+A new pod will be created with the new image loaded

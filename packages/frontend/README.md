@@ -1,27 +1,48 @@
-# React + TypeScript + Vite
+# COMETS-Web Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Running Locally
 
-Currently, two official plugins are available:
+### 1. Make Config
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+* Copy `.env.sample` to `.env`
 
-## Expanding the ESLint configuration
+* Modify as needed, by default the frontend will point to a locally running backend
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### 2. Install Requirements and Run
 
-- Configure the top-level `parserOptions` property like this:
-
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
+```bash
+npm install
+npm run dev
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+Navigate to `http://localhost:5173/`
+
+## Deployment
+
+### Description
+
+The COMETS-Frontend is deployed using Nginx to host the built React frontend. The Dockerfile has instructions for building the React app, then placing the resources in and Nginx environment.
+
+### Steps
+
+### 1. Make Changes
+
+Edit any code in the package, ensuring that the Dockerfile is updated if needed.
+
+### 2. Make PR
+
+Make a PR against the main repo, a workflow will check off to ensure the Docker image can be built (but not pushed yet). Once all checks have passed, the PR is ready to be merged.
+
+### 3. Merge PR
+
+Merge the PR, this will kick off a workflow which will build and push the Docker image to DockerHub.
+
+### 4. Restart Rollout
+
+OpenShift in NERC currently has an issue related to automatically redeploying so the instance needs to be manually rolledout. 
+
+*  Navigate to the [OpenShift Project](https://console.apps.shift.nerc.mghpcc.org/topology/ns/comets-smart-interface-d17eea?view=graph&selectId=9175c380-e700-4946-b199-1f1c484b0f16)
+* Right click on the frontend in the Topology view
+* Select "Restart Rollout"
+
+A new pod will be created with the new image loaded

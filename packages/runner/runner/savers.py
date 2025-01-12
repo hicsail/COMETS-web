@@ -9,6 +9,7 @@ from runner import helpers
 
 @dataclass
 class SaveConfig:
+    """ Information needed for saving the results """
     s3_client: typing.Any
     output_folder: Path
     s3_bucket: str
@@ -17,18 +18,37 @@ class SaveConfig:
 
 
 class Saver(ABC):
+    """
+    Interface that all data savers implement
+    """
     def upload_file(self, config: SaveConfig, key: str, filename: Path) -> None:
+        """
+        Handles uploading the file (if saving is set) to the S3 bucket
+
+        :param config: The save settings
+        :param key: Will be the key in the S3 bucket
+        :param filename: Where the file is located on the local system
+        """
         if config.do_upload:
             config.s3_client.upload_file(filename, config.s3_bucket, key)
 
     @abstractmethod
     def save(self, experiment: c.comets, config: SaveConfig) -> dict:
-        '''
+        """
         Handles saving a component of the comets experiment
-        '''
+        """
 
 class BiomassSaver(Saver):
     def save(self, experiment: c.comets, config: SaveConfig) -> dict:
+        """
+        Generates biomass figures for each model at a fixed time step.
+        Each model results in one image with a fixed number of sampled
+        visualizations.
+
+        :param experiment: The ran COMETS experiment
+        :param config: The save configurations
+        :returns: Where the saved biomass figures are located in S3
+        """
         output = dict()
         output['biomass'] = []
 
@@ -77,6 +97,15 @@ class BiomassSaver(Saver):
 
 class FluxSaver(Saver):
     def save(self, experiment: c.comets, config: SaveConfig) -> dict:
+        """
+        Generates flux figures for each model and for each flux at
+        a fixed time step. Each model cooresponds to a series of
+        flux figures.
+
+        :param experiment: The ran COMETS experiment
+        :param config: The save configurations
+        :returns: Where the flux figures are stored in S3
+        """
         output = dict()
         output['flux'] = []
 
@@ -137,6 +166,13 @@ class FluxSaver(Saver):
 
 class MetaboliteSaver(Saver):
     def save(self, experiment: c.comets, config: SaveConfig) -> dict:
+        """
+        Generates the metabolite figures for the given experiment.
+
+        :param experiment: The ran COMETS experiment
+        :param config: The save configurations
+        :returns: Where the metabolite figures are saved in S3
+        """
         output = dict()
         output['metabolite'] = []
 
@@ -186,6 +222,13 @@ class MetaboliteSaver(Saver):
 
 class BiomassSeriesSaver(Saver):
     def save(self, experiment: c.comets, config: SaveConfig) -> dict:
+        """
+        Generates the time series biomass graph.
+
+        :param experiment: The ran COMETS experiment
+        :param config: The save configuration
+        :returns: Where the biomass graph was saved in S3
+        """
         # Output settings
         filename = 'biomass_timeseries.png'
         output_path = config.output_folder / filename
@@ -214,6 +257,13 @@ class BiomassSeriesSaver(Saver):
 
 class MetaboliteSeriesSaver(Saver):
     def save(self, experiment: c.comets, config: SaveConfig) -> dict:
+        """
+        Generats the time series metabolite graph.
+
+        :param experiment: The ran COMETS experiment
+        :param config: The save configuration
+        :retunrs: Where the metabolite graph is saved in S3
+        """
         # Output settings
         filename = 'metabolite_timeseries.png'
         output_path = config.output_folder / filename

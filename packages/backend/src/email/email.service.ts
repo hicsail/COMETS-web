@@ -15,6 +15,13 @@ export class EmailService {
     private readonly configService: ConfigService
   ) {}
 
+  /**
+   * Handles sending the success message to the user. The user will get a URL to the frontend
+   * which will bring them to the results page.
+   *
+   * @param email The email to send the success message to
+   * @param id The ID of the original request, used to build URL
+   */
   async sendSuccess(email: string, id: string): Promise<void> {
     const mailOptions = {
       from: this.sender,
@@ -25,13 +32,24 @@ export class EmailService {
     await this.transporter.sendMail(mailOptions);
   }
 
+  /**
+   * Handles sending the failure message to both the user and the maintainer. Each
+   * group receives a different message
+   *
+   * @param email The email of the user
+   * @param log The output from the faild COMETS-Runner attempt
+   * @param request The request associated with the failed run
+   */
   async sendFailure(email: string, log: string, request: SimulationRequest): Promise<void> {
     await this.sendFailedClient(email);
     await this.sendFailureInternal(log, request);
   }
 
   /**
-   * Send an email to the client letting them know their email failed to run
+   * Send an email to the client letting them know their email failed to run.
+   * Only contains an apology
+   *
+   * @param email The email of the user
    */
   private async sendFailedClient(email: string): Promise<void> {
     const mailOptions = {
@@ -44,7 +62,12 @@ export class EmailService {
   }
 
   /**
-   * Send an email to the internal address when a run has failed with logs
+   * Send an email to the internal address when a run has failed with logs. Includes
+   * information on the original request such as the parameters as well as the logs of the
+   * run attempt.
+   *
+   * @param log The log output from the failed COMETS-run
+   * @param request The original simulation request
    */
   private async sendFailureInternal(log: string, request: SimulationRequest): Promise<void> {
     const message = `
