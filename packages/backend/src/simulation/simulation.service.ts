@@ -7,7 +7,6 @@ import { SimulationRequestInput } from './dtos/request.dto';
 import { SimulationRequest, SimulationRequestDocument, SimulationStatus } from './models/request.model';
 import { SimulationResult } from './models/result.model';
 
-
 /**
  * Service revolving around the simulation.
  */
