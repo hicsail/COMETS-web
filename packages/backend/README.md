@@ -15,6 +15,16 @@ npm install
 npm run start:dev
 ```
 
+## Software Organization
+
+The software is broken up using NestJS's module structure. A description of each module's purpose is below.
+
+* `config`: Simply stores the configurations for the backend
+* `email`: Contains the logic for emailing users and maintiners
+* `job`: Contains the logic for running the COMETS-Runner Kubernetes job
+* `s3`: Interface to the S3 bucket
+* `simulation`: Main container for backend logic. Handles taking in simulation requests, queuing jobs, triggering the job, and maintaining the results.
+
 ## Deployment
 
 ### Description
