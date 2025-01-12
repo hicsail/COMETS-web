@@ -84,3 +84,23 @@ python main.py \
 ```
 
 By adding the `--notify` and `--s3-save` the resulting images will be saved in the S3 bucket and the BullMQ queue will get a notification of the task completion. This can be used in combination with a backend listening to the BullMQ queue in order to test the result viewing.
+
+## Deployment
+
+### Description
+
+Since the COMETS-Runner is executed as a Kuberenetes Job, the deployment process doesn't require anything more then updating the Docker image. Each time the job is executed, the updated image is pulled down.
+
+### Steps
+
+### 1. Make Changes
+
+Edit any code in the package, ensuring that the Dockerfile is updated if needed. The Dockerfile installs the local version of `cometspy` located in `lib/cometspy` so changes can be made there.
+
+### 2. Make PR
+
+Make a PR against the main repo, a workflow will check off to ensure the Docker image can be built (but not pushed yet). Once all checks have passed, the PR is ready to be merged.
+
+### 3. Merge PR
+
+Merge the PR, this will kick off a workflow which will build and push the Docker image to DockerHub. The next time COMETS-Runner is ran in the Kubernetes cluster, the newest image will be used.
