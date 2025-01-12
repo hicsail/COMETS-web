@@ -100,22 +100,22 @@ sequenceDiagram
 
 ### Tech Stack
 
-| Task                       | Tool           |
-| -------------------------- | -------------- |
-| Backend API Interface      | GraphQL        |
-| Backend Framework          | NestJS         |
-| Backend Language           | Typescript     |
-| Database                   | MongoDB        |
-| Deployment Environment     | NERC OpenShift |
-| Frontend Component Library | MUI            |
-| Frontend Form Library      | JSON Forms     |
-| Frontend Framework         | React          |
-| Frontend Language          | Typescript     |
-| Job Runner                 | Kubernetes Job |
-| Queue Database             | Redis          |
-| Runner Language            | Python         |
-| Runner Container           | Docker         |
-| Work Queue Management      | BullMQ         |
+| Task                       | Tool                                                         |
+| -------------------------- | ------------------------------------------------------------ |
+| Backend API Interface      | [GraphQL](https://graphql.org/)                              |
+| Backend Framework          | [NestJS](https://nestjs.com/)                                |
+| Backend Language           | [Typescript](https://www.typescriptlang.org/)                |
+| Database                   | [MongoDB](https://www.mongodb.com/)                          |
+| Deployment Environment     | [NERC OpenShift](https://nerc-project.github.io/nerc-docs/openshift/) |
+| Frontend Component Library | [MUI](https://mui.com/)                                      |
+| Frontend Form Library      | [JSON Forms](https://jsonforms.io/)                          |
+| Frontend Framework         | [React](https://react.dev/)                                  |
+| Frontend Language          | [Typescript](https://www.typescriptlang.org/)                |
+| Job Runner                 | [Kubernetes Job](https://kubernetes.io/docs/concepts/workloads/controllers/job/) |
+| Queue Database             | [Redis](https://redis.io/)                                   |
+| Runner Language            | [Python](https://www.python.org/)                            |
+| Runner Container           | [Docker](https://www.docker.com/)                            |
+| Work Queue Management      | [BullMQ](https://docs.bullmq.io/)                            |
 
 
 
