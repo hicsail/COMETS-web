@@ -35,7 +35,12 @@ The COMETS-Backend is just a NestJS project so the deployment is handled as havi
 
 ### 1. Make Changes
 
-Edit any code in the package, ensuring that the Dockerfile is updated if needed.
+Edit any code in the package, ensuring that the Dockerfile is updated if needed. Ensure the formatting is correct using
+
+```bash
+npm run formt:fix
+npm run lint:fix
+```
 
 ### 2. Make PR
 
@@ -54,3 +59,16 @@ OpenShift in NERC currently has an issue related to automatically redeploying so
 * Select "Restart Rollout"
 
 A new pod will be created with the new image loaded
+
+## Misc
+
+### Checking Number of User Submissions
+
+You can use a MongoDB connection to check the number of unique users by users.
+
+* Navigate to the [OpenShift Project](https://console.apps.shift.nerc.mghpcc.org/topology/ns/comets-smart-interface-d17eea?view=graph&selectId=9175c380-e700-4946-b199-1f1c484b0f16)
+* Select the mongo instance
+* Select the pod
+* Under the "terminal" section run `mongosh`
+* Run `use comets`
+* Then run `db.simulationrequests.distinct('email').length`
