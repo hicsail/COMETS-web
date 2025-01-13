@@ -35,7 +35,12 @@ The COMETS-Backend is just a NestJS project so the deployment is handled as havi
 
 ### 1. Make Changes
 
-Edit any code in the package, ensuring that the Dockerfile is updated if needed.
+Edit any code in the package, ensuring that the Dockerfile is updated if needed. Ensure the formatting is correct using
+
+```bash
+npm run formt:fix
+npm run lint:fix
+```
 
 ### 2. Make PR
 

@@ -27,7 +27,14 @@ The COMETS-Frontend is deployed using Nginx to host the built React frontend. Th
 
 ### 1. Make Changes
 
-Edit any code in the package, ensuring that the Dockerfile is updated if needed.
+Edit any code in the package, ensuring that the Dockerfile is updated if needed. Ensure the formatting is correct using.
+
+```bash
+npm run formt:fix
+npm run lint:fix
+```
+
+
 
 ### 2. Make PR
 
