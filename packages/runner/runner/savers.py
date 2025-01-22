@@ -15,6 +15,7 @@ class SaveConfig:
     s3_bucket: str
     s3_folder: str
     do_upload: bool
+    is_rich: bool
 
 
 class Saver(ABC):
@@ -269,9 +270,22 @@ class MetaboliteSeriesSaver(Saver):
         output_path = config.output_folder / filename
         bucket_location = f'{config.s3_folder}/{filename}'
 
-        # Get the time series media data and convert time to hours
-        media = experiment.get_metabolite_time_series(upper_threshold=900)
-        media['cycle'] = media['cycle'] * experiment.parameters.get_param('timeStep')
+        media = experiment.media.copy()
+        media['time'] = media['cycle'] * experiment.parameters.get_param('timeStep')
+
+        if config.is_rich:
+            # Range pulled from sample code
+            media = media[(media['conc_mmol'] > 0.020000001) | (media['conc_mmol'] < 0.019999999)]
+        else:
+            media = media[media.conc_mmol < 900]
+
+        media = media.groupby(by = ["metabolite", "cycle"]) \
+                .agg(func = sum) \
+                .reset_index() \
+                .drop(columns = ['x', 'y'])
+        media = media.pivot(columns = 'metabolite', values = 'conc_mmol', index = ['cycle'])\
+                .reset_index()\
+                .fillna(0.)
 
         # Plot the media time series
         fig, ax = plt.subplots()
