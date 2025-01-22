@@ -15,6 +15,7 @@ class SaveConfig:
     s3_bucket: str
     s3_folder: str
     do_upload: bool
+    is_rich: bool
 
 
 class Saver(ABC):
@@ -269,8 +270,13 @@ class MetaboliteSeriesSaver(Saver):
         output_path = config.output_folder / filename
         bucket_location = f'{config.s3_folder}/{filename}'
 
+        # Determine the threshold based on type
+        threshold = 900
+        if config.is_rich:
+            threshold = 5_000
+
         # Get the time series media data and convert time to hours
-        media = experiment.get_metabolite_time_series(upper_threshold=900)
+        media = experiment.get_metabolite_time_series(upper_threshold=threshold)
         media['cycle'] = media['cycle'] * experiment.parameters.get_param('timeStep')
 
         # Plot the media time series

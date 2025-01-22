@@ -149,7 +149,8 @@ async def main():
         output_folder=OUTPUT_DIR,
         s3_bucket=args['app']['s3_bucket'],
         s3_folder=args['app']['s3_folder'],
-        do_upload=args['app']['s3_save'])
+        do_upload=args['app']['s3_save'],
+        is_rich=args['metabolite']['metabolite_type'] == helpers.RICH)
     output = dict()
     for saver in output_savers:
         output.update(saver.save(experiment, save_config))
